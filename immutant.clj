@@ -1,8 +1,8 @@
 (ns tlog.init
-  ;(:use tlog.core)
-  (:require [immutant.messaging :as messaging]
-            [immutant.web :as web]
-            [immutant.utilities :as util]))
+  (:use tlog.core)
+  (:require ; [immutant.messaging :as messaging]
+            [immutant.web :as web]))
+            ; [immutant.utilities :as util]))
 
 ;; This file will be loaded when the application is deployed to Immutant, and
 ;; can be used to start services your app needs. Examples:
@@ -12,7 +12,7 @@
 ;; path given here is a sub-path to the global context-path for the app
 ;; if any.
 
-; (web/start "/" my-ring-handler)
+(web/start root-routes)
 ; (web/start "/foo" a-different-ring-handler)
 
 ;; To start a Noir app:

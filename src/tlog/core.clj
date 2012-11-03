@@ -1,6 +1,4 @@
-(ns tlog.core)
+(ns tlog.core
+  (:use [net.cgrand.moustache :only [app]]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(def root-routes (app [&] "Hello World!"))
