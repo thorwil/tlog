@@ -1,5 +1,6 @@
 (ns tlog.route.route
   "Map URL patterns to handlers."
+  (:require [tlog.route.handle :as h])
   (:use [net.cgrand.moustache :only [app]]))
 
 (defmacro defroutes
@@ -7,8 +8,11 @@
   [name & more]
   `(def ~name (app ~@more)))
 
+(defroutes get
+  [] (h/journal))
+
 (defroutes root
   ["admin" &] {:get "Admin."}
   [&]
-  {:get "Visitor."})
+  {:get get})
 
