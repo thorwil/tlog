@@ -1,5 +1,5 @@
 (ns tlog.init
-  (:use tlog.core)
+  (:use tlog.route.route)
   (:require ; [immutant.messaging :as messaging]
             [immutant.web :as web]))
             ; [immutant.utilities :as util]))
@@ -12,7 +12,7 @@
 ;; path given here is a sub-path to the global context-path for the app
 ;; if any.
 
-(web/start #'root-routes :reload true)
+(web/start #'root :reload true)
 ; (web/start "/foo" a-different-ring-handler)
 
 ;; To start a Noir app:
