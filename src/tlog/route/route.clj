@@ -1,18 +1,21 @@
 (ns tlog.route.route
-  "Map URL patterns to handlers."
-  (:require [tlog.route.handle :as h])
-  (:use [net.cgrand.moustache :only [app]]))
+  "Route requests to handlers, based on URL patterns and methods."
+  (:require [net.cgrand.moustache :refer [app]]
+            [cemerick.friend :as friend]
+            [tlog.route.handle :as h]))
 
 (defmacro defroutes
   "def name to a moustache app form."
   [name & more]
   `(def ~name (app ~@more)))
 
-(defroutes get
-  [] (h/journal))
+(defroutes get-routes
+  [] h/journal
+  ["login"] h/login
+  ["logout"] [friend/logout h/logout])
 
-(defroutes root
-  ["admin" &] {:get "Admin."}
+(defroutes root-routes
+  ["admin" &] {:get [(friend/wrap-authorize [::admin]) h/admin]}
+                  
   [&]
-  {:get get})
-
+  {:get get-routes})

@@ -17,4 +17,4 @@
   []
   (d/with-connection db
     (d/with-query-results r ["select hash from account where nick = 'admin';"]
-      r)))
+      (-> r first :hash))))

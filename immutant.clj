@@ -1,28 +1,30 @@
 (ns tlog.init
-  (:use tlog.route.route)
-  (:require ; [immutant.messaging :as messaging]
-            [immutant.web :as web]))
-            ; [immutant.utilities :as util]))
+  "Start Immutant services."
+  (:require [immutant.web :as web]
+            [immutant.web.session :as immutant-session]
+            [cemerick.friend :as friend]
+            (cemerick.friend [workflows :as workflows]
+                             [credentials :as creds])
+            [ring.middleware.session :refer [wrap-session]]
+            [ring.middleware.params :refer [wrap-params]]
+            [ring.middleware.keyword-params :refer [wrap-keyword-params]]
+            ;; [ring.middleware.nested-params :refer [wrap-nested-params]]
+            [tlog.route.route :refer [root-routes]]))
 
-;; This file will be loaded when the application is deployed to Immutant, and
-;; can be used to start services your app needs. Examples:
+; A dummy in-memory user "database"
+(def users {"admin" {:username "admin"
+                    :password (creds/hash-bcrypt "test")
+                    :roles #{::admin}}
+            "jane" {:username "jane"
+                    :password (creds/hash-bcrypt "plain")
+                    :roles #{::user}}})
 
+(def secured-app
+  (-> #'root-routes
+      (friend/authenticate {:credential-fn (partial creds/bcrypt-credential-fn users)
+                            :workflows [(workflows/interactive-form)]})
+      wrap-keyword-params
+      wrap-params
+      (wrap-session {:store (immutant-session/servlet-store)})))
 
-;; Web endpoints need a context-path and ring handler function. The context
-;; path given here is a sub-path to the global context-path for the app
-;; if any.
-
-(web/start #'root :reload true)
-; (web/start "/foo" a-different-ring-handler)
-
-;; To start a Noir app:
-; (server/load-views (util/app-relative "src/tlog/views"))
-; (web/start "/" (server/gen-handler {:mode :dev :ns 'tlog}))
-
-
-;; Messaging allows for starting (and stopping) destinations (queues & topics)
-;; and listening for messages on a destination.
-
-; (messaging/start "/queue/a-queue")
-; (messaging/listen "/queue/a-queue" #(println "received: " %))
-
+(web/start secured-app :reload true)
