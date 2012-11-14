@@ -13,8 +13,8 @@
 
 ; A dummy in-memory user "database"
 (def users {"admin" {:username "admin"
-                    :password (creds/hash-bcrypt "test")
-                    :roles #{::admin}}
+                     :password (creds/hash-bcrypt "test")
+                     :roles #{::admin}}
             "jane" {:username "jane"
                     :password (creds/hash-bcrypt "plain")
                     :roles #{::user}}})
@@ -24,6 +24,7 @@
       (friend/authenticate {:credential-fn (partial creds/bcrypt-credential-fn users)
                             :workflows [(workflows/interactive-form)]})
       wrap-keyword-params
+      ;; wrap-nested-params
       wrap-params
       (wrap-session {:store (immutant-session/servlet-store)})))
 

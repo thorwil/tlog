@@ -14,5 +14,6 @@
 
 (defn logout [r] (redirect "/"))
 
-(def admin
-  "Admin")
+(defn admin
+  [r]
+  v/admin)
