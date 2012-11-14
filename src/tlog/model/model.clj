@@ -1,4 +1,5 @@
 (ns tlog.model.model
+  "Database access (PostgreSQL), used via tlog.route.handle."
   (:require [clojure.java.jdbc :as d]))
  
 (let [db-host "localhost"
