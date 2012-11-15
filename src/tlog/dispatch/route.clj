@@ -1,8 +1,8 @@
-(ns tlog.route.route
+(ns tlog.dispatch.route
   "Route requests to handlers, based on URL patterns, methods and authorization."
   (:require [net.cgrand.moustache :refer [app]]
             [cemerick.friend :as friend]
-            [tlog.route.handle :as h]))
+            [tlog.dispatch.handle :as h]))
 
 (defmacro defroutes
   "def name to a moustache app form."
