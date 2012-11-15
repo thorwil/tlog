@@ -9,7 +9,7 @@
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             ;; [ring.middleware.nested-params :refer [wrap-nested-params]]
-            [tlog.route.route :refer [root-routes]]))
+            [tlog.dispatch.route :refer [root-routes]]))
 
 ; A dummy in-memory user "database"
 (def users {"admin" {:username "admin"
