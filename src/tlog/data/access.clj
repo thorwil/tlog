@@ -1,4 +1,4 @@
-(ns tlog.data.data
+(ns tlog.data.access
   "Database access (PostgreSQL), used via tlog.dispatch.handle."
   (:require [clojure.java.jdbc :as d]))
  
@@ -14,8 +14,4 @@
            :user "postgres"
            :password "database"}))
 
-(defn test-query
-  []
-  (d/with-connection db
-    (d/with-query-results r ["select hash from account where nick = 'admin';"]
-      (-> r first :hash))))
+(def blarg "lkj")

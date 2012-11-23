@@ -9,19 +9,20 @@
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             ;; [ring.middleware.nested-params :refer [wrap-nested-params]]
-            [tlog.dispatch.route :refer [root-routes]]))
+            [tlog.dispatch.route :refer [root-routes]]
+            [tlog.data.account :refer [accounts]]))
 
-; A dummy in-memory user "database"
-(def users {"admin" {:username "admin"
-                     :password (creds/hash-bcrypt "test")
-                     :roles #{::admin}}
-            "jane" {:username "jane"
-                    :password (creds/hash-bcrypt "plain")
-                    :roles #{::user}}})
+(def users
+  {"admin" {:username "admin"
+            :password (creds/hash-bcrypt "test")
+            :roles #{::admin}}
+   "jane" {:username "jane"
+           :password (creds/hash-bcrypt "plain")
+           :roles #{::guest}}})
 
 (def secured-app
   (-> #'root-routes
-      (friend/authenticate {:credential-fn (partial creds/bcrypt-credential-fn users)
+      (friend/authenticate {:credential-fn (partial creds/bcrypt-credential-fn accounts)
                             :workflows [(workflows/interactive-form)]})
       wrap-keyword-params
       ;; wrap-nested-params

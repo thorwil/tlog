@@ -5,7 +5,7 @@
             ;; [hiccup.def :refer [defhtml]]
             [hiccup.page :refer [html5]]))
 
-(defn base
+(defn- base
   "Outer page skeleton."
   [{:keys [title
 	   buildup]}]
@@ -17,7 +17,7 @@
       [:div#main
        [:div#content buildup]]]]]))
 
-(def login*
+(def ^:private login*
   (html
    [:h2 "Login"]
    [:form {:action "/login" :method "POST"}
