@@ -14,8 +14,12 @@
   ["login"] h/login
   ["logout"] [friend/logout h/logout])
 
+(defn admin
+  [r]
+  ((friend/wrap-authorize h/admin [:tlog.data.account/admin]) r))
+
 (defroutes root-routes
-  ["admin" &] {:get [(friend/wrap-authorize [:tlog.data.account/admin]) h/admin]}
+  ["admin" &] {:get admin}
                   
   [&]
   {:get get-routes})

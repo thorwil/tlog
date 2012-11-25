@@ -22,7 +22,9 @@
   (fact 
      (with-redef-handler ?handler ?uri) => ?handler-and-params)
      ?handler   ?uri     ?handler-and-params
-     #'h/journal "/"      ["#'tlog.dispatch.handle/journal" {:path-info "/", :request-method :get,
+     #'h/journal "/"      ["#'tlog.dispatch.handle/journal" {:path-info "/" :request-method :get
                                                             :uri "/"}]
-     #'h/login  "/login" ["#'tlog.dispatch.handle/login" {:path-info "/login", :request-method :get,
-                                                         :uri "/login"}])
+     #'h/login  "/login"  ["#'tlog.dispatch.handle/login" {:path-info "/login" :request-method :get
+                                                         :uri "/login"}]
+     #'r/admin  "/admin"  ["#'tlog.dispatch.route/admin" {:path-info "/" :request-method :get
+                                                          :uri "/admin"}])
