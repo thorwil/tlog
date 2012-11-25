@@ -26,5 +26,7 @@
                                                             :uri "/"}]
      #'h/login  "/login"  ["#'tlog.dispatch.handle/login" {:path-info "/login" :request-method :get
                                                          :uri "/login"}]
+     #'r/logout "/logout" ["#'tlog.dispatch.route/logout" {:path-info "/logout" :request-method :get
+                                                           :uri "/logout"}]
      #'r/admin  "/admin"  ["#'tlog.dispatch.route/admin" {:path-info "/" :request-method :get
                                                           :uri "/admin"}])

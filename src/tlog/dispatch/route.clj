@@ -9,10 +9,14 @@
   [name & more]
   `(def ~name (app ~@more)))
 
+(defn logout
+  [r]
+  ((friend/logout h/logout) r))
+
 (defroutes get-routes
   [] h/journal
   ["login"] h/login
-  ["logout"] [friend/logout h/logout])
+  ["logout"] logout)
 
 (defn admin
   [r]
