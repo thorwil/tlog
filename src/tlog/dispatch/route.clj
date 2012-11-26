@@ -9,6 +9,8 @@
   [name & more]
   `(def ~name (app ~@more)))
 
+;; This would be nicer written inline as [friend/logout h/logout], but there needs to be a var for
+;; the test to redef it:
 (defn logout
   [r]
   ((friend/logout h/logout) r))
@@ -18,6 +20,8 @@
   ["login"] h/login
   ["logout"] logout)
 
+;; This would be nicer written inline as [(friend/wrap-authorize [:tlog.data.account/admin])
+;; h/admin], but there needs to be a var for the test to redef it:
 (defn admin
   [r]
   ((friend/wrap-authorize h/admin [:tlog.data.account/admin]) r))

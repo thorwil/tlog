@@ -12,14 +12,6 @@
             [tlog.dispatch.route :refer [root-routes]]
             [tlog.data.account :refer [accounts]]))
 
-(def users
-  {"admin" {:username "admin"
-            :password (creds/hash-bcrypt "test")
-            :roles #{::admin}}
-   "jane" {:username "jane"
-           :password (creds/hash-bcrypt "plain")
-           :roles #{::guest}}})
-
 (def secured-app
   (-> #'root-routes
       (friend/authenticate {:credential-fn (partial creds/bcrypt-credential-fn accounts)

@@ -10,8 +10,9 @@
       (into [] as))))
 
 (defn- add-role
-  "Take a single account map. Return the map with roles added: 'admin' if the username is 'admin', 'guest' otherwise.
-   Motivation: keep roles out of the database, as long as 'admin' is the only account of interest."
+  "Take a single account map. Return the map with roles added: 'admin' if the username is 'admin',
+   'guest' otherwise. Motivation: keep roles out of the database, as long as 'admin' is the only
+   account of interest."
   [a]
   (into a {:roles (if (= (:username a) "admin")
                     #{::admin}

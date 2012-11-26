@@ -13,5 +13,3 @@
            ; as driver-specific properties.
            :user "postgres"
            :password "database"}))
-
-(def blarg "lkj")

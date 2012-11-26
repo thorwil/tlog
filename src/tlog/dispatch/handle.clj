@@ -1,5 +1,6 @@
 (ns tlog.dispatch.handle
-  "Take requests from routing, build responses (by calling views with query results from the model)."
+  "Take requests from routing. Build responses, usually by calling views with query results from the
+   model."
   (:require [ring.util.response :refer [response redirect]]
             [tlog.render.render :as v]))
 
