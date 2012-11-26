@@ -28,5 +28,6 @@
                                                          :uri "/login"}]
      #'r/logout "/logout" ["#'tlog.dispatch.route/logout" {:path-info "/logout" :request-method :get
                                                            :uri "/logout"}]
-     #'r/admin  "/admin"  ["#'tlog.dispatch.route/admin" {:path-info "/" :request-method :get
-                                                          :uri "/admin"}])
+     #'r/admin-protected  "/admin"  ["#'tlog.dispatch.route/admin-protected" {:path-info "/"
+                                                                              :request-method :get
+                                                                              :uri "/admin"}])
