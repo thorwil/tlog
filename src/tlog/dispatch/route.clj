@@ -18,16 +18,21 @@
 (defroutes get-routes
   [] h/journal
   ["login"] h/login
-  ["logout"] logout)
+  ["logout"] logout
+  [&] (h/not-found))
+
+(defroutes admin-post-routes
+  [] h/admin
+  [&] (h/not-found))
 
 ;; This would be nicer written inline as [(friend/wrap-authorize [:tlog.data.account/admin])
-;; h/admin], but there needs to be a var for the test to redef it:
-(defn admin
+;; admin-post-routes], but there needs to be a var for the test to redef it:
+(defn admin-protected
   [r]
-  ((friend/wrap-authorize h/admin [:tlog.data.account/admin]) r))
+  ((friend/wrap-authorize admin-post-routes [:tlog.data.account/admin]) r))
 
 (defroutes root-routes
-  ["admin" &] {:get admin}
+  ["admin" &] {:get admin-protected}
                   
   [&]
   {:get get-routes})
