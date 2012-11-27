@@ -2,6 +2,9 @@
   "Route requests to handlers, based on URL patterns, methods and authorization."
   (:require [net.cgrand.moustache :refer [app]]
             [cemerick.friend :as friend]
+            [immutant.utilities :refer [app-relative]]
+            [ring.middleware.resource :refer [wrap-resource]]
+            [ring.middleware.file-info :refer [wrap-file-info]]
             [tlog.dispatch.handle :as h]))
 
 (defmacro defroutes
@@ -15,8 +18,16 @@
   [r]
   ((friend/logout h/logout) r))
 
+(defn static
+  [r]
+  (-> h/not-found
+      (wrap-resource (app-relative "static"))
+      wrap-file-info)
+  r)
+
 (defroutes get-routes
   [] h/journal
+  ["static" &] static
   ["login"] h/login
   ["logout"] logout
   [&] (h/not-found))
