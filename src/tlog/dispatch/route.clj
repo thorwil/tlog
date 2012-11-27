@@ -20,22 +20,22 @@
 
 (defn static
   [r]
-  (-> h/not-found
-      (wrap-resource (app-relative "static"))
-      wrap-file-info)
-  r)
+  ((-> h/not-found
+       (wrap-resource "/")
+       wrap-file-info)
+   r))
 
 (defroutes get-routes
   [] h/journal
   ["static" &] static
   ["login"] h/login
   ["logout"] logout
-  [&] (h/not-found))
+  [&] h/not-found)
 
 (defroutes admin-post-routes
   [] h/admin
   ["write"] h/write
-  [&] (h/not-found))
+  [&] h/not-found)
 
 ;; This would be nicer written inline as [(friend/wrap-authorize [:tlog.data.account/admin])
 ;; admin-post-routes], but there needs to be a var for the test to redef it:

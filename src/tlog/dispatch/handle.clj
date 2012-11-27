@@ -29,8 +29,7 @@
   (-> p/write
       response))
 
-(defn not-found
-  []
+(def not-found
   (-> p/not-found
       response
       constantly
