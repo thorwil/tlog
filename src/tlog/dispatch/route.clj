@@ -2,7 +2,6 @@
   "Route requests to handlers, based on URL patterns, methods and authorization."
   (:require [net.cgrand.moustache :refer [app]]
             [cemerick.friend :as friend]
-            [immutant.utilities :refer [app-relative]]
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.middleware.file-info :refer [wrap-file-info]]
             [tlog.dispatch.handle :as h]))
