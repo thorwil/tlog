@@ -1,11 +1,11 @@
-(ns tlog.render.render
-  "Take data from tlog.dispatch.handle and build HTML responses."
+(ns tlog.render.html
+  "Build HTML in a modular way."
   (:require [ring.util.response :refer [response]]
             [hiccup.core :refer [html]]
             ;; [hiccup.def :refer [defhtml]]
             [hiccup.page :refer [html5]]))
 
-(defn- base
+(defn skeleton
   "Outer page skeleton."
   [{:keys [title
 	   buildup]}]
@@ -17,7 +17,7 @@
       [:div#main
        [:div#content buildup]]]]]))
 
-(def ^:private login*
+(def login
   (html
    [:h2 "Login"]
    [:form {:action "/login" :method "POST"}
@@ -33,9 +33,3 @@
       [:td
        [:input {:type "password" :name "password" :value ""}]]]]
     [:input {:type "submit" :value "submit"}]]))
-
-(def login
-  (-> {:title "Login" :buildup login*} base response))
-
-(def admin
-  (-> {:title "Admin" :buildup "Admin"} base response))

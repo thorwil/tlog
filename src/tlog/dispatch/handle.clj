@@ -3,7 +3,7 @@
    model."
   (:require [ring.util.response :refer [response redirect]]
             [net.cgrand.moustache :refer [alter-response]]
-            [tlog.render.render :as v]))
+            [tlog.render.page :as p]))
 
 (defn journal
   [r]
@@ -11,13 +11,13 @@
 
 (defn login
   [r]
-  v/login)
+  p/login)
 
 (defn logout [r] (redirect "/"))
 
 (defn admin
   [r]
-  v/admin)
+  p/admin)
 
 (defn article-form
   [r]
