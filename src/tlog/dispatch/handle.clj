@@ -7,11 +7,13 @@
 
 (defn journal
   [r]
-  p/journal)
+  (-> p/journal
+      response))
 
 (defn login
   [r]
-  p/login)
+  (-> p/login
+      response))
 
 (defn logout
   [r]
@@ -19,11 +21,13 @@
 
 (defn admin
   [r]
-  p/admin)
+  (-> p/admin
+      response))
 
 (defn write
   [r]
-  p/write)
+  (-> p/write
+      response))
 
 (defn not-found
   []

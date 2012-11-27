@@ -1,16 +1,15 @@
 (ns tlog.render.page
   "Take data from tlog.dispatch.handle and build HTML responses, using tlog.render.html."
-  (:require [ring.util.response :refer [response]]
-            [tlog.render.html :as h]))
+  (:require [tlog.render.html :as h]))
 
 (def journal
-  (-> {:title "Login" :buildup "Journal"} h/skeleton response))
+  (h/skeleton {:title "Login" :buildup "Journal"}))
 
 (def login
-  (-> {:title "Login" :buildup h/login-form} h/skeleton response))
+  (h/skeleton {:title "Login" :buildup h/login-form}))
 
 (def admin
-  (-> {:title "Admin" :buildup "Admin"} h/skeleton response))
+  (h/skeleton {:title "Admin" :buildup "Admin"}))
 
 (def write
-  (-> {:title "Write" :buildup h/article-form} h/skeleton response))
+  (h/skeleton {:title "Write" :buildup h/article-form}))
