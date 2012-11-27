@@ -31,7 +31,7 @@
 
 (defn not-found
   []
-  (-> "404: There's nothing associated with this URL."
+  (-> p/not-found
       response
       constantly
       (alter-response #(assoc % :status 404))))

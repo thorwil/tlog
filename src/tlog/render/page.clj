@@ -13,3 +13,6 @@
 
 (def write
   (h/skeleton {:title "Write" :buildup h/article-form}))
+
+(def not-found
+  (h/skeleton {:title "Write" :buildup "404: There's nothing associated with this URL."}))
