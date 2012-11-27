@@ -23,7 +23,7 @@
 
 (defroutes admin-post-routes
   [] h/admin
-  ["write"] h/article-form
+  ["write"] h/write
   [&] (h/not-found))
 
 ;; This would be nicer written inline as [(friend/wrap-authorize [:tlog.data.account/admin])

@@ -8,3 +8,6 @@
 
 (def admin
   (-> {:title "Admin" :buildup "Admin"} h/skeleton response))
+
+(def write
+  (-> {:title "Write" :buildup h/article-form} h/skeleton response))
