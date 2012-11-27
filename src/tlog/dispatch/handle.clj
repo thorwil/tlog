@@ -7,13 +7,15 @@
 
 (defn journal
   [r]
-  {:body "Journal"})
+  p/journal)
 
 (defn login
   [r]
   p/login)
 
-(defn logout [r] (redirect "/"))
+(defn logout
+  [r]
+  (redirect "/"))
 
 (defn admin
   [r]

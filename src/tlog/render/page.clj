@@ -3,6 +3,9 @@
   (:require [ring.util.response :refer [response]]
             [tlog.render.html :as h]))
 
+(def journal
+  (-> {:title "Login" :buildup "Journal"} h/skeleton response))
+
 (def login
   (-> {:title "Login" :buildup h/login-form} h/skeleton response))
 
