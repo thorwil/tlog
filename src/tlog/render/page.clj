@@ -4,7 +4,7 @@
             [tlog.render.html :as h]))
 
 (def login
-  (-> {:title "Login" :buildup h/login} h/skeleton response))
+  (-> {:title "Login" :buildup h/login-form} h/skeleton response))
 
 (def admin
   (-> {:title "Admin" :buildup "Admin"} h/skeleton response))

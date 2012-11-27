@@ -17,7 +17,7 @@
       [:div#main
        [:div#content buildup]]]]]))
 
-(def login
+(def login-form
   (html
    [:h2 "Login"]
    [:form {:action "/login" :method "POST"}
