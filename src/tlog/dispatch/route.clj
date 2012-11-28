@@ -1,5 +1,6 @@
 (ns tlog.dispatch.route
-  "Route requests to handlers, based on URL patterns, methods and authorization."
+  "Route requests to handlers (wrapped in middleware), based on URL patterns, methods and
+   authorization."
   (:require [net.cgrand.moustache :refer [app]]
             [cemerick.friend :as friend]
             [ring.middleware.resource :refer [wrap-resource]]
@@ -17,19 +18,18 @@
   [r]
   ((friend/logout h/logout) r))
 
-(defn static
-  [r]
-  ((-> h/not-found
-       (wrap-resource "/")
-       wrap-file-info)
-   r))
-
 (defroutes get-routes
   [] h/journal
-  ["static" &] static
   ["login"] h/login
   ["logout"] logout
   [&] h/not-found)
+
+(defn static
+  [r]
+  ((-> get-routes
+       (wrap-resource "/")
+       wrap-file-info)
+   r))
 
 (defroutes admin-post-routes
   [] h/admin
@@ -46,4 +46,4 @@
   ["admin" &] {:get admin-protected}
                   
   [&]
-  {:get get-routes})
+  {:get static})
