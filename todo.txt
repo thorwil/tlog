@@ -1,5 +1,8 @@
+Replace the GAE channel/token solution for updating the slug list
 Decide on home page content and journal URL
 Do something about the plain text database password?
+Look into Drip
+Look into Wakeful or Noir routing
 
 # Copied from tlog-gae-clj:
 

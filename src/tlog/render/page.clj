@@ -12,7 +12,10 @@
   (h/skeleton {:title "Admin" :buildup "Admin"}))
 
 (def write
-  (h/skeleton {:title "Write" :buildup h/article-form}))
+  (h/skeleton {:title "Write"
+               :scripts h/aloha-admin
+               :buildup h/article-form}))
+;; To add: (option-admin-bar :write)  option-noscript-warning
 
 (def not-found
   (h/skeleton {:title "Write" :buildup "404: There's nothing associated with this URL."}))
