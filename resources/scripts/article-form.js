@@ -23,7 +23,7 @@ window.onload=function() {
     var slugInput = document.getElementById("article_slug_input");
     var textArea = document.getElementById("article_text_area");
     var submitButton = document.getElementById("article_submit");
-    var feedCheckboxes = $('input.feed, [type="checkbox"]');
+    var feedCheckboxes = document.getElementById("feed-selectors").getElementsByTagName("input");//$('input.feed, [type="checkbox"]');
 
     function convertToSlug(text){
 	return text
@@ -78,13 +78,16 @@ window.onload=function() {
 	updateSubmitButton(slugInput.value);
     };
 
-    function getFeedCheckboxString() {
+    function getCheckedFeedCheckboxesString(checkboxes) {
 	var s = "";
-	feedCheckboxes.each(function() {
-	    s = s + this.name + " " + this.checked + " ";
-	});
+	for (var e = 0; e < checkboxes.length; e++)
+	{
+            if (checkboxes[e].checked == true) {
+		s = s + checkboxes[e].name + " ";
+	    }
+	}
 	return s.slice(0, -1); // Drop last character, as it's a space
-    }
+    };
 
     // Submit button, submit article
     function submit() {
@@ -92,7 +95,7 @@ window.onload=function() {
     	       {slug: slugInput.value,
     		title: titleInput.value,
     		body: textArea.innerHTML,
-		feeds: getFeedCheckboxString(),
+		feeds: getCheckedFeedCheckboxesString(feedCheckboxes),
     		redir: slugInput.value},
     	       function(data){location.href = '/' + slugInput.value;});
     }
