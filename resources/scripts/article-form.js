@@ -18,21 +18,11 @@
  * - Enable submit button if all 3 fields are filled, else make sure it's disabled.
  */
 
-// function setSlugs(message){
-//     slugs = message.split(" ");
-// }
-
-// var socket = channel.open();
-// // socket.onopen = function(){};
-// socket.onmessage = function(m){setSlugs(m.data);};
-// socket.onerror = function(){$('body').prepend('<p>Channel error, please reload.</p>');};
-// socket.onclose = function(){$('body').prepend('<p>Channel closed, please reload.</p>');};
-
 window.onload=function() {
-    var titleInput = $('[name="title"]');
-    var slugInput = $('[name="slug"]');
-    var textArea = $('div#slug');
-    var submitButton = $('[type="submit"]');
+    var titleInput = document.getElementById("article_title_input");
+    var slugInput = document.getElementById("article_slug_input");
+    var textArea = document.getElementById("article_text_area");
+    var submitButton = document.getElementById("article_submit");
     var feedCheckboxes = $('input.feed, [type="checkbox"]');
 
     function convertToSlug(text){
@@ -44,14 +34,13 @@ window.onload=function() {
     }
 
     function updateSubmitButton(slug){
-	if (titleInput.val() != '' &&
-	    slugInput.val() != '' &&
-	    textArea.html() != ''){
-	    // .disabled only works with [0], whereas .val only works without!?
-	    submitButton[0].disabled = false;
+	if (titleInput.value != '' &&
+	    slugInput.value != '' &&
+	    textArea.innerHTML != ''){
+	    submitButton.disabled = false;
 	}
 	else {
-	    submitButton[0].disabled = true;
+	    submitButton.disabled = true;
 	}
 
 	// if (jQuery.inArray(slug, slugs) > -1) {
@@ -71,43 +60,42 @@ window.onload=function() {
 	o.value = o.value.replace(regexp, '');
     }
 
-    var SubmitDefaultValue = submitButton.val();
+    var SubmitDefaultValue = submitButton.value;
 
-    titleInput.keyup(function(){
+    titleInput.onkeyup = function(){
 	// Fill slug as title is being written
-	var text = convertToSlug($(this).val());
-	slugInput.val(text);
+	var text = convertToSlug(this.value);
+	slugInput.value = text;
 	updateSubmitButton(text);
-    });
+    };
 
-    slugInput.keyup(function(){
-	updateSubmitButton($(this).val());
+    slugInput.onkeyup = function(){
+	updateSubmitButton(this.value);
 	return rejectInvalidChars(this, /[^a-zäöüß0-9_\-]/);
-    });
+    };
 
-    textArea.keyup(function(){
-	updateSubmitButton(slugInput.val());
-    });
+    textArea.onkeyup = function(){
+	updateSubmitButton(slugInput.value);
+    };
 
     function getFeedCheckboxString() {
 	var s = "";
 	feedCheckboxes.each(function() {
 	    s = s + this.name + " " + this.checked + " ";
 	});
-	return s.slice(0, -1); // Drop last character, as it's a " "
+	return s.slice(0, -1); // Drop last character, as it's a space
     }
 
     // Submit button, submit article
     function submit() {
 	$.post('/admin/add-article',
-    	       {slug: slugInput.val(),
-    		title: titleInput.val(),
-    		body: textArea.html(),
+    	       {slug: slugInput.value,
+    		title: titleInput.value,
+    		body: textArea.innerHTML,
 		feeds: getFeedCheckboxString(),
-    		redir: slugInput.val()},
-    	       function(data){location.href = '/' + slugInput.val();});
+    		redir: slugInput.value},
+    	       function(data){location.href = '/' + slugInput.value;});
     }
 
-    // submitButton[0].onclick = function() { submit(); };
     submitButton.onclick = function() { submit(); };
 };
