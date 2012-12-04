@@ -2,16 +2,10 @@
 
 /* Functions for a form for adding articles.
  *
- * On GAE, this worked as follows:
- *
  * To be defined prior to referencing this file:
- * - channel = new goog.appengine.Channel('token'); with custom token
- * - var slugs as array of slugs in use;
+ * - var slugsInUse as array of slugs in use;
  *
- * Open a channel with the token to receive updates on the slugs in use.
- *
- * Compare current slug field value to switch between "Move" and "Overwrite"
- * text on the submit button. Also change slug field background color.
+ * Compare current slug field value with slugs array. Disable the submit button, if there's a match.
  *
  * Actions on key input:
  * - Reject invalid chars.
@@ -23,7 +17,7 @@ window.onload=function() {
     var slugInput = document.getElementById("article_slug_input");
     var textArea = document.getElementById("article_text_area");
     var submitButton = document.getElementById("article_submit");
-    var feedCheckboxes = document.getElementById("feed-selectors").getElementsByTagName("input");//$('input.feed, [type="checkbox"]');
+    var feedCheckboxes = document.getElementById("feed-selectors").getElementsByTagName("input");
 
     function convertToSlug(text){
 	return text
@@ -43,17 +37,18 @@ window.onload=function() {
 	    submitButton.disabled = true;
 	}
 
-	// if (jQuery.inArray(slug, slugs) > -1) {
-	//     // slug in use, warn
-	//     slugInput.addClass('warning');
-	//     submitButton.val("Can't overwrite existing Article");
-	// 	submitButton[0].disabled = true;
-	// }
-	// else {
-	//     // slug not in use
-	//     slugInput.removeClass('warning');
-	//     submitButton.val(SubmitDefaultValue);
-	// }
+	if (jQuery.inArray(slug, slugsInUse) > -1) {
+	    // slug in use, warn
+	    // FIX: It gets here, but following has no effect
+	    slugInput.className += ('warning');
+	    submitButton.value = "There's already an Article with this slug.";
+	    submitButton.disabled = true;
+	}
+	else {
+	    // slug not in use
+	    slugInput.className = slugInput.className.replace( /(?:^|\s)warning(?!\S)/g , '' );
+	    submitButton.value = SubmitDefaultValue;
+	}
     }
 
     function rejectInvalidChars(o, regexp){

@@ -89,6 +89,7 @@
 (def article-form-js
   "Link JS for article forms."
   (html
+   [:script "var slugsInUse = ['admin', 'login']"]
    [:script {:src "/scripts/article-form.js"}]))
 
 (defn- aloha
