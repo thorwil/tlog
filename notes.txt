@@ -28,6 +28,11 @@ INSERT INTO account VALUES ('admin', '$2a$10$Cp0GK58KbTE3SYx8wmgqLO2oF2JHLp/a72D
 
 -----
 
+# Test a POST handler:
+curl -i -H "Accept: text/plain" -X PUT -d "payload" http://localhost:8080/test
+
+-----
+
 Example request map for /admin/write:
 {:ssl-client-cert nil
  :remote-addr "127.0.0.1"

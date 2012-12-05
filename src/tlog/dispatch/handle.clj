@@ -29,6 +29,14 @@
   (-> p/write
       response))
 
+(defn put-article
+  [r]
+  (do (println (:uri r))
+      (println r)
+      {:status 200
+       :headers {"Content-Type" "text/plain"}
+       :body "example"}))
+
 (def not-found
   (-> p/not-found
       response

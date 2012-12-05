@@ -84,15 +84,41 @@ window.onload=function() {
 	return s.slice(0, -1); // Drop last character, as it's a space
     };
 
+    function httpRequest(method, url, body, success, failure) {
+	var r = new XMLHttpRequest();
+	r.open(method, url, true);
+	r.send("payload");
+	r.onreadystatechange = function() {
+	    if (r.readyState == 4) {
+		if (r.status == 200)
+		    success(r.responseText);
+		else if (failure)
+		    failure(r.status, r.statusText);
+	    }
+	};
+    }
+
+    function httpPutSuccess(responseText) {
+	alert("HTTP PUT succeeded");
+	// function(data){location.href = '/' + slugInput.value;});
+    }
+
+    function httpPutFailure(responseStatus, responseText) {
+	alert("Submitting the Article via HTTP PUT failed with status " + responseStatus);
+    }
+
     // Submit button, submit article
     function submit() {
-	$.post('/admin/add-article',
-    	       {slug: slugInput.value,
-    		title: titleInput.value,
-    		body: textArea.innerHTML,
-		feeds: getCheckedFeedCheckboxesString(feedCheckboxes),
-    		redir: slugInput.value},
-    	       function(data){location.href = '/' + slugInput.value;});
+	var slug = '/' + slugInput.value;
+	httpRequest("PUT",
+		    slug,
+		    "PAYLOAD",
+		    // {title: titleInput.value,
+		    //  body: textArea.innerHTML,
+		    //  feeds: getCheckedFeedCheckboxesString(feedCheckboxes),
+		    //  redir: slugInput.value},
+		    httpPutSuccess,
+		    httpPutFailure);
     }
 
     submitButton.onclick = function() { submit(); };
