@@ -1,4 +1,4 @@
-(ns tlog.init
+(ns immutant.init
   "Start Immutant services."
   (:require [immutant.web :as web]
             [immutant.web.session :as immutant-session]
