@@ -10,6 +10,7 @@
                  [postgresql/postgresql "9.1-901-1.jdbc4"]
                  [com.cemerick/friend "0.1.2"]
                  [hiccup "1.0.1"]
+                 [org.clojure/data.json "0.2.0"]
                  [org.clojure/tools.nrepl "0.2.0-beta10"]]
   :profiles {:dev {:dependencies [[midje "1.4.0" :exclusions [org.clojure/core.incubator]]]
                    :plugins [[lein-midje "2.0.1"]]}}

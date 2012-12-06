@@ -3,6 +3,7 @@
    model."
   (:require [ring.util.response :refer [response redirect]]
             [net.cgrand.moustache :refer [alter-response]]
+            [clojure.data.json :as json]
             [tlog.render.page :as p]))
 
 (defn journal
@@ -30,12 +31,18 @@
       response))
 
 (defn put-article
-  [r]
-  (do (println (:uri r))
-      (println r)
-      {:status 200
+  "Take a JSON string as :body."
+  [{:keys [body]}]
+  (let [body* (try (-> body slurp (json/read-str :key-fn keyword))
+                   (catch Exception e nil))]
+    (if body*
+      (do (println body*)
+          {:status 201 ;; Status 201: Created
+           :headers {"Content-Type" "text/plain"}
+           :body "Success"})
+      {:status 400 ;; Status 400: Bad Request
        :headers {"Content-Type" "text/plain"}
-       :body "example"}))
+       :body "Failure"})))
 
 (def not-found
   (-> p/not-found

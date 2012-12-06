@@ -46,9 +46,12 @@
 (defn put-article
   [r]
   ((-> h/put-article
-       wrap-params)
-       ;; (friend/wrap-authorize [:tlog.data.account/admin]))
+       (friend/wrap-authorize [:tlog.data.account/admin]))
    r))
+
+(defn put-article*
+  [r]
+  (h/put-article r))
 
 (defroutes root-routes
   ["admin" &] {:get admin-protected}

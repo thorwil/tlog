@@ -1,4 +1,3 @@
-Replace the GAE channel/token solution for updating the slug list
 Decide on home page content and journal URL
 Do something about the plain text database password?
 Look into Drip
@@ -36,7 +35,9 @@ Minify JS and CSS
 Try to load less JS
 Etags?
 Do something about older IEs lacking getElementsByClassName, used in time.js
+Do something about relying on JSON.stringify (http://caniuse.com/json)?
 Do not try to remove CSS class empty for every single comment submission
+Update slugsInUse asynchronously
 
 Comments
 --------
@@ -46,7 +47,6 @@ Do not write "Reply" in comment fields, if JS is disabled
 
 # But how?
 --------
-Consider an architecture, where view parts take a map filled with fns to get info, passing the map on with the fns replaced.
 Make sure article content is put in <p>, to avoid <br>s
 Disable Aloha Save button until there are changes (even better: unless), look into smartContentChange
 Fix Aloha blocking in some new comment fields, when adding several comments in succession
