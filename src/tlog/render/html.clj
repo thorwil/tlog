@@ -16,6 +16,7 @@
   "HTML page skeleton."
   [{:keys [title
            scripts
+           option-noscript-warning
 	   buildup]}]
   (html5
    [:html {:lang "en"}
@@ -30,6 +31,7 @@
 	    :type "text/css"}]
      [:link {:rel "stylesheet" :href "/main.css" :type "text/css"}]
      [:body
+      option-noscript-warning
       [:div#main
        [:div#content buildup]]]]]))
 
@@ -50,6 +52,9 @@
       [:td
        [:input {:type "password" :name "password" :value ""}]]]]
     [:input {:type "submit" :value "submit"}]]))
+
+(def option-noscript-warning
+  (html [:noscript [:div#noscript-warning "This won't work with JavaScript disabled ;)"]]))
 
 (def feed-selector
   "Area for selecting the feeds an article should appear in (checkboxes)."
