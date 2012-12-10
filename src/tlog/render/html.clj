@@ -6,6 +6,58 @@
             [hiccup.page :refer [html5 include-css]]
             [tlog.render.configuration :as conf]))
 
+;; Taken from Clojure 1.2 clojure.contrib.def:
+(defn- name-with-attributes
+  "To be used in macro definitions. Handles optional docstrings and attribute maps for a name to be
+   defined in a list of macro arguments. If the first macro argument is a string, it is added as a
+   docstring to name and removed from the macro argument list. If afterwards the first macro
+   argument is a map, its entries are added to the name's metadata map and the map is removed from
+   the macro argument list. The return value is a vector containing the name with its extended
+   metadata map and the list of unprocessed macro arguments."
+  [name macro-args]
+  (let [[docstring macro-args] (if (string? (first macro-args))
+                                 [(first macro-args) (next macro-args)]
+                                 [nil macro-args])
+        [attr macro-args] (if (map? (first macro-args))
+                            [(first macro-args) (next macro-args)]
+                            [{} macro-args])
+        attr (if docstring
+               (assoc attr :doc docstring)
+               attr)
+        attr (if (meta name)
+               (conj (meta name) attr)
+               attr)]
+    [(with-meta name attr) macro-args]))
+
+(defmacro ^:private defopt
+  "Macro for defining static, optional HTML fragments as single-keyword hash-maps, to be passed to
+   skeleton.
+
+   Take a name, optional doc-string, body and optional keyname. Use name to create a keyname, if
+   none is given. Return the body as value to the keyname in a hash-map."
+  [name* & more]
+  (let [[name body-and-maybe-keyword] (name-with-attributes name* more)
+        keyword* (or (second body-and-maybe-keyword)
+                     (keyword name))]
+    `(def ~name
+       {~keyword* ~(first body-and-maybe-keyword)})))
+
+(defmacro ^:private defopt-fn
+  "Macro for defining functions that return optional HTML fragments as single-keyword hash-maps, to
+   be passed to skeleton.
+
+   Take a name, optional doc-string, argument-list, body and optional keyname. Use name to create a
+   keyname, if none is given. Return a form that returns the body as value to the keyname in a
+   hash-map."
+  [name* & more]
+  (let [[name args+body+maybe-keyword] (name-with-attributes name* more)
+        [args body] args+body+maybe-keyword
+        keyword* (or (nth args+body+maybe-keyword 2 nil)
+                     (keyword name))]
+    `(defn ~name
+       ~args
+       {~keyword* ~body})))
+
 (def title-with
   "Build string for the <head>, <title> tag."
   #(str %
@@ -53,7 +105,7 @@
        [:input {:type "password" :name "password" :value ""}]]]]
     [:input {:type "submit" :value "submit"}]]))
 
-(def option-noscript-warning
+(defopt option-noscript-warning
   (html [:noscript [:div#noscript-warning "This won't work with JavaScript disabled ;)"]]))
 
 (def feed-selector
