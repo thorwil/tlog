@@ -2,9 +2,12 @@
   "Build HTML in a modular way."
   (:require [ring.util.response :refer [response]]
             [hiccup.core :refer [html]]
-            ;; [hiccup.def :refer [defhtml]]
+            [hiccup.def :refer [defhtml]]
             [hiccup.page :refer [html5 include-css]]
             [tlog.render.configuration :as conf]))
+
+
+;; Utilities
 
 (defn- valid-or-alt
   "Take a predicate, alternative and a seq. If the predicate on the first of the seq is
@@ -65,10 +68,14 @@
         (when (not-empty %) conf/title-seperator)
         conf/title-main))
 
+
+;; HTML page skeleton
+
 (defn skeleton
   "HTML page skeleton."
   [{:keys [title
            scripts
+           option-admin-bar
            option-noscript-warning
 	   main]}]
   (html5
@@ -84,9 +91,13 @@
 	    :type "text/css"}]
      [:link {:rel "stylesheet" :href "/main.css" :type "text/css"}]
      [:body
+      option-admin-bar
       option-noscript-warning
       [:div#main
        [:div#content main]]]]]))
+
+
+;; HTML fragments for :main
 
 (def login-form
   "Form for submitting username and password."
@@ -105,9 +116,6 @@
       [:td
        [:input {:type "password" :name "password" :value ""}]]]]
     [:input {:type "submit" :value "submit"}]]))
-
-(defopt option-noscript-warning
-  (html [:noscript [:div#noscript-warning "This won't work with JavaScript disabled ;)"]]))
 
 (def feed-selector
   "Area for selecting the feeds an article should appear in (checkboxes)."
@@ -210,3 +218,50 @@
 
 (def aloha-guest
   (str jquery (aloha nil)))
+
+
+;; HTML options (fragments for keys other than :main)
+
+(defopt option-noscript-warning
+  (html [:noscript [:div#noscript-warning "This won't work with JavaScript disabled ;)"]]))
+
+(defn- map-map
+  "Take a function and a map. Return a map of the same kind, with the function applied to the
+   values."
+  [f m]
+  (into (empty m) (for [[k v] m] [k (f v)])))
+
+(defhtml ^:private text+href->link
+  [[text href]]
+  [:a {:href href} text])
+
+(defhtml ^:private text+href->span
+  [[text href]]
+  [:span text])
+
+(defopt-fn option-admin-bar
+  "Take no argument or a key refering to the current page. Render area with links for the logged in
+   admin, with the link associated with the key turned into plain text."
+  [& [current]]
+  (let [items-default (array-map :list ["List" "/admin"]
+                                 :write ["Write" "/admin/write"]
+                                 :file ["File" "/admin/file"]
+                                 :logout ["Log out" "/logout"])]
+    (if (or (nil? current)
+            (some #{current} (keys items-default)))
+      ;; No or known key given, render admin-bar:
+      (let [items-linked (map-map text+href->link items-default)
+            items-linked-except-current (if current
+                                          (assoc items-linked
+                                            current
+                                            (text+href->span (current items-default)))
+                                          items-linked)]
+        (html
+         [:div#top
+          [:nav {:id "admin-bar"}
+           [:ul
+            (for [v (vals items-linked-except-current)]
+              [:li v])]]]))
+      ;; Unrecognized key, render error message:
+      "Mistyped or wrong key given!"))
+  :option-admin-bar)

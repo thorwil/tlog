@@ -1,3 +1,4 @@
+Use ring-json?
 Decide on home page content and journal URL
 Do something about the plain text database password?
 Look into Drip

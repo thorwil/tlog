@@ -20,10 +20,12 @@
                :main h/article-form}))
 
 (def write
-  (h/skeleton (into  {:title "Writer"
-                      :scripts h/aloha-admin
-                      :main h/article-form}
-                     h/option-noscript-warning)))
+  (h/skeleton (reduce into
+                      [{:title "Writer"
+                        :scripts h/aloha-admin
+                        :main h/article-form}
+                       h/option-noscript-warning
+                       (h/option-admin-bar :write)])))
 
 (def not-found
   (h/skeleton {:title "Write"
