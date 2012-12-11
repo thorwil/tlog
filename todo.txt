@@ -23,7 +23,6 @@ Handle delete/cancel-delete asynchronously
 
 Testing
 -------
-Write tests ...
 Validate HTML, CSS
 Cross-Browser
 
@@ -38,6 +37,7 @@ Do something about older IEs lacking getElementsByClassName, used in time.js
 Do something about relying on JSON.stringify (http://caniuse.com/json)?
 Do not try to remove CSS class empty for every single comment submission
 Update slugsInUse asynchronously
+Improve defopt macro to not mistake a sole string as body for a docstring
 
 Comments
 --------
