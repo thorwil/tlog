@@ -225,11 +225,15 @@
 (defopt option-noscript-warning
   (html [:noscript [:div#noscript-warning "This won't work with JavaScript disabled ;)"]]))
 
-(defn- map-map
-  "Take a function and a map. Return a map of the same kind, with the function applied to the
-   values."
-  [f m]
-  (into (empty m) (for [[k v] m] [k (f v)])))
+(defn- map-map-if
+  "Take a key, 2 functions and a map. Return a map of the same kind, with one of the functions
+   applied to each value. The first function, where the key matches the key argument, the second
+   function in all other cases."
+  [akey f-true f-false m]
+  (into (empty m) (for [[k v] m] [k ((if (= akey k)
+                                       f-true
+                                       f-false)
+                                     v)])))
 
 (defhtml ^:private text+href->link
   [[text href]]
@@ -240,8 +244,8 @@
   [:span text])
 
 (defopt-fn option-admin-bar
-  "Take no argument or a key refering to the current page. Render area with links for the logged in
-   admin, with the link associated with the key turned into plain text."
+  "Take no argument or a key referring to the current page. Render area with links for the logged in
+   admin, with the link, that is associated with the key (if any), turned into plain text."
   [& [current]]
   (let [items-default (array-map :list ["List" "/admin"]
                                  :write ["Write" "/admin/write"]
@@ -250,18 +254,13 @@
     (if (or (nil? current)
             (some #{current} (keys items-default)))
       ;; No or known key given, render admin-bar:
-      (let [items-linked (map-map text+href->link items-default)
-            items-linked-except-current (if current
-                                          (assoc items-linked
-                                            current
-                                            (text+href->span (current items-default)))
-                                          items-linked)]
+      (let [items (map-map-if current text+href->span text+href->link items-default)]
         (html
          [:div#top
           [:nav {:id "admin-bar"}
            [:ul
-            (for [v (vals items-linked-except-current)]
+            (for [v (vals items)]
               [:li v])]]]))
       ;; Unrecognized key, render error message:
-      "Mistyped or wrong key given!"))
+      "option-admin-bar: mistyped or wrong key!"))
   :option-admin-bar)
