@@ -70,7 +70,7 @@
   [{:keys [title
            scripts
            option-noscript-warning
-	   buildup]}]
+	   main]}]
   (html5
    [:html {:lang "en"}
     [:head
@@ -86,7 +86,7 @@
      [:body
       option-noscript-warning
       [:div#main
-       [:div#content buildup]]]]]))
+       [:div#content main]]]]]))
 
 (def login-form
   "Form for submitting username and password."

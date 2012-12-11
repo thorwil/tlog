@@ -4,27 +4,27 @@
 
 (def journal
   (h/skeleton {:title "Journal"
-               :buildup "Journal"}))
+               :main "Journal"}))
 
 (def login
   (h/skeleton {:title "Login"
-               :buildup h/login-form}))
+               :main h/login-form}))
 
 (def admin
   (h/skeleton {:title "Admin"
-               :buildup "Admin"}))
+               :main "Admin"}))
 
 (def write*
   (h/skeleton {:title "Writer"
                :scripts h/aloha-admin
-               :buildup h/article-form}))
+               :main h/article-form}))
 
 (def write
   (h/skeleton (into  {:title "Writer"
                       :scripts h/aloha-admin
-                      :buildup h/article-form}
+                      :main h/article-form}
                      h/option-noscript-warning)))
 
 (def not-found
   (h/skeleton {:title "Write"
-               :buildup "404: There's nothing associated with this URL."}))
+               :main "404: There's nothing associated with this URL."}))
