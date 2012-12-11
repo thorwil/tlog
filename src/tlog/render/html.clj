@@ -6,30 +6,31 @@
             [hiccup.page :refer [html5 include-css]]
             [tlog.render.configuration :as conf]))
 
-;; Taken from Clojure 1.2 clojure.contrib.def:
+(defn- valid-or-alt
+  "Take a predicate, alternative and a seq. If the predicate on the first of the seq is
+   true, return a new sequence of the first and next of the sequence. Else return a seq of the
+   alternative and initial seq."
+  [pred alt [x & xs :as x+xs]]
+  (if (pred x)
+    [x xs]
+    [alt x+xs]))
+
 (defn- name-with-attributes
   "To be used in macro definitions. Handles optional docstrings and attribute maps for a name to be
-   defined in a list of macro arguments. If the first macro argument is a string, it is added as a
-   docstring to name and removed from the macro argument list. If afterwards the first macro
-   argument is a map, its entries are added to the name's metadata map and the map is removed from
-   the macro argument list. The return value is a vector containing the name with its extended
-   metadata map and the list of unprocessed macro arguments."
-  [name macro-args]
-  (let [[docstring macro-args] (if (string? (first macro-args))
-                                 [(first macro-args) (next macro-args)]
-                                 [nil macro-args])
-        [attr macro-args] (if (map? (first macro-args))
-                            [(first macro-args) (next macro-args)]
-                            [{} macro-args])
+   defined in a list of macro arguments. Return a vector containing the name with its extended
+   metadata map and the list of remaining macro arguments."
+  [name maybe-docstring+attr+more]
+  (let [[docstring maybe-attr+more] (valid-or-alt string? nil maybe-docstring+attr+more)
+        [attr more] (valid-or-alt map? {} maybe-attr+more)
         attr (if docstring
                (assoc attr :doc docstring)
                attr)
         attr (if (meta name)
                (conj (meta name) attr)
                attr)]
-    [(with-meta name attr) macro-args]))
+    [(with-meta name attr) more]))
 
-(defmacro ^:private defopt
+(defmacro defopt ;; Used only here and should be private, but can't use private macros in tests.
   "Macro for defining static, optional HTML fragments as single-keyword hash-maps, to be passed to
    skeleton.
 
@@ -42,7 +43,7 @@
     `(def ~name
        {~keyword* ~(first body-and-maybe-keyword)})))
 
-(defmacro ^:private defopt-fn
+(defmacro defopt-fn ;; Used only here and should be private, but can't use private macros in tests.
   "Macro for defining functions that return optional HTML fragments as single-keyword hash-maps, to
    be passed to skeleton.
 
