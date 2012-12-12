@@ -4,6 +4,8 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.4.0"]
+                 [org.immutant/immutant "0.7.0"] ;; Not needed when using "lein immutant run",
+                                                 ;; but for "lein midje".
                  [ring/ring-core "1.1.6"]
 		 [net.cgrand/moustache "1.1.0" :exclusions [org.clojure/clojure ring/ring-core]]
                  [org.clojure/java.jdbc "0.2.3"]
