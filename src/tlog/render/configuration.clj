@@ -7,13 +7,6 @@
 (def meta-description "Interaction and visual design by Thorsten Wilms.")
 (def font-link "http://fonts.googleapis.com/css?family=Lato:light,regular,regularitalic,bold,900")
 
-;; Feeds of selected articles will change rarely, if ever, so they are hard-coded.
-;; Using array-map keeps them in order.
-(def feeds (array-map "journal" true
-                      "planet-ubuntu" true ;; http://planet.ubuntu.com/
-                      "planet-linuxaudio" false ;; http://planet.linuxaudio.org/
-                      "graphicsplanet" false)) ;; http://www.graphicsplanet.org/
-
 
 ;; Used in html.clj, to be used in atom-feed.clj:
 

@@ -4,7 +4,8 @@
             [hiccup.core :refer [html]]
             [hiccup.def :refer [defhtml]]
             [hiccup.page :refer [html5 include-css]]
-            [tlog.render.configuration :as conf]))
+            [tlog.render.configuration :as conf]
+            [tlog.data.feed :as f]))
 
 
 ;; Utilities
@@ -122,7 +123,7 @@
   (html
    [:fieldset#feed-selectors
     [:legend "Include in the following feeds:"]
-    (for [[label checked] conf/feeds]
+    (for [[label checked] f/feeds]
       [:input.feed (into {:type "checkbox" :name label}
                          (when checked {:checked "checked"}))
        [:label label]])]))
