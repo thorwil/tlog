@@ -32,7 +32,7 @@ CREATE TABLE feed (
    slug text PRIMARY KEY,
    preset boolean NOT NULL); -- On whether the feed is selected by default on the new article form
 
-INSERT INTO feed (position, slug, preset) VALUES
+INSERT INTO feed VALUES
    (0, 'journal', true),
    (1, 'planet-ubuntu', true), -- http://planet.ubuntu.com/
    (2, 'planet-linuxaudio', false), -- ;; http://planet.linuxaudio.org/
