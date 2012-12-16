@@ -38,13 +38,25 @@ INSERT INTO feed VALUES
    (2, 'planet-linuxaudio', false), -- ;; http://planet.linuxaudio.org/
    (3, 'graphicsplanet', false); -- http://www.graphicsplanet.org/
 
-CREATE TABLE ressource (
+CREATE TABLE resource (
    slug text PRIMARY KEY,
    created_timestamp timestamp,
    updated_timestamp timestamp,
    table_reference text);
 
 CREATE TABLE article (
-   slug text PRIMARY KEY REFERENCES ressource(slug),
+   slug text PRIMARY KEY REFERENCES resource(slug),
    title text,
    body text);
+
+CREATE TABLE article_feed_rel (
+   article_slug text REFERENCES article(slug),
+   feed_slug text REFERENCES feed(slug),
+   PRIMARY KEY (article_slug, feed_slug));
+
+
+# For testing article creation
+
+DELETE FROM article WHERE slug = 'test'; DELETE FROM resource WHERE slug = 'test';
+SELECT * FROM resource; SELECT * FROM article; SELECT * FROM article_feed_rel;
+DELETE FROM article_feed_rel WHERE article_slug = 'test'; DELETE FROM article WHERE slug = 'test'; DELETE FROM resource WHERE slug = 'test';
