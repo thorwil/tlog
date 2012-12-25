@@ -30,7 +30,7 @@ db
    there are no rows for the article-slug already."
   [article-slug feed-slugs]
   (k/insert article_feed_rel (k/values
-                              (for [feed-slug feed-slugs] {:article_slug  article-slug
+                              (for [feed-slug feed-slugs] {:article_slug article-slug
                                                            :feed_slug feed-slug}))))
 
 (defn set-article-feed-rels!

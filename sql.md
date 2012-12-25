@@ -47,7 +47,7 @@ CREATE TABLE resource (
 CREATE TABLE article (
    slug text PRIMARY KEY REFERENCES resource(slug),
    title text,
-   body text);
+   content text);
 
 CREATE TABLE article_feed_rel (
    article_slug text REFERENCES article(slug),

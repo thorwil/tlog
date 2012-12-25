@@ -14,14 +14,9 @@
   (h/skeleton {:title "Admin"
                :main "Admin"}))
 
-(def write*
-  (h/skeleton {:title "Writer"
-               :scripts h/aloha-admin
-               :main h/article-form}))
-
 (def write
   (h/skeleton (reduce into
-                      [{:title "Writer"
+                      [{:title "Write"
                         :scripts h/aloha-admin
                         :main h/article-form}
                        h/option-noscript-warning

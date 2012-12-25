@@ -39,7 +39,6 @@ window.onload=function() {
 
 	if (jQuery.inArray(slug, slugsInUse) > -1) {
 	    // slug in use, warn
-	    // FIX: It gets here, but following has no effect
 	    slugInput.className += ('warning');
 	    submitButton.value = "There's already an Article with this slug.";
 	    submitButton.disabled = true;
@@ -116,7 +115,7 @@ window.onload=function() {
 	httpRequest("PUT",
 		    slug,
 		    JSON.stringify({title: titleInput.value,
-				    body: textArea.innerHTML,
+				    content: textArea.innerHTML,
 				    feeds: getCheckedFeedCheckboxesString(feedCheckboxes)}),
 		    httpPutSuccess,
 		    httpPutFailure);

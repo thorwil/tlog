@@ -1,34 +1,38 @@
+Fill slugsInUse with all fixed routes and resource slugs
 Use ring-json?
 Decide on home page content and journal URL
 Do something about the plain text database password?
 Look into Drip
-Look into Wakeful or Noir routing
+
 
 # Copied from tlog-gae-clj:
 
 Try switching box model for better comment section layout
 
-Features
---------
+
+## Features
+
 Thumbnails
 Tags
 Series
 G-channel update blob list
 G-channel update admin article list
 Handle delete/cancel-delete asynchronously
-# Email notifications/subscriptions
-# Pingbacks
-# Blog-wide search
-# Look into offering older articles via the feed
-# Pages as sequences of blocks
+(Email notifications/subscriptions)
+(Pingbacks)
+(Blog-wide search)
+(Look into offering older articles via the feed)
+(Pages as sequences of blocks)
 
-Testing
--------
+
+## Testing
+
 Validate HTML, CSS
 Cross-Browser
 
-Optimization
-------------
+
+## Optimization
+
 Only check article feed membership if you actually work with the info
 Memchache/memoization
 Minify JS and CSS
@@ -40,14 +44,16 @@ Do not try to remove CSS class empty for every single comment submission
 Update slugsInUse asynchronously
 Improve defopt macro to not mistake a sole string as body for a docstring
 
-Comments
---------
-Do not write "Reply" in comment fields, if JS is disabled
-# Validate the links
-# Update page with comments from other sessions
 
-# But how?
---------
+## Comments
+
+Do not write "Reply" in comment fields, if JS is disabled
+(Validate the links)
+(Update page with comments from other sessions)
+
+
+## But how?
+
 Make sure article content is put in <p>, to avoid <br>s
 Disable Aloha Save button until there are changes (even better: unless), look into smartContentChange
 Fix Aloha blocking in some new comment fields, when adding several comments in succession
