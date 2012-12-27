@@ -182,7 +182,7 @@
               components: [
                  [ 'strong', 'emphasis', 'subscript', 'superscript', 'strikethrough' ],
                  [ 'formatBlock' ],
-                 [ 'createTable', 'insertLink' ]
+                 [ 'createTable', 'characterPicker', 'insertLink' ]
               ]
            }
         ],
@@ -195,6 +195,7 @@
                                        common/link,
                                        common/list,
                                        common/table,
+                                       common/characterpicker,
                                        common/paste,
                                        common/undo"
                                       aloha-save-plugin)}]
