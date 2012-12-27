@@ -164,14 +164,30 @@
   [{:keys [aloha-save-plugin aloha-admin-editables]}] 
   (html
    (include-css "/scripts/aloha/css/aloha.css")
-   [:script ;; Get Aloha to use the JQuery to be linked before this, instead of its own local copy.
+   [:script
+    ;; Disable Aloha sidebar.
+    ;; Get Aloha to use the JQuery to be linked before this, instead of its own local copy.
+    ;; Configure the Aloha toolbar.
     "Aloha = window.Aloha || {};
      Aloha.settings = {
 	sidebar: {
-        	disabled: true
+           disabled: true
 	}
      };
-     Aloha.settings.jQuery = window.jQuery;"]
+     Aloha.settings.jQuery = window.jQuery;
+     Aloha.settings.toolbar = {
+        tabs: [
+           {
+              label: 'Format',
+              components: [
+                 [ 'strong', 'emphasis', 'subscript', 'superscript', 'strikethrough' ],
+                 [ 'formatBlock' ],
+                 [ 'createTable', 'insertLink' ]
+              ]
+           }
+        ],
+        exclude: [ 'tab.format.label', 'tab.insert.label']
+     };"]
    [:script {:src "/scripts/aloha/lib/require.js"}]
    [:script {:src "/scripts/aloha/lib/aloha.js"
              :data-aloha-plugins (str "common/ui,
@@ -182,35 +198,6 @@
                                        common/paste,
                                        common/undo"
                                       aloha-save-plugin)}]
-    ;;Todo: bring in custom format plugin ^
-   ;; [:script
-   ;;  "GENTICS.Aloha.settings = {
-   ;;             'plugins': {
-   ;;               'tlog.Format': {
-   ;;                    // all elements with no specific configuration get this configuration
-   ;;                    config: ['strong', 'em', 'sub', 'sup', 'ol', 'ul', 'p', 'title', 'h1', 'h2',
-   ;;                             'h3', 'h4', 'h5', 'h6', 'pre', 'removeFormat'],
-   ;;                    editables: {
-   ;;                        // no formatting allowed for title
-   ;;                        '.title': [ ]
-   ;;                    }
-   ;;                },
-   ;;                'com.gentics.aloha.plugins.List': {
-   ;;                    config: ['ul', 'ol'],
-   ;;                    editables: {
-   ;;                        // no lists allowed for title
-   ;;      	          '.title': [ ]
-   ;;                    }
-   ;;                }
-   ;;           }
-   ;;         }
-   ;;         "]
-    ;; Make elements with CSS class 'editable' editable with Aloha:
-    ;; "<script type=\"text/javascript\">
-    ;;     Aloha.ready( function() {
-    ;;         Aloha.jQuery('.editable').aloha();
-    ;;     });
-    ;; </script>"
     aloha-admin-editables
     ))
 
