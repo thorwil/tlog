@@ -166,7 +166,11 @@
    (include-css "/scripts/aloha/css/aloha.css")
    [:script ;; Get Aloha to use the JQuery to be linked before this, instead of its own local copy.
     "Aloha = window.Aloha || {};
-     Aloha.settings = Aloha.settings || {};
+     Aloha.settings = {
+	sidebar: {
+        	disabled: true
+	}
+     };
      Aloha.settings.jQuery = window.jQuery;"]
    [:script {:src "/scripts/aloha/lib/require.js"}]
    [:script {:src "/scripts/aloha/lib/aloha.js"
