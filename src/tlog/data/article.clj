@@ -25,3 +25,7 @@ db
    (resource/create! slug "article")
    (create-row! {:slug slug :title title :content content})
    (feed/create-article-feed-rels! slug feeds)))
+
+(def slugs
+  "List of all article slugs"
+  (map :slug (k/select article (k/fields :slug))))

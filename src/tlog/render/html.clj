@@ -153,11 +153,13 @@
    (html ;; Make elements with CSS class 'admin-editable' editable with Aloha:
     [:script "Aloha.ready( function() {Aloha.jQuery('.admin-editable').aloha();});"])})
 
-(def article-form-js
+(def ^:private article-form-js
   "Link JS for article forms."
-  (html
-   [:script "var slugsInUse = ['admin', 'login']"]
-   [:script {:src "/scripts/article-form.js"}]))
+  (let [slugs-in-use (into tlog.dispatch.route/static-slugs
+                           tlog.data.article/slugs)]
+    (html
+     [:script  (str "var slugsInUse = " (clojure.data.json/write-str slugs-in-use) ";")]
+     [:script {:src "/scripts/article-form.js"}])))
 
 (defn- aloha
   "JS to link and configure Aloha editor."
@@ -207,9 +209,11 @@
   "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></script>")
 
 (def aloha-admin
+  "Assemble fragments to set up Aloha editor for the admin."
   (str jquery article-form-js (aloha aloha-make-admin)))
 
 (def aloha-guest
+  "Assemble fragments to set up Aloha editor for guests."
   (str jquery (aloha nil)))
 
 
