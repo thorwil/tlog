@@ -1,3 +1,4 @@
+Get characterpicker icon to show up
 Fill slugsInUse with all fixed routes and resource slugs
 Use ring-json?
 Decide on home page content and journal URL
