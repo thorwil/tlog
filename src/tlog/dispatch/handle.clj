@@ -66,6 +66,12 @@
    :headers {"Content-Type" "text/plain"}
    :body "Success"})
 
+(defn resource
+  [rsc]
+  (-> (str {:body rsc})
+      response
+      constantly))
+
 (def not-found
   (-> p/not-found
       response

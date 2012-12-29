@@ -18,3 +18,8 @@ db
                                   :created_timestamp now
                                   :updated_timestamp now
                                   :table_reference table-reference}))))
+
+(defn slug->resource-or-nil
+  "Take a slug (string). Return a resource for the slug, or nil if there is none."
+  [slug]
+  (first (k/select resource (k/where {:slug [= slug]}))))

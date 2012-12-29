@@ -7,6 +7,7 @@
             [ring.middleware.file-info :refer [wrap-file-info]]
             [ring.middleware.params :refer [wrap-params]]
             [clojure.data.json :as json]
+            [tlog.data.resource]
             [tlog.dispatch.handle :as h]))
 
 (defn- decode-json-body
@@ -43,6 +44,7 @@
   [] h/journal
   ["login"] h/login
   ["logout"] logout
+  [[slug tlog.data.resource/slug->resource-or-nil]] (h/resource slug)
   [&] h/not-found)
 
 (defn static
