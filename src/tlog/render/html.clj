@@ -5,7 +5,8 @@
             [hiccup.def :refer [defhtml]]
             [hiccup.page :refer [html5 include-css]]
             [tlog.render.configuration :as conf]
-            [tlog.data.feed :as f]))
+            [tlog.data.feed]
+            [tlog.data.article]))
 
 
 ;; Utilities
@@ -123,7 +124,7 @@
   (html
    [:fieldset#feed-selectors
     [:legend "Include in the following feeds:"]
-    (for [[label checked] f/feeds]
+    (for [[label checked] tlog.data.feed/feeds]
       [:input.feed (into {:type "checkbox" :name label}
                          (when checked {:checked "checked"}))
        [:label label]])]))
@@ -153,9 +154,13 @@
    (html ;; Make elements with CSS class 'admin-editable' editable with Aloha:
     [:script "Aloha.ready( function() {Aloha.jQuery('.admin-editable').aloha();});"])})
 
+(def ^:private static-slugs
+  "Slugs in use for static routes."
+  ["logout" "login" "admin"])
+
 (def ^:private article-form-js
   "Link JS for article forms."
-  (let [slugs-in-use (into tlog.dispatch.route/static-slugs
+  (let [slugs-in-use (into static-slugs
                            tlog.data.article/slugs)]
     (html
      [:script  (str "var slugsInUse = " (clojure.data.json/write-str slugs-in-use) ";")]

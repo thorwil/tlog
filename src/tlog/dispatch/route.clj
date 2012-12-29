@@ -76,7 +76,5 @@
   [&] {:get static
        :put put-article})
 
-(def static-slugs
-  "Vector of static slugs. Used in tlog.render.html, to rule out attempts of creating new articles
-   with any slug in use."
-  ["logout" "login" "journal" "admin"])
+;; Remember to update tlog.render.html/static-slugs when changing slugs in static routes like
+;; "login".
