@@ -8,22 +8,22 @@
 
 ;; Utility
 
-(defn remove-empty-style
+(defn- remove-empty-style
   "Remove empty style attributes from a string."
   [s]
   (clojure.string/replace s " style=\"\"" ""))
 
-(defn remove-empty-<p>
+(defn- remove-empty-<p>
   "Remove <p> elements that are empty, except for a <br>, from a string."
   [s]
   (clojure.string/replace s "<p><br></p>" ""))
 
-(defn remove-<br>-cleanme
+(defn- remove-<br>-cleanme
   "Remove <p> elements that are empty, except for a <br>, from a string."
   [s]
   (clojure.string/replace s "<br class=\"aloha-cleanme\">" ""))
 
-(defn cleanup-html-string
+(defn- cleanup-html-string
   [s]
   (-> s remove-empty-<p> remove-empty-style remove-<br>-cleanme))
 
