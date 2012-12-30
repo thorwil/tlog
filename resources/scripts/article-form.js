@@ -102,8 +102,7 @@ window.onload=function() {
     }
 
     function httpPutSuccess(responseText) {
-	alert("HTTP PUT succeeded");
-	// function(data){location.href = '/' + slugInput.value;});
+	window.location.href = '/' + slugInput.value;
     }
 
     function httpPutFailure(responseStatus, responseText) {
