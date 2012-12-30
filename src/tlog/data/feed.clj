@@ -46,7 +46,7 @@ db
   (map :article_slug
        (k/select article_feed_rel
                  (k/fields :article_slug)
-                 (k/where {:feed_slug [= feed-slug]}))))
+                 (k/where {:feed_slug feed-slug}))))
 
 (defn feed-slugs-for-article
   "Take an article slug. Return a list of the slugs for the feeds the article shall appear in."
@@ -54,4 +54,4 @@ db
   (map :feed_slug
        (k/select article_feed_rel
                  (k/fields :feed_slug)
-                 (k/where {:article_slug [= article-slug]}))))
+                 (k/where {:article_slug article-slug}))))

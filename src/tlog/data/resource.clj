@@ -22,7 +22,7 @@ db
 (defn slug->resource-or-nil
   "Take a slug (string). Return a resource for the slug, or nil if there is none."
   [slug]
-  (first (k/select resource (k/where {:slug [= slug]}))))
+  (first (k/select resource (k/where {:slug slug}))))
 
 (defn resolve
   "Take a resource map. Retrieve the entity associated via :table_reference and :slug. Return a
@@ -30,4 +30,4 @@ db
   [rsc]
   (into rsc
         (first (k/select (:table_reference rsc)
-                          (k/where {:slug [= (:slug rsc)]})))))
+                         (k/where {:slug (:slug rsc)})))))
