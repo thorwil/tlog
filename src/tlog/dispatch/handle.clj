@@ -4,7 +4,8 @@
   (:require [ring.util.response :refer [response redirect]]
             [net.cgrand.moustache :refer [alter-response]]
             [tlog.render.page :as p]
-            [tlog.data.article :as article]))
+            [tlog.data.article :as article]
+            [tlog.data.resource :as resource]))
 
 ;; Utility
 
@@ -68,9 +69,10 @@
 
 (defn resource
   [rsc]
-  (-> (str {:body rsc})
-      response
-      constantly))
+  (let [item (resource/resolve rsc)]
+    (-> (str item)
+        response
+        constantly)))
 
 (def not-found
   (-> p/not-found
