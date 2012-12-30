@@ -1,27 +1,30 @@
 (ns tlog.render.page
   "Take data from tlog.dispatch.handle and build HTML responses, using tlog.render.html."
-  (:require [tlog.render.html :as h]))
+  (:require [tlog.render.html.skeleton :refer [skeleton]]
+            [tlog.render.html.fragment-main :as main]
+            [tlog.render.html.fragment-option :as option]
+            [tlog.render.html.fragment-script :as script]))
 
 (def journal
-  (h/skeleton {:title "Journal"
-               :main "Journal"}))
+  (skeleton {:title "Journal"
+             :main "Journal"}))
 
 (def login
-  (h/skeleton {:title "Login"
-               :main h/login-form}))
+  (skeleton {:title "Login"
+             :main main/login-form}))
 
 (def admin
-  (h/skeleton {:title "Admin"
-               :main "Admin"}))
+  (skeleton {:title "Admin"
+             :main "Admin"}))
 
 (def write
-  (h/skeleton (reduce into
-                      [{:title "Write"
-                        :scripts h/aloha-admin
-                        :main h/article-form}
-                       h/option-noscript-warning
-                       (h/option-admin-bar :write)])))
+  (skeleton (reduce into
+                    [{:title "Write"
+                      :scripts script/aloha-admin
+                      :main main/article-form}
+                     option/noscript-warning
+                     (option/admin-bar :write)])))
 
 (def not-found
-  (h/skeleton {:title "Write"
-               :main "404: There's nothing associated with this URL."}))
+  (skeleton {:title "Write"
+             :main "404: There's nothing associated with this URL."}))

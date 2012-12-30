@@ -78,5 +78,5 @@
   [&] {:get static
        :put put-article})
 
-;; Remember to update tlog.render.html/static-slugs when changing slugs in static routes like
-;; "login".
+;; Remember to update tlog.render.html.fragment-script/static-slugs when changing slugs in static
+;; routes like "login".
