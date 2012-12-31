@@ -28,6 +28,10 @@
   [s]
   (-> s remove-empty-<p> remove-empty-style remove-<br>-cleanme))
 
+(def ^:private table-ref->page
+  "Associate resource table-references with functions for rendering them."
+  {"article" p/article})
+
 
 ;; Handlers
 
@@ -68,9 +72,12 @@
    :body "Success"})
 
 (defn resource
+  "Take a resource map. Return a rendition of the combined resource and referenced table (for now
+   only article) map."
   [rsc]
-  (let [item (resource/resolve rsc)]
-    (-> (str item)
+  (let [item (resource/resolve rsc)
+        page (-> rsc :table_reference table-ref->page)]
+    (-> (page item)
         response
         constantly)))
 
