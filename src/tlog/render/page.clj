@@ -25,6 +25,11 @@
                      option/noscript-warning
                      (option/admin-bar :write)])))
 
+(defn article
+  [item]
+  (skeleton {:title (:title item)
+             :main (main/article-solo item)}))
+
 (def not-found
-  (skeleton {:title "Write"
+  (skeleton {:title "404"
              :main "404: There's nothing associated with this URL."}))
