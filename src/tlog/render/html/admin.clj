@@ -1,5 +1,5 @@
-(ns tlog.render.html.fragment-option
-  "HTML fragments for keys of skeleton, other than :main."
+(ns tlog.render.html.admin
+  "HTML fragments for admin. To be handed to skeleton as values of keys other than :main."
   (:require [hiccup.core :refer [html]]
             [hiccup.def :refer [defhtml]]
             [tlog.render.html.option :refer [defopt defopt-fn]]))

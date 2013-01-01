@@ -1,5 +1,5 @@
-(ns tlog.render.html.fragment-main
-  "HTML fragments for :main of skeleton."
+(ns tlog.render.html.main
+  "HTML fragments to be handed to skeleton as value of :main."
   (:require [hiccup.core :refer [html]]
             [hiccup.def :refer [defhtml]]
             [tlog.data.feed]

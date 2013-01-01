@@ -1,5 +1,6 @@
 (ns tlog.render.html.option
-  "Macros for building HTML fragments for keys of skeleton, other than :main.")
+  "Macros for building HTML fragments that are to be handed to skeleton, as values of keys other
+   than :main.")
 
 (defn- valid-or-alt
   "Take a predicate, alternative and a seq. If the predicate on the first of the seq is

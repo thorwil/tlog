@@ -1,9 +1,9 @@
 (ns tlog.render.page
   "Take data from tlog.dispatch.handle and build HTML responses, using tlog.render.html."
   (:require [tlog.render.html.skeleton :refer [skeleton]]
-            [tlog.render.html.fragment-main :as main]
-            [tlog.render.html.fragment-option :as option]
-            [tlog.render.html.fragment-script :as script]))
+            [tlog.render.html.main :as main]
+            [tlog.render.html.admin :as option]
+            [tlog.render.html.script :as script]))
 
 (def journal
   (skeleton {:title "Journal"
