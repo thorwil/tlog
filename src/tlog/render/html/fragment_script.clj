@@ -77,3 +77,8 @@
 (def aloha-guest
   "Assemble fragments to set up Aloha editor for guests."
   (str jquery (aloha nil)))
+
+(def client-time-offset
+  "Link time.js script for converting UTC to the client's local time."
+  (html
+   [:script {:src "/scripts/time.js"}]))

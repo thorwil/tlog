@@ -28,6 +28,7 @@
 (defn article
   [item]
   (skeleton {:title (:title item)
+             :scripts script/client-time-offset
              :main (main/article-solo item)}))
 
 (def not-found

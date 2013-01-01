@@ -9,11 +9,16 @@
     (.setTimeZone format (java.util.TimeZone/getTimeZone "GMT"))
     #(.format format %)))
 
-(def ^:private timestamp-to-day (timestamp-to* "yyyy-MM-dd"))
 (def ^:private timestamp-to-day-time (timestamp-to*
                                       "yyyy-MM-dd '<span class=\"hour-minute\">'H:mm'</span>'"))
+
 (def ^:private timestamp-to-datetime (timestamp-to* "yyyy-MM-dd'T'H:mm:ss'+00:00'"))
+
 (def ^:private timestamp-to-rfc-3339 (timestamp-to* "yyyy-MM-dd'T'HH:mm:ssZ")) ;; For Atom feeds
+
+(defn- timestamp-to-ms
+  [t]
+  (.getTime t))
 
 (defhtml ^:private time*
   [t attr-map]
@@ -21,11 +26,11 @@
 
 (defhtml ^:private time-created
   [t]
-  [:p (time* t {:pubdate "pubdate" :class "time-created" :id t})])
+  [:p (time* t {:pubdate "pubdate" :class "time-created" :id (timestamp-to-ms t)})])
 
 (defhtml ^:private time-updated
   [t]
-  [:p "Updated:" [:br] (time* t {:class "time-updated" :id t})])
+  [:p "Updated:" [:br] (time* t {:class "time-updated" :id (timestamp-to-ms t)})])
 
 (defn derive-from-timestamps
   "Take 2 timestamps for creation and last update. Derive everything that depends on whether there

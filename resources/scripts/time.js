@@ -1,12 +1,12 @@
 "use strict";
 
-/* Replace the UTC timestamps of articles and comments with ones offset to the browser's local time.
- *
- * Defined before loading this file:
- * serverNow: the current server time in UTC, ms
+/* Replace the UTC timestamps of articles and comments with new ones that are offset to the browser's local time.
  *
  * Timestamps have 'time-created' and 'time-updated' CSS classes and timestamps in ms as #ids
  */
+
+var today = new Date();
+var offset = -(today.getTimezoneOffset() * 60000); // getTimezoneOffset from minutes to ms
 
 function pad(n){
     return n<10 ? '0'+n : n;
@@ -45,11 +45,10 @@ function updateTimes(collection){
     };
 }
 
-var today = new Date();
-var offset = -(today.getTimezoneOffset() * 60000); // getTimezoneOffset from minutes to ms
+window.onload = function() {
+    var createdTimes = document.getElementsByClassName('time-created');
+    var updatedTimes = document.getElementsByClassName('time-updated');
 
-var createdTimes = document.getElementsByClassName('time-created');
-var updatedTimes = document.getElementsByClassName('time-updated');
-
-updateTimes(createdTimes);
-updateTimes(updatedTimes);
+    updateTimes(createdTimes);
+    updateTimes(updatedTimes);
+};
