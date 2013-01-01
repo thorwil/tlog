@@ -1,4 +1,4 @@
-(ns tlog.render.html.option
+(ns tlog.render.html.option-macro
   "Macros for building HTML fragments that are to be handed to skeleton, as values of keys other
    than :main.")
 
