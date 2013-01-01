@@ -9,14 +9,15 @@
     (.setTimeZone format (java.util.TimeZone/getTimeZone "GMT"))
     #(.format format %)))
 
-(def ^:private ms-to-day (ms-to* "yyyy-MM-dd"))
-(def ^:private ms-to-day-time (ms-to* "yyyy-MM-dd '<span class=\"hour-minute\">'H:mm'</span>'"))
-(def ^:private ms-to-datetime (ms-to* "yyyy-MM-dd'T'H:mm:ss'+00:00'"))
-(def ^:private ms-to-rfc-3339 (ms-to* "yyyy-MM-dd'T'HH:mm:ssZ")) ;; as required for Atom feeds
+(def ^:private timestamp-to-day (timestamp-to* "yyyy-MM-dd"))
+(def ^:private timestamp-to-day-time (timestamp-to*
+                                      "yyyy-MM-dd '<span class=\"hour-minute\">'H:mm'</span>'"))
+(def ^:private timestamp-to-datetime (timestamp-to* "yyyy-MM-dd'T'H:mm:ss'+00:00'"))
+(def ^:private timestamp-to-rfc-3339 (timestamp-to* "yyyy-MM-dd'T'HH:mm:ssZ")) ;; For Atom feeds
 
 (defhtml ^:private time*
   [t attr-map]
-  [:time (into {:datetime (ms-to-datetime t)} attr-map) (ms-to-day-time t)])
+  [:time (into {:datetime (timestamp-to-datetime t)} attr-map) (timestamp-to-day-time t)])
 
 (defhtml ^:private time-created
   [t]

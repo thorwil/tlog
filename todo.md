@@ -1,10 +1,10 @@
-Get characterpicker icon to show up
-Fill slugsInUse with all fixed routes and resource slugs
-Use ring-json?
+Use time.js
+Look into Aloha IDs
+Consider "N minutes/hous/days/... ago" as addition or replacement for current timestamps
 Decide on home page content and journal URL
 Do something about the plain text database password?
 Look into Drip
-
+Use ring-json?
 
 # Copied from tlog-gae-clj:
 
