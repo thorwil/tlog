@@ -1,8 +1,6 @@
-Use time.js
-Look into Aloha IDs
+Make articles editanle by admin, look into Aloha IDs
 Consider "N minutes/hous/days/... ago" as addition or replacement for current timestamps
 Decide on home page content and journal URL
-Do something about the plain text database password?
 Look into Drip
 Use ring-json?
 
