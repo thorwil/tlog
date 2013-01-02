@@ -1,4 +1,6 @@
-Make articles editanle by admin, look into Aloha IDs
+Configure Aloha for editing existing articles
+Put noscript-warning on article pages
+Make articles editable by admin, look into Aloha IDs
 Consider "N minutes/hous/days/... ago" as addition or replacement for current timestamps
 Decide on home page content and journal URL
 Look into Drip

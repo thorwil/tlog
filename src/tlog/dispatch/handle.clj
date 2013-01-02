@@ -32,6 +32,11 @@
   "Associate resource table-references with functions for rendering them."
   {"article" p/article})
 
+(defn- roles
+  "Extract the value of :roles from a request map (passed through Friend)."
+  [r]
+  (-> r :session :cemerick.friend/identity :authentications vals first :roles))
+
 
 ;; Handlers
 
@@ -77,9 +82,7 @@
   [rsc]
   (let [item (resource/resolve rsc)
         page (-> rsc :table_reference table-ref->page)]
-    (-> (page item)
-        response
-        constantly)))
+    (fn [request] (response (page (roles request) item)))))
 
 (def not-found
   (-> p/not-found
