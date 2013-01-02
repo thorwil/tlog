@@ -1,6 +1,6 @@
-(ns tlog.render.html.t-option
+(ns tlog.render.html.t-option-macros
   (:require [midje.sweet :refer [fact]]
-            [tlog.render.html.option :as o]))
+            [tlog.render.html.option-macros :as o]))
 
 (o/defopt opt-1 (str "s")) ;; Wrap in str, as plain string would be mistaken for a docstring.
 (o/defopt opt-2 (str "s") :alt)
