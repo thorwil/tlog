@@ -16,17 +16,49 @@
     (into a b)
     a))
 
-(defn- per-role
-  "Take roles and a map of maps per role. Add the map of every role present in roles into the
-   :everyone map."
-  ;; Currently roles can only be one of nil or #{:tlog.data.account/admin}, so the following is good
-  ;; enough:
-  [roles {:keys [everyone admin] :as all}]
-  (let [additions+replacements (first-or-into (= roles #{:tlog.data.account/admin})
-                                              everyone
-                                              admin)
-        scripts-joined {:scripts (apply str (map :scripts (vals all)))}]
-    (into additions+replacements scripts-joined)))
+(defn- concat-per-key
+  "Take a map and a sequence of maps. Return a map with keys from the maps in the sequence, each
+   with a value that is all values associated to the key in the input maps concatenated.
+
+   Reduce over the sequence of maps, using a selection from the single map with only the keys
+   present in the sequence as seed. Within, reduce over the keys in use, using the selection as
+   seed."
+  [m ms]
+  (let [keys-used (set (mapcat keys ms))
+        overlap (select-keys m keys-used)]
+    (reduce (fn [m from-ms] (reduce (fn [m k] (assoc m k (str (k m) (k from-ms))))
+                                    m
+                                    keys-used))
+            overlap
+            ms)))
+
+(defn- filter-for-role-then-split
+  "Take a set of roles and a vector of vectors, each consisting of a role key and a map. Return a
+   vector with 2 items: All maps belonging to keys found in roles merged. The values associated to
+   :append of said maps in a vector."
+  [roles role-map-pairs]
+  (let [merged+to-append (reduce (fn [[merged to-append] [k v]]
+                                   (if (some #{k} roles)
+                                     [(merge merged v) (if-let [a (:append v)]
+                                                         (conj to-append a)
+                                                         to-append)]
+                                     [merged to-append]))
+                                 [{} []]
+                                 role-map-pairs)
+        [merged to-append] merged+to-append]
+    [(dissoc merged :append) to-append]))
+
+(defn- per-role-in
+  "Take a set of roles and any pairs of role-key and per-role-map. Merge the map of every role
+   present in roles in given order: Replace values for identical keys, but concatenate when given
+   per-role-maps with maps in :append.
+
+   Currently roles will only be one of nil or #{:tlog.data.account/admin}."
+  [roles & per-role]
+  (let [roles+everyone (into [:everyone] roles)
+        role-map-pairs (partition 2 per-role)
+        [merged to-append] (filter-for-role-then-split roles+everyone role-map-pairs)]
+    (merge merged (concat-per-key merged to-append))))
 
 
 ;; Handlers
@@ -55,10 +87,11 @@
   "Take roles (for now, can only be nil or #{:tlog.data.account/admin}) and an article map. Return a
    HTML page representing the article."
   [roles art]
-  (skeleton (per-role roles {:everyone {:title (:title art)
-                                        :scripts script/client-time-offset
-                                        :main (main/article-solo art)}
-                             :admin {:scripts script/aloha-admin}})))
+  (skeleton (per-role-in roles
+                         :everyone {:title (:title art)
+                                    :scripts script/client-time-offset
+                                    :main (main/article-solo art)}
+                         :tlog.data.account/admin {:append {:scripts script/aloha-admin}})))
 
 (def not-found
   (skeleton {:title "404"
