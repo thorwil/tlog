@@ -1,3 +1,4 @@
+Look into reduce-kv, [f init coll], where f should be a function with 3 arguments
 Configure Aloha for editing existing articles
 Put noscript-warning on article pages
 Make articles editable by admin, look into Aloha IDs

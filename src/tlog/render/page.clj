@@ -48,7 +48,7 @@
         [merged to-append] merged+to-append]
     [(dissoc merged :append) to-append]))
 
-(defn- per-role-in
+(defn- select-by-role-merge
   "Take a set of roles and any pairs of role-key and per-role-map. Merge the map of every role
    present in roles in given order: Replace values for identical keys, but concatenate when given
    per-role-maps with maps in :append.
@@ -87,7 +87,7 @@
   "Take roles (for now, can only be nil or #{:tlog.data.account/admin}) and an article map. Return a
    HTML page representing the article."
   [roles art]
-  (skeleton (per-role-in roles
+  (skeleton (select-by-role-merge roles
                          :everyone {:title (:title art)
                                     :scripts script/client-time-offset
                                     :main (main/article-solo art)}
