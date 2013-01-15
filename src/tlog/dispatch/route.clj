@@ -32,62 +32,27 @@
          :headers {"Content-Type" "text/plain"}
          :body "Failure"}))))
 
-(defmacro ^:private defroutes
-  "def name to a moustache app form."
-  [name & more]
-  `(def ~name (app ~@more)))
-
 
 ;; Routes
 
-;; Having separate vars for admin-protected, logout and put-article allows the test to redef them
-
-(defroutes admin-get-routes
-  [] h/admin
-  ["write"] h/write
-  [&] h/not-found)
-
-(defn admin-area
-  [r]
-  ((friend/wrap-authorize admin-get-routes [:tlog.data.account/admin]) r))
-
-(defn logout
-  [r]
-  ((friend/logout h/logout) r))
-
-(defroutes get-routes
-  [] h/journal
-  ["login"] h/login
-  ["logout"] logout
-  [[slug tlog.data.resource/slug->resource-or-nil]] (h/resource slug)
-  [&] h/not-found)
-
-(defn get-routes-with-resource
-  [r]
-  ((-> get-routes
-       (wrap-resource "/")
-       wrap-file-info)
-   r))
-
-(defn put-article
-  [r]
-  ((-> h/put-article
-       wrap-json
-       (friend/wrap-authorize [:tlog.data.account/admin]))
-   r))
-
-(defn update-article
-  [r]
-  ((-> h/update-article
-       wrap-json
-       (friend/wrap-authorize [:tlog.data.account/admin]))
-   r))
-
-(defroutes root-routes
-  ["admin" &] {:get admin-area}
-  [&] {:get get-routes-with-resource
-       :put put-article
-       :post update-article})
-
 ;; Remember to update tlog.render.html.script/static-slugs when changing slugs in static
 ;; routes like "login".
+
+(def routes
+  (app :get [(wrap-resource "/")
+             wrap-file-info
+             [] h/journal
+             [[slug tlog.data.resource/slug->resource-or-nil]] (h/resource slug)
+             ["login"] h/login
+             ["logout"] (friend/logout h/logout)
+             ["admin" &] (-> (app [] h/admin
+                                  ["write"] h/write
+                                  [&] h/not-found)
+                             (friend/wrap-authorize [:tlog.data.account/admin]))
+             [&] h/not-found]
+       :put [[slug] (-> h/put-article
+                        wrap-json
+                        (friend/wrap-authorize [:tlog.data.account/admin]))]
+       :post [[slug] (-> h/update-article
+                         wrap-json
+                         (friend/wrap-authorize [:tlog.data.account/admin]))]))

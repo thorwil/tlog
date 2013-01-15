@@ -4,6 +4,10 @@ Docstring style
 Disable all styling buttons on Aloha floating menu, when editing a title
 Put noscript-warning on article pages
 Get strong and emphasis to show up on Aloha floating menu
+Journal
+Comments (form, create, edit, delete)
+Delete article
+Move article
 Consider "N minutes/hous/days/... ago" as addition or replacement for current timestamps
 Decide on home page content and journal URL
 Disable Aloha Save button until there are changes (even better: unless), look into smartContentChange
@@ -11,10 +15,11 @@ Look into Drip
 Use ring-json?
 Consider to use Marginalia
 Consider Typed Clojure
+Make sure the slug is valid and free, before PUTing an article
+Validate that the slug exists, before accepting a POST for an article
+
 
 # Copied from tlog-gae-clj:
-
-Try switching box model for better comment section layout
 
 
 ## Features
@@ -22,14 +27,13 @@ Try switching box model for better comment section layout
 Thumbnails
 Tags
 Series
-G-channel update blob list
-G-channel update admin article list
+Asynchronously update blob list
+Asynchronously update admin article list
 Handle delete/cancel-delete asynchronously
 (Email notifications/subscriptions)
 (Pingbacks)
 (Blog-wide search)
 (Look into offering older articles via the feed)
-(Pages as sequences of blocks)
 
 
 ## Testing
@@ -53,6 +57,7 @@ Improve defopt macro to not mistake a sole string as body for a docstring
 
 ## Comments
 
+Try switching box model for better comment section layout
 Do not write "Reply" in comment fields, if JS is disabled
 (Validate the links)
 (Update page with comments from other sessions)

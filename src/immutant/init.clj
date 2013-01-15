@@ -9,11 +9,11 @@
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             ;; [ring.middleware.nested-params :refer [wrap-nested-params]]
-            [tlog.dispatch.route :refer [root-routes]]
+            [tlog.dispatch.route :refer [routes]]
             [tlog.data.account :refer [accounts]]))
 
 (def secured-app
-  (-> #'root-routes
+  (-> #'routes
       (friend/authenticate {:credential-fn (partial creds/bcrypt-credential-fn accounts)
                             :workflows [(workflows/interactive-form)]})
       wrap-keyword-params
