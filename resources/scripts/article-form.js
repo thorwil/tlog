@@ -87,37 +87,28 @@ window.onload=function() {
 	return encodeURIComponent(str).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
     }
 
-    function httpRequest(method, url, body, success, failure) {
+    function httpRequestPut(url, body, success, failure) {
 	var r = new XMLHttpRequest();
-	r.open(method, url, true);
+	r.open('PUT', url, true);
 	r.send(body);
 	r.onreadystatechange = function() {
 	    if (r.readyState == 4) {
 		if (r.status == 201) // Status 201: Created
-		    success(r.responseText);
-		else if (failure)
-		    failure(r.status, r.statusText);
+		    // Navigate to the new article:
+		    window.location.href = '/' + slugInput.value;
+		else
+		    // Bring up error message:
+		    alert(r.status + ' ' + r.statusText + ': ' + r.responseText);
 	    }
 	};
     }
 
-    function httpPutSuccess(responseText) {
-	window.location.href = '/' + slugInput.value;
-    }
-
-    function httpPutFailure(responseStatus, responseText) {
-	alert("Submitting the Article via HTTP PUT failed with status " + responseStatus);
-    }
-
     function submit() {
 	var slug = '/' + slugInput.value;
-	httpRequest("PUT",
-		    slug,
+	httpRequestPut(slug,
 		    JSON.stringify({title: titleInput.value,
 				    content: textArea.innerHTML,
-				    feeds: getCheckedFeedCheckboxesString(feedCheckboxes)}),
-		    httpPutSuccess,
-		    httpPutFailure);
+				    feeds: getCheckedFeedCheckboxesString(feedCheckboxes)}));
     }
 
     submitButton.onclick = function() { submit(); };
