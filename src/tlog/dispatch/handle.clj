@@ -65,8 +65,9 @@
       response))
 
 (defn put-article
-  "Take article parameters from a request :body. Store a new article in the database. Return a
-   status 201: Created, if article/create! returns. "
+  "Take a request map, expecting :uri and :body with an article's title, content and feeds. Store a
+   new article in the database. Return a
+   status 201: Created, if article/create! returns."
   [{:keys [uri body]}]
   (article/create! (.substring uri 1) ;; Drop leading "/", to extract the slug.
                    (:title body)
@@ -74,7 +75,18 @@
                    (-> body :feeds (clojure.string/split ,,, #" ")))
   {:status 201 ;; = Created
    :headers {"Content-Type" "text/plain"}
-   :body "Success"})
+   :body "Article created."})
+
+(defn update-article
+  "Take a request map, expecting :uri and :body with an article's title and content. Update the
+   article in the database. Return a status 201: Created, if article/update! returns."
+  [{:keys [uri body]}]
+  (article/update! (.substring uri 1) ;; Drop leading "/", to extract the slug.
+                   (:title body)
+                   (-> body :content cleanup-html-string))
+  {:status 200 ;; = OK
+   :headers {"Content-Type" "text/plain"}
+   :body "Article updated."}) ;; Why doesn't this appear as status text in the alert?
 
 (defn resource
   "Take a resource map. Return a rendition of the combined resource and referenced table (for now

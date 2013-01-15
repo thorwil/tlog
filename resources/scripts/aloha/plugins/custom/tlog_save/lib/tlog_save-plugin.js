@@ -1,47 +1,52 @@
-define(['aloha/plugin', 'aloha/console'], function (Plugin, console) {
-    'use strict';
+// Aloha plugin for saving edited articles via a 'Save' button on the floating menu.
 
-    return Plugin.create('tlog_save', {
-        defaults: {
-            value: 10
-        },
-        init: function () {
-            // Executed on plugin initialization
+function httpRequestPost(url, body) {
+    var r = new XMLHttpRequest();
+    r.open('POST', url, true);
+    r.send(body);
+    r.onreadystatechange = function() {
+	if (r.readyState == 4) {
+	    if (r.status == 200) // Status 200: OK
+		alert(r.responseText);
+	    else
+		alert(r.status + ' ' + r.statusText + ': ' + r.responseText);
+	}
+    };
+}
 
-	    // Create a new button
-	    Aloha.require(['ui/ui', 'ui/button'], function(Ui, Button) {
-		var button = Ui.adopt("myButton", Button, {
-		    label: 'Save',
-		    size: 'small',
-		    click: function () {
-			post();
-		    }
-		});
-	    });
+function postArticle(activeID, activeEditable, activeContent, activeModified) {
+    if (activeID.match(/title_/)) {
+	// The active editable contains the title, so get the body, too:
+	var slug = activeID.replace(/title_/, '');
+	var contentEditable = Aloha.getEditableById('content_' + slug);
+	var content = contentEditable.getContents();
+	var otherModified = contentEditable.isModified();
+	var title = activeContent;
+    } else {
+	// The active editable contains the body, so get the title, too:
+	var slug = activeID.replace(/content_/, '');
+	var titleID = 'title_' + slug;
+	var titleEditable = Aloha.getEditableById(titleID);
 
-	    // Add it to the floating menu
-	    // FloatingMenu.addButton(
-	    // 	'Aloha.continuoustext',
-	    // 	that.button,
-	    // 	i18nCore.t('floatingmenu.tab.format'),
-	    // 	4
-	    // );
-        }
-    });
-});
+	if (titleEditable) {
+	    // Title is in an editable. Get its content via Aloha.
+	    var title = titleEditable.getContents();
+	    var otherModified = titleEditable.isModified();
+	} else {
+	    // Title is not in an editable (because the title is used as link). Get its content via the DOM.
+	    var title = document.getElementById(titleID).innerHTML;
+	    var otherModified = false;
+	}
+	var content = activeContent;
+    }
 
-function post() {
-    var activeID = Aloha.getActiveEditable().getId();
-    var activeEditable = Aloha.getEditableById(activeID);
-    var activeContent = activeEditable.getContents();
-    var activeModified = activeEditable.isModified();
-
-    if (activeID.match(/comment-author_/)) {
-	postCommentAuthor(activeID, activeEditable, activeContent, activeModified);
-    } else if (activeID.match(/comment-body_/)) {
-	postCommentBody(activeID, activeEditable, activeContent, activeModified);
-    } else { // It's an Article title or body
-	postArticle(activeID, activeEditable, activeContent, activeModified);
+    // Post article, if at least one of title or body has been modified:
+    if (activeModified || otherModified) {
+	httpRequestPost(slug,
+			JSON.stringify({title: title,
+					content: content}));
+    } else {
+	alert('No changes to save!'); // Disabling the Save button would be preferable!
     }
 }
 
@@ -61,55 +66,60 @@ function postCommentAuthor(activeID, activeEditable, activeContent, activeModifi
 	var commentData = {id: activeID.replace(/comment-author_/, ''),
 			   author: author,
     			   link: link};
-	//alert(author + " " + link);
 	$.post('/admin/update-comment', commentData);
     } else {
 	alert('No changes to save!');
     }
 }
 
-function postCommentBody(activeID, activeEditable, activeContent, activeModified) {
+function postCommentContent(activeID, activeEditable, activeContent, activeModified) {
     // Post comment body, if modified:
     if (activeModified) {
-	var commentData = {id: activeID.replace(/comment-body_/, ""),
-			   body: activeContent.replace(/<br>$/, '')}; // Drop traling <br>
+	var commentData = {id: activeID.replace(/comment-body_/, ''),
+			   body: activeContent.replace(/<br>$/, '')}; // Drop trailing <br>
 	$.post('/admin/update-comment', commentData);
     } else {
 	alert('No changes to save!');
     }
 }
 
-function postArticle(activeID, activeEditable, activeContent, activeModified) {
-    if (activeID.match(/title_/)) {
-	// The active editable contains the title, so get the body, too:
-	var otherID = activeID.replace(/title_/, '');
-	var postID = otherID;
-	var otherEditable = Aloha.getEditableById(otherID);
-	var otherContent = otherEditable.getContents();
-	var otherModified = otherEditable.isModified();
-	var content = [activeContent, otherContent];
-    } else {
-	// The active editable contains the body, so get the title, too:
-    	var otherID = "title_" + activeID;
-	var postID = activeID;
-	// Title might not be in an editable, so fall back to JQuery, if getEditablebyID returns null:
-	var tryOtherEditable = Aloha.getEditableById(otherID);
-	if (tryOtherEditable) {
-	    var otherContent = tryOtherEditable.getContents();
-	    var otherModified = tryOtherEditable.isModified();
-	} else {
-	    var otherContent = $('#' + otherID).html();
-	    var otherModified = false;
-	}
-	var content = [otherContent, activeContent];
-    }
+function post() {
+    var activeID = Aloha.getActiveEditable().getId();
+    var activeEditable = Aloha.getEditableById(activeID);
+    var activeContent = activeEditable.getContents();
+    var activeModified = activeEditable.isModified();
 
-    // Post article, if at least one of title or body have been modified:
-    if (activeModified || otherModified) {
-	$.post('/admin/update-article', {id: postID,
-					 title: content[0],
-					 body: content[1]});
-    } else {
-	alert('No changes to save!');
+    if (activeID.match(/comment-author_/)) {
+	// It's a comment author field
+	postCommentAuthor(activeID, activeEditable, activeContent, activeModified);
+    } else if (activeID.match(/comment-body_/)) {
+	// It's comment content
+	postCommentContent(activeID, activeEditable, activeContent, activeModified);
+    } else { // It's an Article title or content
+	postArticle(activeID, activeEditable, activeContent, activeModified);
     }
 }
+
+define(['aloha/plugin', 'aloha/console'], function (Plugin, console) {
+    'use strict';
+
+    return Plugin.create('tlog_save', {
+        defaults: {
+            value: 10
+        },
+        init: function () {
+            // Executed on plugin initialization
+
+	    // Create a new button
+	    Aloha.require(['ui/ui', 'ui/button'], function(Ui, Button) {
+		var button = Ui.adopt("tlog_save", Button, {
+		    tooltip: 'Save', // actually button text
+		    size: 'large',
+		    click: function () {
+			post();
+		    }
+		});
+	    });
+        }
+    });
+});

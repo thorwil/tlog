@@ -61,7 +61,7 @@
     (merge merged (concat-per-key merged to-append))))
 
 
-;; Handlers
+;; Pages
 
 (def journal
   (skeleton {:title "Journal"
@@ -76,12 +76,11 @@
              :main "Admin"}))
 
 (def write
-  (skeleton (reduce into
-                    [{:title "Write"
-                      :scripts script/aloha-admin
+  (skeleton (merge {:title "Write"
+                      :scripts script/aloha-admin-create
                       :main main/article-form}
                      option/noscript-warning
-                     (option/admin-bar :write)])))
+                     (option/admin-bar :write))))
 
 (defn article
   "Take roles (for now, can only be nil or #{:tlog.data.account/admin}) and an article map. Return a
@@ -91,7 +90,7 @@
                          :everyone {:title (:title art)
                                     :scripts script/client-time-offset
                                     :main (main/article-solo art)}
-                         :tlog.data.account/admin {:append {:scripts script/aloha-admin}})))
+                         :tlog.data.account/admin {:append {:scripts script/aloha-admin-edit}})))
 
 (def not-found
   (skeleton {:title "404"

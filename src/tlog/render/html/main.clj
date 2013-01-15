@@ -21,14 +21,14 @@
 
 (defn- title-linked
   "For articles appearing in a list: Wrap the title in a link to the article's page."
-  [id slug title]
-  (html [:a.article-link {:id (str "title_" id), :href (str "/" slug)} title]))
+  [slug title]
+  (html [:a.article-link {:id (str "title_" slug), :href (str "/" slug)} title]))
 
 (defn title-plain
   "For an article appearing on its own page: Use a plain text title, as a link would lead to where
    we already are."
-  [id _ title]
-  (html [:span {:id (str "title_" id), :class "admin-editable"} title]))
+  [slug title]
+  (html [:span {:id (str "title_" slug), :class "admin-editable"} title]))
 
 
 ;; Main fragments
@@ -71,7 +71,7 @@
 (defhtml ^:private article-generic
   "Render article content to be used once on single pages and several times in the journal."
   [title-linked-or-plain
-   {:keys [id slug title created_timestamp updated_timestamp content
+   {:keys [slug title created_timestamp updated_timestamp content
            option-slug-form option-feed-selector]}]
   (let [[timestamps css-class-updated?] (time/derive-from-timestamps created_timestamp
                                                             updated_timestamp)]
@@ -79,9 +79,9 @@
      [:header
       option-slug-form
       option-feed-selector
-      [:h2 (title-linked-or-plain id slug title)]
+      [:h2 (title-linked-or-plain slug title)]
       timestamps]
-     [:div {:id id
+     [:div {:id (str "content_" slug)
             :class (str "article-body hyphenate admin-editable " css-class-updated?)} content]]))
 
 (def article-solo

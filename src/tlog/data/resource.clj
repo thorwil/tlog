@@ -11,13 +11,20 @@ db
   (k/pk :slug))
 
 (defn create!
-  "Take a slug and a table-reference (the entity type). Add a row to the resource table."
+  "Take strings for slug and table-reference (the entity type). Add a row to the resource table."
   [slug table-reference]
   (let [now now]
     (k/insert resource (k/values {:slug slug
                                   :created_timestamp now
                                   :updated_timestamp now
                                   :table_reference table-reference}))))
+
+(defn update-timestamp!
+  "Take a slug (string). Set the associated updated_timestamp to current time."
+  [slug]
+  (k/update resource
+            (k/set-fields {:updated_timestamp now})
+            (k/where {:slug slug})))
 
 (defn slug->resource-or-nil
   "Take a slug (string). Return a resource for the slug, or nil if there is none."

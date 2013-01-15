@@ -10,6 +10,9 @@
             [tlog.data.resource]
             [tlog.dispatch.handle :as h]))
 
+
+;; Utility
+
 (defn- decode-json-body
   "Take a ring request. Replace a JSON string in the :body of the request with a deserialization
    (or nil if it's not an input stream and/or not JSON)"
@@ -34,8 +37,20 @@
   [name & more]
   `(def ~name (app ~@more)))
 
-;; This would be nicer written inline as [friend/logout h/logout], but there needs to be a var for
-;; the test to redef it:
+
+;; Routes
+
+;; Having separate vars for admin-protected, logout and put-article allows the test to redef them
+
+(defroutes admin-get-routes
+  [] h/admin
+  ["write"] h/write
+  [&] h/not-found)
+
+(defn admin-area
+  [r]
+  ((friend/wrap-authorize admin-get-routes [:tlog.data.account/admin]) r))
+
 (defn logout
   [r]
   ((friend/logout h/logout) r))
@@ -47,36 +62,32 @@
   [[slug tlog.data.resource/slug->resource-or-nil]] (h/resource slug)
   [&] h/not-found)
 
-(defn static
+(defn get-routes-with-resource
   [r]
   ((-> get-routes
        (wrap-resource "/")
        wrap-file-info)
    r))
 
-(defroutes admin-post-routes
-  [] h/admin
-  ["write"] h/write
-  [&] h/not-found)
-
-;; See comment for logout
-(defn admin-protected
-  [r]
-  ((friend/wrap-authorize admin-post-routes [:tlog.data.account/admin]) r))
-
-;; See comment for logout
 (defn put-article
   [r]
   ((-> h/put-article
        wrap-json
-       (friend/wrap-authorize [:tlog.data.account/admin])
-       )
+       (friend/wrap-authorize [:tlog.data.account/admin]))
+   r))
+
+(defn update-article
+  [r]
+  ((-> h/update-article
+       wrap-json
+       (friend/wrap-authorize [:tlog.data.account/admin]))
    r))
 
 (defroutes root-routes
-  ["admin" &] {:get admin-protected}
-  [&] {:get static
-       :put put-article})
+  ["admin" &] {:get admin-area}
+  [&] {:get get-routes-with-resource
+       :put put-article
+       :post update-article})
 
 ;; Remember to update tlog.render.html.script/static-slugs when changing slugs in static
 ;; routes like "login".

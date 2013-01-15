@@ -4,17 +4,9 @@
   (:require [hiccup.core :refer [html]]
             [hiccup.page :refer [include-css]]))
 
-(def ^:private aloha-make-admin
-  "Fragments to use Aloha editor as admin"
-  {:aloha-save-plugin
-   ",custom/tlog_save"
-   :aloha-admin-editables
-   (html ;; Make elements with CSS class 'admin-editable' editable with Aloha:
-    [:script "Aloha.ready( function() {Aloha.jQuery('.admin-editable').aloha();});"])})
-
 (def ^:private static-slugs
-  "Slugs in use for static routes."
-  ["logout" "login" "admin"])
+  "Slugs in use for static routes plus fragments used to build CSS IDs."
+  ["logout" "login" "admin" "title_" "content_"])
 
 (def ^:private article-form-js
   "Link JS for article forms."
@@ -47,7 +39,8 @@
               components: [
                  [ 'strong', 'emphasis', 'subscript', 'superscript', 'strikethrough' ],
                  [ 'formatBlock' ],
-                 [ 'createTable', 'characterPicker', 'insertLink' ]
+                 [ 'createTable', 'characterPicker', 'insertLink' ],
+                 [ 'tlog_save' ]
               ]
            }
         ],
@@ -71,9 +64,23 @@
   "Use JQuery 1.7.2 from Google Hosted Libraries."
   "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></script>")
 
-(def aloha-admin
-  "Assemble fragments to set up Aloha editor for the admin."
-  (str jquery article-form-js (aloha aloha-make-admin)))
+(def ^:private aloha-ready-admin-editable
+  "Fragment to make DOM elements with the .admin-editable CSS class editable via Aloha."
+  {:aloha-admin-editables
+   (html [:script "Aloha.ready( function() {Aloha.jQuery('.admin-editable').aloha();});"])})
+
+(def ^:private aloha-save-plugin
+  "Fragments to load the tlog_save Aloha plugin for a Save button on the floating menu."
+  {:aloha-save-plugin
+   ",custom/tlog_save"})
+
+(def aloha-admin-create
+  "Assemble fragments to set up Aloha editor for creating new articles by the admin."
+  (str jquery article-form-js (aloha aloha-ready-admin-editable)))
+
+(def aloha-admin-edit
+  "Assemble fragments to set up Aloha editor for editing articles by the admin."
+  (str jquery article-form-js (aloha (merge aloha-ready-admin-editable aloha-save-plugin))))
 
 (def aloha-guest
   "Assemble fragments to set up Aloha editor for guests."

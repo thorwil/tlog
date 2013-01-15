@@ -1,11 +1,16 @@
-Look into reduce-kv, [f init coll], where f should be a function with 3 arguments
-Configure Aloha for editing existing articles
+Update the article timestamp on the page
+Handle article feed selection changes
+Docstring style
+Disable all styling buttons on Aloha floating menu, when editing a title
 Put noscript-warning on article pages
-Make articles editable by admin, look into Aloha IDs
+Get strong and emphasis to show up on Aloha floating menu
 Consider "N minutes/hous/days/... ago" as addition or replacement for current timestamps
 Decide on home page content and journal URL
+Disable Aloha Save button until there are changes (even better: unless), look into smartContentChange
 Look into Drip
 Use ring-json?
+Consider to use Marginalia
+Consider Typed Clojure
 
 # Copied from tlog-gae-clj:
 
@@ -35,7 +40,6 @@ Cross-Browser
 
 ## Optimization
 
-Only check article feed membership if you actually work with the info
 Memchache/memoization
 Minify JS and CSS
 Try to load less JS
@@ -52,12 +56,3 @@ Improve defopt macro to not mistake a sole string as body for a docstring
 Do not write "Reply" in comment fields, if JS is disabled
 (Validate the links)
 (Update page with comments from other sessions)
-
-
-## But how?
-
-Make sure article content is put in <p>, to avoid <br>s
-Disable Aloha Save button until there are changes (even better: unless), look into smartContentChange
-Fix Aloha blocking in some new comment fields, when adding several comments in succession
-Stay exactly on baseline grid
-Automatically avoid collisions between article slugs and fixed routes
