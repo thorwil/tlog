@@ -15,17 +15,23 @@
 (tabular "Routing calls the right handlers for all static GET cases."
   (fact 
      (with-redef-handler ?handler ?uri) => ?handler-and-params)
-     ?handler   ?uri           ?handler-and-params
-     #'h/journal "/"           {:request-method :get
-                                :uri "/"}
-     #'h/login  "/login"       {:request-method :get
-                                :uri "/login"}
-     #'h/logout "/logout"      {:session nil
-                                :request-method :get
-                                :uri "/logout"}
-     #'h/admin  "/admin"       {:path-info "/"
-                                :request-method :get
-                                :uri "/admin"}
-     #'h/write  "/admin/write" {:path-info "/write"
-                                :request-method :get
-                                :uri "/admin/write"})
+     ?handler      ?uri           ?handler-and-params
+     #'h/journal   "/"            {:request-method :get
+                                   :uri "/"}
+     #'h/login     "/login"       {:request-method :get
+                                   :uri "/login"}
+     #'h/logout    "/logout"      {:session nil
+                                   :request-method :get
+                                   :uri "/logout"}
+     #'h/admin     "/admin"       {:path-info "/"
+                                   :request-method :get
+                                   :uri "/admin"}
+     #'h/write     "/admin/write" {:path-info "/write"
+                                   :request-method :get
+                                   :uri "/admin/write"}
+     #'h/not-found "/admin/xrtgy" {:path-info "/xrtgy"
+                                    :request-method :get
+                                    :uri "/admin/xrtgy"}
+     #'h/not-found "/xrtgy"       {:path-info "/xrtgy"
+                                   :request-method :get
+                                   :uri "/xrtgy"})
