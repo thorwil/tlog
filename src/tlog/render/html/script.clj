@@ -2,7 +2,8 @@
   "HTML fragments dealing with JavaScript. To be handed to skeleton as values of keys other than
    :main."
   (:require [hiccup.core :refer [html]]
-            [hiccup.page :refer [include-css]]))
+            [hiccup.page :refer [include-css]]
+            [clojure.data.json :as json]))
 
 (def ^:private static-slugs
   "Slugs in use for static routes plus fragments used to build CSS IDs."
@@ -13,7 +14,7 @@
   (let [slugs-in-use (into static-slugs
                            tlog.data.article/slugs)]
     (html
-     [:script  (str "var slugsInUse = " (clojure.data.json/write-str slugs-in-use) ";")]
+     [:script  (str "var slugsInUse = " (json/write-str slugs-in-use) ";")]
      [:script {:src "/scripts/article-form.js"}])))
 
 (defn- aloha

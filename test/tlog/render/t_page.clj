@@ -21,15 +21,13 @@
  [:r1 :r2]     '((:r1 {:a "a" :b "b"}) (:r2 {:append {:b "2"}}))                          [{:a "a" :b "b"} [{:b "2"}]]
  [:r1 :r2 :r3] '((:r1 {:a "a" :b "b"}) (:r2 {:append {:b "2"}}) (:r3 {:append {:b "3"}})) [{:a "a" :b "b"} [{:b "2"} {:b "3"}]])
 
-(fact "per-role-in with no role and no map for :everyone results in empty map."
-  (#'p/per-role-in nil
-                   :r1 {:a "a"}) => {})
+(fact "select-by-role-merge with no role and no map for :everyone results in empty map."
+  (#'p/select-by-role-merge #{} :r1 {:a "a"}) => {})
 
-(fact "per-role-in given nil still looks out for :everyone."
-  (#'p/per-role-in nil
-                   :everyone {:a "a"}) => {:a "a"})
+(fact "select-by-role-merge given nil still looks out for :everyone."
+  (#'p/select-by-role-merge nil :everyone {:a "a"}) => {:a "a"})
 
-(fact "per-role-in replaces values for the same keys in earlier maps, but appends what's in :append."
-  (#'p/per-role-in #{:r1 :r2}
-                   :r1 {:a "a" :b "b"}
-                   :r2 {:a "a2" :append {:b "2"}}) => {:a "a2" :b "b2"})
+(fact "select-by-role-merge replaces values for the same keys in earlier maps, but appends what's in
+       :append."
+  (#'p/select-by-role-merge #{:r1 :r2} :r1 {:a "a" :b "b"} :r2 {:a "a2" :append {:b "2"}})
+   => {:a "a2" :b "b2"})
