@@ -16,20 +16,19 @@
            option-admin-bar
            option-noscript-warning
 	   main]}]
-  (html5
-   [:html {:lang "en"}
-    [:head
-     [:meta {:charset "utf-8"}]
-     [:title (title-with title)]
-     scripts
-     [:meta {:name "description" :content conf/meta-description}]
-     [:meta {:name "author" :content conf/author}]
-     [:link {:href conf/font-link
-             :rel "stylesheet"
-             :type "text/css"}]
-     [:link {:rel "stylesheet" :href "/main.css" :type "text/css"}]
-     [:body
-      option-admin-bar
-      option-noscript-warning
-      [:div#main
-       [:div#content main]]]]]))
+  (html5 {:lang "en"}
+   [:head
+    [:meta {:charset "utf-8"}]
+    [:title (title-with title)]
+    scripts
+    [:meta {:name "description" :content conf/meta-description}]
+    [:meta {:name "author" :content conf/author}]
+    [:link {:href conf/font-link
+            :rel "stylesheet"
+            :type "text/css"}]
+    [:link {:rel "stylesheet" :href "/main.css" :type "text/css"}]]
+   [:body
+    option-admin-bar
+    option-noscript-warning
+    [:div#main
+     [:div#content main]]]))
