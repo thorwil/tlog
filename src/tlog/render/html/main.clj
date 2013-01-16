@@ -16,8 +16,8 @@
     [:legend "Include in the following feeds:"]
     (for [[label checked] tlog.data.feed/feeds]
       [:input.feed (into {:type "checkbox" :name label}
-                         (when checked {:checked "checked"}))
-       [:label label]])]))
+                         (when checked {:checked "checked"}))]
+      [:label label])]))
 
 (defn- title-linked
   "For articles appearing in a list: Wrap the title in a link to the article's page."
