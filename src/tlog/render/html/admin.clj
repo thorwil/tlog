@@ -44,5 +44,4 @@
             (for [v (vals items)]
               [:li v])]]]))
       ;; Unrecognized key, render error message:
-      "option-admin-bar: mistyped or wrong key!"))
-  :option-admin-bar)
+      "option-admin-bar: mistyped or wrong key!")))

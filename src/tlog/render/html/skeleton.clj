@@ -10,11 +10,11 @@
         conf/title-main))
 
 (defn skeleton
-  "HTML page skeleton."
+  "HTML page skeleton. The keys admin-bar and noscript-warning are used for optional components."
   [{:keys [title
            scripts
-           option-admin-bar
-           option-noscript-warning
+           admin-bar
+           noscript-warning
 	   main]}]
   (html5 {:lang "en"}
    [:head
@@ -28,7 +28,7 @@
             :type "text/css"}]
     [:link {:rel "stylesheet" :href "/main.css" :type "text/css"}]]
    [:body
-    option-admin-bar
-    option-noscript-warning
+    admin-bar
+    noscript-warning
     [:div#main
      [:div#content main]]]))
