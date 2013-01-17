@@ -73,22 +73,27 @@
    [:input#article_submit {:type "submit" :value "Add new article" :disabled "disabled"}]))
 
 (defhtml ^:private article-generic
-  "Render article content to be used once on single pages and several times in the journal."
+  "Render article content to be used once on single pages and several times in the journal.
+   feed-selector is used as optional component, thus may be nil."
   [title-linked-or-plain
-   {:keys [slug title created_timestamp updated_timestamp content
-           option-slug-form option-feed-selector]}]
+   feed-selector
+   {:keys [slug title created_timestamp updated_timestamp content]}]
   (let [[timestamps css-class-updated?] (time/derive-from-timestamps slug
                                                                      created_timestamp
                                                                      updated_timestamp)]
     [:article
      [:header
-      option-slug-form
-      option-feed-selector
       [:h2 (title-linked-or-plain slug title)]
-      timestamps]
+      timestamps
+      feed-selector]
      [:div {:id (str "content_" slug)
             :class (str "article-body hyphenate admin-editable " css-class-updated?)} content]]))
 
 (def article-solo
   "Render article content. Use article-generic specialized for one article on its own page"
-  (partial article-generic title-plain))
+  (partial article-generic title-plain nil))
+
+(def article-solo-admin
+  "Render article content. Use article-generic specialized for one article on its own page, with
+   feed-selector for admin."
+  (partial article-generic title-plain feed-selector))

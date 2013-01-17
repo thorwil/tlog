@@ -6,7 +6,7 @@ Journal
 Comments (form, create, edit, delete)
 Delete article
 Move article
-Consider "N minutes/hous/days/... ago" as addition or replacement for current timestamps
+Consider "N minutes/hours/days/... ago" as addition or replacement for current timestamps
 Decide on home page content and journal URL
 Disable Aloha Save button until there are changes (even better: unless), look into smartContentChange
 Look into Drip

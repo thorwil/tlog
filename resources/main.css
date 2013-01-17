@@ -57,6 +57,9 @@ article {
    margin-top:-0.05em;
    margin-bottom:1.5em;
 }
+article header {
+   margin-bottom:1.5em;
+}
 nav#pages {
    border-top:0.05em solid #000;
    padding-top:1.5em;

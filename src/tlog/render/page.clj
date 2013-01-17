@@ -2,7 +2,7 @@
   "Take data from tlog.dispatch.handle and build HTML responses, using tlog.render.html.*."
   (:require [tlog.render.html.skeleton :refer [skeleton]]
             [tlog.render.html.main :as main]
-            [tlog.render.html.admin :as option]
+            [tlog.render.html.admin :as admin]
             [tlog.render.html.script :as script]))
 
 
@@ -79,18 +79,21 @@
   (skeleton (merge {:title "Write"
                     :scripts script/aloha-admin-create
                     :main main/article-form}
-                     option/noscript-warning
-                     (option/admin-bar :write))))
+                   admin/noscript-warning
+                   (admin/admin-bar :write))))
 
 (defn article
   "Take roles (for now, can only be nil or #{:tlog.data.account/admin}) and an article map. Return a
    HTML page representing the article."
-  [roles art]
+  [roles article-map]
   (skeleton (select-by-role-merge roles
-                         :everyone {:title (:title art)
-                                    :scripts script/client-time-offset
-                                    :main (main/article-solo art)}
-                         :tlog.data.account/admin {:append {:scripts script/aloha-admin-edit}})))
+                                  :everyone {:title (:title article-map)
+                                             :scripts script/client-time-offset
+                                             :main (main/article-solo article-map)}
+                                  :tlog.data.account/admin
+                                  (merge admin/noscript-warning
+                                         {:main (main/article-solo-admin article-map)
+                                          :append {:scripts script/aloha-admin-edit}}))))
 
 (def not-found
   (skeleton {:title "404"
