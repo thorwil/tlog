@@ -81,7 +81,7 @@
 
 (def aloha-admin-edit
   "Assemble fragments to set up Aloha editor for editing articles by the admin."
-  (str jquery article-form-js (aloha (merge aloha-ready-admin-editable aloha-save-plugin))))
+  (str jquery (aloha (merge aloha-ready-admin-editable aloha-save-plugin))))
 
 (def aloha-guest
   "Assemble fragments to set up Aloha editor for guests."

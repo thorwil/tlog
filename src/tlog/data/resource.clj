@@ -3,7 +3,10 @@
   (:require [korma.core :as k]
             [tlog.data.access :refer [db]]))
 
-(def now (java.sql.Timestamp. (.getTime (java.util.Date.))))
+(defn- now
+  "Get the current time as java.sql.Timestamp."
+  []
+  (java.sql.Timestamp. (.getTime (java.util.Date.))))
 
 db
 
@@ -20,11 +23,14 @@ db
                                   :table_reference table-reference}))))
 
 (defn update-timestamp!
-  "Take a slug (string). Set the associated updated_timestamp to current time."
+  "Take a slug (string). Set the associated updated_timestamp to current time. Return the new
+   updated_timestamp."
   [slug]
-  (k/update resource
-            (k/set-fields {:updated_timestamp now})
-            (k/where {:slug slug})))
+  (let [now (now)]
+    (k/update resource
+              (k/set-fields {:updated_timestamp now})
+              (k/where {:slug slug}))
+    now))
 
 (defn slug->resource-or-nil
   "Take a slug (string). Return a resource for the slug, or nil if there is none."
@@ -38,3 +44,15 @@ db
   (into rsc
         (first (k/select (:table_reference rsc)
                          (k/where {:slug (:slug rsc)})))))
+
+
+;; For testing
+
+(defn set-updated-to-created-timestamp
+  "Set updated_timestamp equal to created_timestamp, as if the resource had never been updated."
+  [slug]
+  (k/update resource
+            (k/set-fields {:updated_timestamp (-> (k/select resource (k/where {:slug slug}))
+                                                  first
+                                                  :created_timestamp)})
+            (k/where {:slug slug})))

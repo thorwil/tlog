@@ -1,6 +1,4 @@
-Update the article timestamp on the page
 Handle article feed selection changes
-Docstring style
 Disable all styling buttons on Aloha floating menu, when editing a title
 Put noscript-warning on article pages
 Get strong and emphasis to show up on Aloha floating menu
@@ -13,11 +11,11 @@ Decide on home page content and journal URL
 Disable Aloha Save button until there are changes (even better: unless), look into smartContentChange
 Look into Drip
 Use ring-json?
-Consider to use Marginalia
+Docstring style, consider to use Marginalia
 Consider Typed Clojure
 Make sure the slug is valid and free, before PUTing an article
 Validate that the slug exists, before accepting a POST for an article
-
+Flash updated timestamps after saving an article and/or other feedback
 
 # Copied from tlog-gae-clj:
 

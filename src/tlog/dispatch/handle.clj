@@ -5,7 +5,8 @@
             [net.cgrand.moustache :refer [alter-response]]
             [tlog.render.page :as p]
             [tlog.data.article :as article]
-            [tlog.data.resource :as resource]))
+            [tlog.data.resource :as resource]
+            [tlog.render.html.time]))
 
 ;; Utility
 
@@ -79,14 +80,18 @@
 
 (defn update-article
   "Take a request map, expecting :uri and :body with an article's title and content. Update the
-   article in the database. Return a status 201: Created, if article/update! returns."
+   article in the database. Return a status 200: OK, with HTML for the updated timestamp as body (if
+   article/update! returns)."
   [{:keys [uri body]}]
-  (article/update! (.substring uri 1) ;; Drop leading "/", to extract the slug.
-                   (:title body)
-                   (-> body :content cleanup-html-string))
-  {:status 200 ;; = OK
-   :headers {"Content-Type" "text/plain"}
-   :body "Article updated."}) ;; Why doesn't this appear as status text in the alert?
+  (let [slug (.substring uri 1)] ;; Drop leading "/", to extract the slug.
+    {:status 200 ;; = OK
+     :headers {"Content-Type" "text/plain"}
+     :body (tlog.render.html.time/time-updated slug
+                                               (article/update! slug
+                                                                (:title body)
+                                                                (-> body
+                                                                    :content
+                                                                    cleanup-html-string)))}))
 
 (defn resource
   "Take a resource map. Return a rendition of the combined resource and referenced table (for now

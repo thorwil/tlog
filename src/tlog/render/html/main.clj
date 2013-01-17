@@ -73,8 +73,9 @@
   [title-linked-or-plain
    {:keys [slug title created_timestamp updated_timestamp content
            option-slug-form option-feed-selector]}]
-  (let [[timestamps css-class-updated?] (time/derive-from-timestamps created_timestamp
-                                                            updated_timestamp)]
+  (let [[timestamps css-class-updated?] (time/derive-from-timestamps slug
+                                                                     created_timestamp
+                                                                     updated_timestamp)]
     [:article
      [:header
       option-slug-form

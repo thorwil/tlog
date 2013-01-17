@@ -26,8 +26,8 @@ db
    (feed/create-article-feed-rels! slug feeds)))
 
 (defn update!
-  "Take an article's slug, title and content. Update the article table. Update the created_timestamp
-   in the resource table."
+  "Take an article's slug, title and content. Update the article table. Update the updated_timestamp
+   in the resource table. Return the new updated_timestamp."
   [slug title content]
   (d/transaction
    (k/update article

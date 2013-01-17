@@ -77,8 +77,8 @@
 
 (def write
   (skeleton (merge {:title "Write"
-                      :scripts script/aloha-admin-create
-                      :main main/article-form}
+                    :scripts script/aloha-admin-create
+                    :main main/article-form}
                      option/noscript-warning
                      (option/admin-bar :write))))
 

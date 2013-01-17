@@ -1,15 +1,28 @@
 // Aloha plugin for saving edited articles via a 'Save' button on the floating menu.
 
-function httpRequestPost(url, body) {
+function httpRequestPost(slug, body) {
     var r = new XMLHttpRequest();
-    r.open('POST', url, true);
+    r.open('POST', slug, true);
     r.send(body);
     r.onreadystatechange = function() {
 	if (r.readyState == 4) {
-	    if (r.status == 200) // Status 200: OK
-		alert(r.responseText);
-	    else
+	    if (r.status == 200) { // Status 200: OK
+		// r.responseText will contain replacement HTML
+		var timeUpdated = document.getElementById('time-updated_' + slug);
+		var updatedPara = document.createElement('p');
+		updatedPara.innerHTML = r.responseText;
+		if (timeUpdated) {
+		    // Replace existing time-updated paragraph
+		    document.getElementById('times_' + slug).replaceChild(updatedPara, timeUpdated.parentNode);
+		} else {
+		    // There is no time-updated paragraph, yet, insert new one:
+		    document.getElementById('times_' + slug).appendChild(updatedPara);
+		}
+		// Update timestamps to client's local time by calling time.js/updateTimes
+		updateTimes();
+	    } else {
 		alert(r.status + ' ' + r.statusText + ': ' + r.responseText);
+	    }
 	}
     };
 }
