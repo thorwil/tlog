@@ -9,15 +9,19 @@
 
 ;; Sub-fragments
 
+(defhtml ^:privte feed-selector-part
+  "One checkbox and label pair, to be used per feed via feed-selector."
+  [[label checked]]
+  [:input.feed (merge {:type "checkbox" :name label}
+                      (when checked {:checked "checked"}))]
+  [:label label])
+
 (def ^:private feed-selector
   "Area for selecting the feeds an article should appear in (checkboxes)."
   (html
    [:fieldset#feed-selectors
     [:legend "Include in the following feeds:"]
-    (for [[label checked] tlog.data.feed/feeds]
-      [:input.feed (into {:type "checkbox" :name label}
-                         (when checked {:checked "checked"}))]
-      [:label label])]))
+    (mapcat feed-selector-part tlog.data.feed/feeds)]))
 
 (defn- title-linked
   "For articles appearing in a list: Wrap the title in a link to the article's page."
