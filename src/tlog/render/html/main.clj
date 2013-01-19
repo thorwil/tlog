@@ -19,7 +19,7 @@
 (def ^:private feed-selector
   "Area for selecting the feeds an article should appear in (checkboxes)."
   (html
-   [:fieldset#feed-selectors
+   [:fieldset.feed-selectors
     [:legend "Include in the following feeds:"]
     (mapcat feed-selector-part tlog.data.feed/feeds)]))
 
