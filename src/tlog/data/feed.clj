@@ -33,13 +33,6 @@ db
                               (for [feed-slug feed-slugs] {:article_slug article-slug
                                                            :feed_slug feed-slug}))))
 
-(defn set-article-feed-rels!
-  "Take an article slug and a vector of feed slugs. Delete previous article and feed relations,
-   store new ones. Has to happen within a d/with-connection."
-  [article-slug feed-slugs]
-  (k/delete article_feed_rel (k/where {:article_slug [= article-slug]}))
-  (create-article-feed-rels! article-slug feed-slugs))
-
 (defn article-slugs-in-feed
   "Take a feed slug. Return a list of slugs for all articles the feed shall contain."
   [feed-slug]
