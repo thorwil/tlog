@@ -53,6 +53,6 @@
        :put [[slug] (-> h/put-article
                         wrap-json
                         (friend/wrap-authorize [:tlog.data.account/admin]))]
-       :post [[slug] (-> h/update-article
+       :post [[slug] (-> h/update-article*
                          wrap-json
                          (friend/wrap-authorize [:tlog.data.account/admin]))]))

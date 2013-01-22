@@ -2,18 +2,39 @@
 
 /* Send updates on clicking feed selection checkboxes */
 
-var feedCheckboxes = $('input.feed, [type="checkbox"]');
-
-/* Also defined via slug.js:
-var currentSlug = slugInput.val(); */
-
-function sendFeedSelectionChange(feed, checked) {
-    $.post("/admin/feed-selection-change", {slug: currentSlug,
-					    feed: feed,
-					    checked: checked});
+function postFeedSelectionChange(slug, feed, checked, checkbox) {
+    var body = JSON.stringify({feed: feed,
+			       checked: checked});
+    var r = new XMLHttpRequest();
+    r.open('POST', '/' + slug, true);
+    r.send(body);
+    r.onreadystatechange = function() {
+    	if (r.readyState == 4) {
+    	    if (r.status == 409) { // 409: Conflict
+    		alert("Checkbox and stored membership were out of sync. The checkbox will be set to the right state now.");
+		if (r.responseText == "true") {
+		    checkbox.checked = true;
+		} else {
+		    checkbox.checked = false;
+		}
+    	    }
+    	}
+    };
 }
 
-feedCheckboxes.click(function(){
-			 sendFeedSelectionChange(this.name, this.checked); /* .checked is the state after the click! */
-		     });
+function armCheckboxes() {
+    var checkboxes = document.getElementsByClassName("feed-checkbox");
 
+    for (var i = 0; i < checkboxes.length; i ++) {
+	checkboxes[i].onclick = function(){
+	    postFeedSelectionChange(
+		// Input in fieldset in header in article with data-slug attribute:
+	    	this.parentNode.parentNode.parentNode.getAttribute('data-slug'),
+	    	this.name,
+	    	this.checked, // the state after the click.
+		this);
+	};
+    }
+}
+
+window.addEventListener('load', function(){armCheckboxes();}, false);

@@ -12,12 +12,12 @@
  * - Enable submit button if all 3 fields are filled, else make sure it's disabled.
  */
 
-window.onload=function() {
+function wireArticleForm() {
     var titleInput = document.getElementById("article_title_input");
     var slugInput = document.getElementById("article_slug_input");
     var textArea = document.getElementById("article_text_area");
     var submitButton = document.getElementById("article_submit");
-    var feedCheckboxes = document.getElementById("feed-selectors").getElementsByTagName("input");
+    var feedCheckboxes = document.getElementsByClassName("feed-checkbox");
 
     function convertToSlug(text){
 	return text
@@ -87,7 +87,7 @@ window.onload=function() {
 	return encodeURIComponent(str).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
     }
 
-    function httpRequestPut(url, body, success, failure) {
+    function httpRequestPut(url, body) {
 	var r = new XMLHttpRequest();
 	r.open('PUT', url, true);
 	r.send(body);
@@ -113,3 +113,5 @@ window.onload=function() {
 
     submitButton.onclick = function() { submit(); };
 };
+
+window.addEventListener('load', function(){wireArticleForm();}, false);

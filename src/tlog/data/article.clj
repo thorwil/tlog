@@ -27,7 +27,8 @@ db
 
 (defn update!
   "Take an article's slug, title and content. Update the article table. Update the updated_timestamp
-   in the resource table. Return the new updated_timestamp."
+   in the resource table. Return the new updated_timestamp, or nil if there is no resource for the
+   given slug."
   [slug title content]
   (d/transaction
    (k/update article

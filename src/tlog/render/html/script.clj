@@ -91,3 +91,7 @@
   "Link time.js script for converting UTC to the client's local time."
   (html
    [:script {:src "/scripts/time.js"}]))
+
+(def feed-selection
+  "Link JS for posting changes of which feeds an article belongs to."
+  (html [:script {:src "/scripts/feed-membership.js"}]))

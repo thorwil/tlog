@@ -6,6 +6,7 @@
             [tlog.render.page :as p]
             [tlog.data.article :as article]
             [tlog.data.resource :as resource]
+            [tlog.data.feed :as feed]
             [tlog.render.html.time]))
 
 ;; Utility
@@ -78,20 +79,44 @@
    :headers {"Content-Type" "text/plain"}
    :body "Article created."})
 
-(defn update-article
-  "Take a request map, expecting :uri and :body with an article's title and content. Update the
-   article in the database. Return a status 200: OK, with HTML for the updated timestamp as body (if
-   article/update! returns)."
-  [{:keys [uri body]}]
-  (let [slug (.substring uri 1)] ;; Drop leading "/", to extract the slug.
-    {:status 200 ;; = OK
+(defn- update-article-title+content
+  "Update an article's title and content in the database. Return a status 200: OK (if
+   article/update! returns). Include HTML for the updated timestamp as body."
+  [slug title content]
+  (let [updated-timestamp (article/update! slug
+                                           title
+                                           (cleanup-html-string content))]
+    ;; updated-timestamp will be nil, if there was no resource for the given slug.
+    (if updated-timestamp
+        {:status 200 ;; = OK
+         :headers {"Content-Type" "text/plain"}
+         :body (tlog.render.html.time/time-updated slug updated-timestamp)}
+        {:status 400 ;; = Bad request
+         :headers {"Content-Type" "text/plain"}
+         :body (format "There doesn't seem to be an article that could be updated, with the slug %s"
+                       slug)})))
+
+(defn- update-article-feed-rel
+  "Take an article slug, a feed slug and a boolean that is true if the article belongs to the feed.
+   Store or erase an article and feed relation."
+  [slug feed checked]
+  (let [[checked-final changed] (feed/set-article-feed-rel! slug feed checked)]
+    {:status (if changed
+               200  ;; = OK
+               409) ;; = Conflict
      :headers {"Content-Type" "text/plain"}
-     :body (tlog.render.html.time/time-updated slug
-                                               (article/update! slug
-                                                                (:title body)
-                                                                (-> body
-                                                                    :content
-                                                                    cleanup-html-string)))}))
+     :body (str checked-final)}))
+
+(defn update-article*
+  "Take a request map, expecting :uri and :body with either an article's title and content, or a
+   feed name and its new state regarding having the article as member. Call
+   update-article-title+content or update-article-feed-rel accordingly."
+  [{:keys [uri body]}]
+  (let [slug (.substring uri 1) ;; Drop leading "/", to extract the slug.
+        {:keys [title content feed checked]} body]
+    (if title
+      (update-article-title+content slug title content)
+      (update-article-feed-rel slug feed checked))))
 
 (defn resource
   "Take a resource map. Return a rendition of the combined resource and referenced table (for now

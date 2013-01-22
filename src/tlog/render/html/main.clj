@@ -2,7 +2,7 @@
   "HTML fragments to be handed to skeleton as value of :main."
   (:require [hiccup.core :refer [html]]
             [hiccup.def :refer [defhtml]]
-            [tlog.data.feed]
+            [tlog.data.feed :as feed]
             [tlog.data.article]
             [tlog.render.html.time :as time]))
 
@@ -12,16 +12,16 @@
 (defhtml ^:privte feed-selector-part
   "One checkbox and label pair, to be used per feed via feed-selector."
   [[label checked]]
-  [:input.feed (merge {:type "checkbox" :name label}
-                      (when checked {:checked "checked"}))]
+  [:input.feed-checkbox (merge {:type "checkbox" :name label}
+                               (when checked {:checked "checked"}))]
   [:label label])
 
-(def ^:private feed-selector
+(defhtml ^:private feed-selector
   "Area for selecting the feeds an article should appear in (checkboxes)."
-  (html
-   [:fieldset.feed-selectors
-    [:legend "Include in the following feeds:"]
-    (mapcat feed-selector-part tlog.data.feed/feeds)]))
+  [feed-pairs]
+  [:fieldset.feed-selectors
+   [:legend "Include in the following feeds:"]
+   (mapcat feed-selector-part feed-pairs)])
 
 (defn- title-linked
   "For articles appearing in a list: Wrap the title in a link to the article's page."
@@ -68,7 +68,7 @@
      [:td [:label "Slug"]]
      [:td [:input#article_slug_input {:type "text" :name "slug" :required "required"
                                       :pattern "[a-zäöüß0-9_-]*"}]]]]
-   feed-selector
+   (feed-selector (feed/feed-defaults))
    [:div#article_text_area {:class "article-body hyphenate admin-editable start-blank"} ""]
    [:input#article_submit {:type "submit" :value "Add new article" :disabled "disabled"}]))
 
@@ -81,7 +81,7 @@
   (let [[timestamps css-class-updated?] (time/derive-from-timestamps slug
                                                                      created_timestamp
                                                                      updated_timestamp)]
-    [:article
+    [:article {:data-slug slug}
      [:header
       [:h2 (title-linked-or-plain slug title)]
       timestamps
@@ -93,7 +93,10 @@
   "Render article content. Use article-generic specialized for one article on its own page"
   (partial article-generic title-plain nil))
 
-(def article-solo-admin
+(defn article-solo-admin
   "Render article content. Use article-generic specialized for one article on its own page, with
    feed-selector for admin."
-  (partial article-generic title-plain feed-selector))
+  [article-map]
+  (article-generic title-plain
+                   (feed-selector (feed/feed-pairs-for-article (:slug article-map)))
+                   article-map))

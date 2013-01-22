@@ -93,7 +93,8 @@
                                   :tlog.data.account/admin
                                   (merge admin/noscript-warning
                                          {:main (main/article-solo-admin article-map)
-                                          :append {:scripts script/aloha-admin-edit}}))))
+                                          :append {:scripts (str script/aloha-admin-edit
+                                                                 script/feed-selection)}}))))
 
 (def not-found
   (skeleton {:title "404"

@@ -1,4 +1,4 @@
-Handle article feed selection changes
+Reorganize
 Disable all styling buttons on Aloha floating menu, when editing a title
 Put noscript-warning on article pages
 Get strong and emphasis to show up on Aloha floating menu
@@ -9,15 +9,17 @@ Move article
 Consider "N minutes/hours/days/... ago" as addition or replacement for current timestamps
 Decide on home page content and journal URL
 Disable Aloha Save button until there are changes (even better: unless), look into smartContentChange
-Look into Drip
 Use ring-json?
 Docstring style, consider to use Marginalia
 Consider Typed Clojure
 Make sure the slug is valid and free, before PUTing an article
 Validate that the slug exists, before accepting a POST for an article
 Flash updated timestamps after saving an article and/or other feedback
+Note on login form if already logged in
+Consider generic XMLHttpRequest function or relying on JQuery for that
+Look into minimizing tlog.render.html.script/aloha
 
-# Copied from tlog-gae-clj:
+# Mostly copied from tlog-gae-clj:
 
 
 ## Features
@@ -46,11 +48,16 @@ Memchache/memoization
 Minify JS and CSS
 Try to load less JS
 Etags?
+Do not try to remove CSS class empty for every single comment submission
+
+
+## Correctness
+
 Do something about older IEs lacking getElementsByClassName, used in time.js
 Do something about relying on JSON.stringify (http://caniuse.com/json)?
-Do not try to remove CSS class empty for every single comment submission
 Update slugsInUse asynchronously
 Improve defopt macro to not mistake a sole string as body for a docstring
+Avoid error on attempting to insert an article_feed_rel with invalid slug and/or feed
 
 
 ## Comments

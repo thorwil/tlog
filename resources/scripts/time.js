@@ -55,6 +55,4 @@ function updateTimes(){
     updateTimesColl(updatedTimes, 'data-time-updated');
 }
 
-window.onload = function() {
-    updateTimes();
-};
+window.addEventListener('load', function(){updateTimes();}, false);
