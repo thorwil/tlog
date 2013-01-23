@@ -1,7 +1,8 @@
-Reorganize
+Disable feed checkbox until response
+Reconsider option macros
 Disable all styling buttons on Aloha floating menu, when editing a title
 Put noscript-warning on article pages
-Get strong and emphasis to show up on Aloha floating menu
+Get strong and emphasis to show up on Aloha floating menu (https://github.com/alohaeditor/Aloha-Editor/issues/861)
 Journal
 Comments (form, create, edit, delete)
 Delete article
@@ -29,6 +30,8 @@ Tags
 Series
 Asynchronously update blob list
 Asynchronously update admin article list
+Auto-saving articles
+Color coded margin for auto-saving, marking edits and pointing to the marks
 Handle delete/cancel-delete asynchronously
 (Email notifications/subscriptions)
 (Pingbacks)

@@ -9,7 +9,7 @@
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             ;; [ring.middleware.nested-params :refer [wrap-nested-params]]
-            [tlog.dispatch.route :refer [routes]]
+            [tlog.interface.receive :refer [routes]]
             [tlog.data.account :refer [accounts]]))
 
 (def secured-app

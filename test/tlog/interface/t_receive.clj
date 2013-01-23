@@ -1,7 +1,7 @@
-(ns tlog.dispatch.t-route
+(ns tlog.interface.t-receive
   (:require [midje.sweet :refer [fact tabular]]
-            [tlog.dispatch.route :as r]
-            [tlog.dispatch.handle :as h]
+            [tlog.interface.receive :refer [routes]]
+            [tlog.interface.respond :as r]
             [cemerick.friend :as friend]))
 
 (defn with-redef-handler
@@ -10,28 +10,28 @@
   [handler uri]
   (with-redefs-fn {#'friend/wrap-authorize (fn [handler roles] handler)
                    handler identity}
-    (fn [] (r/routes {:request-method :get :uri uri}))))
+    (fn [] (routes {:request-method :get :uri uri}))))
 
 (tabular "Routing calls the right handlers for all static GET cases."
   (fact 
      (with-redef-handler ?handler ?uri) => ?handler-and-params)
      ?handler      ?uri           ?handler-and-params
-     #'h/journal   "/"            {:request-method :get
+     #'r/journal   "/"            {:request-method :get
                                    :uri "/"}
-     #'h/login     "/login"       {:request-method :get
+     #'r/login     "/login"       {:request-method :get
                                    :uri "/login"}
-     #'h/logout    "/logout"      {:session nil
+     #'r/logout    "/logout"      {:session nil
                                    :request-method :get
                                    :uri "/logout"}
-     #'h/admin     "/admin"       {:path-info "/"
+     #'r/admin     "/admin"       {:path-info "/"
                                    :request-method :get
                                    :uri "/admin"}
-     #'h/write     "/admin/write" {:path-info "/write"
+     #'r/write     "/admin/write" {:path-info "/write"
                                    :request-method :get
                                    :uri "/admin/write"}
-     #'h/not-found "/admin/xrtgy" {:path-info "/xrtgy"
+     #'r/not-found "/admin/xrtgy" {:path-info "/xrtgy"
                                     :request-method :get
                                     :uri "/admin/xrtgy"}
-     #'h/not-found "/xrtgy"       {:path-info "/xrtgy"
+     #'r/not-found "/xrtgy"       {:path-info "/xrtgy"
                                    :request-method :get
                                    :uri "/xrtgy"})

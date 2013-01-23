@@ -1,4 +1,4 @@
-(ns tlog.render.html.script
+(ns tlog.render.html.parts.script
   "HTML fragments dealing with JavaScript. To be handed to skeleton as values of keys other than
    :main."
   (:require [hiccup.core :refer [html]]

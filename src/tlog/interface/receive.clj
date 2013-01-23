@@ -1,4 +1,4 @@
-(ns tlog.dispatch.route
+(ns tlog.interface.receive
   "Route requests to handlers (wrapped in middleware), based on URL patterns, methods and
    authorization."
   (:require [net.cgrand.moustache :refer [app]]
@@ -8,7 +8,7 @@
             [ring.middleware.params :refer [wrap-params]]
             [clojure.data.json :as json]
             [tlog.data.resource]
-            [tlog.dispatch.handle :as h]))
+            [tlog.interface.respond :as r]))
 
 
 ;; Utility
@@ -16,8 +16,8 @@
 (defn- decode-json-body
   "Take a ring request. Replace a JSON string in the :body of the request with a deserialization
    (or nil if it's not an input stream and/or not JSON)"
-  [r]
-  (update-in r [:body] #(try (-> % slurp (json/read-str :key-fn keyword))
+  [req]
+  (update-in req [:body] #(try (-> % slurp (json/read-str :key-fn keyword))
                              (catch Exception e nil))))
 
 (defn- wrap-json
@@ -25,9 +25,9 @@
    Request status, if decoding fails"
   [handler]
   (fn [request]
-    (let [r (decode-json-body request)]
-      (if (:body r)
-        (handler r)
+    (let [req (decode-json-body request)]
+      (if (:body req)
+        (handler req)
         {:status 400 ;; Status 400: Bad Request
          :headers {"Content-Type" "text/plain"}
          :body "Failure"}))))
@@ -35,24 +35,24 @@
 
 ;; Routes
 
-;; Remember to update tlog.render.html.script/static-slugs when changing slugs in static
+;; Remember to update tlog.render.html.parts.script/static-slugs when changing slugs in static
 ;; routes like "login".
 
 (def routes
   (app :get [(wrap-resource "/")
              wrap-file-info
-             [] h/journal
-             [[slug tlog.data.resource/slug->resource-or-nil]] (h/resource slug)
-             ["login"] h/login
-             ["logout"] (friend/logout h/logout)
-             ["admin" &] (-> (app [] h/admin
-                                  ["write"] h/write
-                                  [&] h/not-found)
+             [] r/journal
+             [[slug tlog.data.resource/slug->resource-or-nil]] (r/resource slug)
+             ["login"] r/login
+             ["logout"] (friend/logout r/logout)
+             ["admin" &] (-> (app [] r/admin
+                                  ["write"] r/write
+                                  [&] r/not-found)
                              (friend/wrap-authorize [:tlog.data.account/admin]))
-             [&] h/not-found]
-       :put [[slug] (-> h/put-article
+             [&] r/not-found]
+       :put [[slug] (-> r/put-article
                         wrap-json
                         (friend/wrap-authorize [:tlog.data.account/admin]))]
-       :post [[slug] (-> h/update-article*
+       :post [[slug] (-> r/update-article*
                          wrap-json
                          (friend/wrap-authorize [:tlog.data.account/admin]))]))

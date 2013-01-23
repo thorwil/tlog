@@ -1,13 +1,13 @@
-(ns tlog.dispatch.handle
-  "Take requests from routing. Build responses, usually by calling tlog.render.page functions
+(ns tlog.interface.respond
+  "Take requests from routing. Build responses, usually by calling tlog.render.html.assemble functions
    with database query results obtained via tlog.data.*."
   (:require [ring.util.response :refer [response redirect]]
             [net.cgrand.moustache :refer [alter-response]]
-            [tlog.render.page :as p]
+            [tlog.render.html.assemble :as p]
             [tlog.data.article :as article]
             [tlog.data.resource :as resource]
             [tlog.data.feed :as feed]
-            [tlog.render.html.time]))
+            [tlog.render.html.parts.time]))
 
 ;; Utility
 
@@ -90,7 +90,7 @@
     (if updated-timestamp
         {:status 200 ;; = OK
          :headers {"Content-Type" "text/plain"}
-         :body (tlog.render.html.time/time-updated slug updated-timestamp)}
+         :body (tlog.render.html.parts.time/time-updated slug updated-timestamp)}
         {:status 400 ;; = Bad request
          :headers {"Content-Type" "text/plain"}
          :body (format "There doesn't seem to be an article that could be updated, with the slug %s"

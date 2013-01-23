@@ -1,6 +1,6 @@
-(ns tlog.dispatch.t-handle
+(ns tlog.interface.t-respond
   (:require [midje.sweet :refer [fact]]
-            [tlog.dispatch.handle :as h]))
+            [tlog.interface.respond :as r]))
 
 (def session-nobody
   "Relevant part of a request map passed through Friend, if no one is logged in."
@@ -15,7 +15,7 @@
                                        :roles #{:tlog.data.account/admin}}}}}})
 
 (fact "roles-in-resource works with a request map like we get when there no one logged in."
-  (#'h/roles session-nobody) => nil)
+  (#'r/roles session-nobody) => nil)
 
 (fact "roles-in-resource works with a request map like we get when admin is logged in."
-  (#'h/roles session-admin) => #{:tlog.data.account/admin})
+  (#'r/roles session-admin) => #{:tlog.data.account/admin})

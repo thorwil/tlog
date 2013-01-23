@@ -19,14 +19,6 @@ db
   []
   (convert-feeds (k/select feed)))
 
-(defn feed-pairs-for-article
-  "Take an article slug. Return a list of vectors, each consisting of a feed name and either the
-   feed name again (as true value), or nil. Here nil stands for the article not being a member of
-   the feed."
-  [slug]
-  (let [memberships (feed-slugs-for-article slug)]
-    (for [[feed checked] (feed-defaults)] [feed (some #{feed} memberships)])))
-
 (k/defentity article_feed_rel
   ;; (k/pk :article_slug :feed_slug) Doesn't work: Korma does not support composite keys explicitly.
   )
@@ -54,6 +46,14 @@ db
        (k/select article_feed_rel
                  (k/fields :feed_slug)
                  (k/where {:article_slug article-slug}))))
+
+(defn feed-pairs-for-article
+  "Take an article slug. Return a list of vectors, each consisting of a feed name and either the
+   feed name again (as true value), or nil. Here nil stands for the article not being a member of
+   the feed."
+  [slug]
+  (let [memberships (feed-slugs-for-article slug)]
+    (for [[feed checked] (feed-defaults)] [feed (some #{feed} memberships)])))
 
 (defn rel-does-not-exist?
   "Return boolean that is true if there's a row for the given article slug and feed name in the

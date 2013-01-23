@@ -1,9 +1,9 @@
-(ns tlog.render.page
-  "Take data from tlog.dispatch.handle and build HTML responses, using tlog.render.html.*."
+(ns tlog.render.html.assemble
+  "Take data from tlog.interface.receive and build HTML responses, using tlog.render.html.*."
   (:require [tlog.render.html.skeleton :refer [skeleton]]
-            [tlog.render.html.main :as main]
-            [tlog.render.html.admin :as admin]
-            [tlog.render.html.script :as script]))
+            [tlog.render.html.parts.main :as main]
+            [tlog.render.html.parts.admin :as admin]
+            [tlog.render.html.parts.script :as script]))
 
 
 ;; Utility

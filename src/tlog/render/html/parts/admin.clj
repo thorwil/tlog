@@ -1,8 +1,8 @@
-(ns tlog.render.html.admin
+(ns tlog.render.html.parts.admin
   "HTML fragments for admin. To be handed to skeleton as values of keys other than :main."
   (:require [hiccup.core :refer [html]]
             [hiccup.def :refer [defhtml]]
-            [tlog.render.html.option-macros :refer [defopt defopt-fn]]))
+            [tlog.render.html.parts.option-macros :refer [defopt defopt-fn]]))
 
 (defn- map-map-if
   "Take a key, 2 functions and a map. Return a map of the same kind, with one of the functions

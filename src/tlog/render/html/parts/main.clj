@@ -1,10 +1,10 @@
-(ns tlog.render.html.main
+(ns tlog.render.html.parts.main
   "HTML fragments to be handed to skeleton as value of :main."
   (:require [hiccup.core :refer [html]]
             [hiccup.def :refer [defhtml]]
             [tlog.data.feed :as feed]
             [tlog.data.article]
-            [tlog.render.html.time :as time]))
+            [tlog.render.html.parts.time :as time]))
 
 
 ;; Sub-fragments
