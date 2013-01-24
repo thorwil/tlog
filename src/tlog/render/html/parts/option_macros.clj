@@ -1,5 +1,5 @@
 (ns tlog.render.html.parts.option-macros
-  "Macros for building HTML fragments that are to be handed to skeleton, as values of keys other
+  "Macros for building HTML parts that are to be handed to skeleton, as values of keys other
    than :main.")
 
 (defn- valid-or-alt
@@ -27,7 +27,7 @@
     [(with-meta name attr) more]))
 
 (defmacro defopt
-  "Macro for defining static, optional HTML fragments as single-keyword hash-maps, to be passed to
+  "Macro for defining static, optional HTML parts as single-keyword hash-maps, to be passed to
    skeleton.
 
    Take a name, optional doc-string, body and optional keyname. Use name to create a keyname, if
@@ -40,7 +40,7 @@
        {~keyword* ~(first body-and-maybe-keyword)})))
 
 (defmacro defopt-fn
-  "Macro for defining functions that return optional HTML fragments as single-keyword hash-maps, to
+  "Macro for defining functions that return optional HTML parts as single-keyword hash-maps, to
    be passed to skeleton.
 
    Take a name, optional doc-string, argument-list, body and optional keyname. Use name to create a

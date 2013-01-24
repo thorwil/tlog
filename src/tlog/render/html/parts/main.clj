@@ -1,5 +1,5 @@
 (ns tlog.render.html.parts.main
-  "HTML fragments to be handed to skeleton as value of :main."
+  "HTML parts to be handed to skeleton as value of :main."
   (:require [hiccup.core :refer [html]]
             [hiccup.def :refer [defhtml]]
             [tlog.data.feed :as feed]
@@ -7,7 +7,7 @@
             [tlog.render.html.parts.time :as time]))
 
 
-;; Sub-fragments
+;; Sub-parts
 
 (defhtml ^:privte feed-selector-part
   "One checkbox and label pair, to be used per feed via feed-selector."
@@ -35,7 +35,7 @@
   (html [:span {:id (str "title_" slug), :class "admin-editable"} title]))
 
 
-;; Main fragments
+;; Main parts
 
 (def login-form
   "Form for submitting username and password."

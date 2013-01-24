@@ -1,12 +1,12 @@
 (ns tlog.render.html.parts.script
-  "HTML fragments dealing with JavaScript. To be handed to skeleton as values of keys other than
+  "HTML parts dealing with JavaScript. To be handed to skeleton as values of keys other than
    :main."
   (:require [hiccup.core :refer [html]]
             [hiccup.page :refer [include-css]]
             [clojure.data.json :as json]))
 
 (def ^:private static-slugs
-  "Slugs in use for static routes plus fragments used to build CSS IDs."
+  "Slugs in use for static routes plus parts used to build CSS IDs."
   ["logout" "login" "admin" "title_" "content_"])
 
 (def ^:private article-form-js
@@ -76,15 +76,15 @@
    ",custom/tlog_save"})
 
 (def aloha-admin-create
-  "Assemble fragments to set up Aloha editor for creating new articles by the admin."
+  "Assemble parts to set up Aloha editor for creating new articles by the admin."
   (str jquery article-form-js (aloha aloha-ready-admin-editable)))
 
 (def aloha-admin-edit
-  "Assemble fragments to set up Aloha editor for editing articles by the admin."
+  "Assemble parts to set up Aloha editor for editing articles by the admin."
   (str jquery (aloha (merge aloha-ready-admin-editable aloha-save-plugin))))
 
 (def aloha-guest
-  "Assemble fragments to set up Aloha editor for guests."
+  "Assemble parts to set up Aloha editor for guests."
   (str jquery (aloha nil)))
 
 (def client-time-offset

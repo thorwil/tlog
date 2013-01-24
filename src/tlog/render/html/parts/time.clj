@@ -1,5 +1,5 @@
 (ns tlog.render.html.parts.time
-  "HTML fragments for timestamps. Used in tlog.render.html.parts.main."
+  "HTML parts for timestamps. Used in tlog.render.html.parts.main."
   (:require [hiccup.core :refer [html]]
             [hiccup.def :refer [defhtml]]))
 
