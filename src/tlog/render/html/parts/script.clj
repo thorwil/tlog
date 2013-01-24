@@ -6,7 +6,7 @@
             [clojure.data.json :as json]))
 
 (def ^:private static-slugs
-  "Slugs in use for static routes plus parts used to build CSS IDs."
+  "Slugs in use for static routes plus fragments used to build CSS IDs."
   ["logout" "login" "admin" "title_" "content_"])
 
 (def ^:private article-form-js
@@ -30,7 +30,21 @@
      Aloha.settings = {
 	sidebar: {
            disabled: true
-	}
+	},
+        plugins: {
+           format: {
+              editables: {
+                 // no formatting allowed for title
+                 '.title': []
+              }
+           },
+           link: {
+              editables: {
+                 // no links in title
+                 '.title': []
+              }
+           }
+        }
      };
      Aloha.settings.jQuery = window.jQuery;
      Aloha.settings.toolbar = {

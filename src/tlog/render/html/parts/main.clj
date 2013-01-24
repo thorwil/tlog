@@ -34,7 +34,7 @@
   "For an article appearing on its own page: Use a plain text title, as a link would lead to where
    we already are."
   [slug title]
-  (html [:span {:id (str "title_" slug), :class "admin-editable"} title]))
+  (html [:span {:id (str "title_" slug), :class "admin-editable title"} title]))
 
 
 ;; Main parts
