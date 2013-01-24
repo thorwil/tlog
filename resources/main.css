@@ -25,8 +25,12 @@ html > body { /* hide from IE 6 */
    background-color:black;
 }
 
-#noscript-warning {
+.noscript-warning {
    background-color:#ff9;
+   margin-left:-1ex;
+   margin-right:-1ex;
+   padding-left:1ex;
+   padding-right:1ex;
 }
 
 #top ul li {

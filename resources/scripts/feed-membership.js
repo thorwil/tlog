@@ -30,6 +30,7 @@ function armCheckboxes() {
     var checkboxes = document.getElementsByClassName("feed-checkbox");
 
     for (var i = 0; i < checkboxes.length; i ++) {
+	checkboxes[i].disabled = false;
 	checkboxes[i].onclick = function(){
 	    postFeedSelectionChange(
 		// Input in fieldset in header in article with data-slug attribute:

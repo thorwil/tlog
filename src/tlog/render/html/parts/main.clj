@@ -12,7 +12,7 @@
 (defhtml ^:privte feed-selector-part
   "One checkbox and label pair, to be used per feed via feed-selector."
   [[label checked]]
-  [:input.feed-checkbox (merge {:type "checkbox" :name label}
+  [:input.feed-checkbox (merge {:type "checkbox" :name label :disabled "disabled"}
                                (when checked {:checked "checked"}))]
   [:label label])
 
@@ -20,6 +20,8 @@
   "Area for selecting the feeds an article should appear in (checkboxes)."
   [feed-pairs]
   [:fieldset.feed-selectors
+   [:noscript
+    [:div.noscript-warning "Changing feed memberships won't work with JavaScript disabled."]]
    [:legend "Include in the following feeds:"]
    (mapcat feed-selector-part feed-pairs)])
 
@@ -58,7 +60,9 @@
 (def article-form
   "Form for adding articles."
   (html
-   [:h2 "Write Article"]
+   [:h1 "Write Article"]
+   [:noscript
+    [:div.noscript-warning "Writing articles won't work with JavaScript disabled."]]
    [:table.form
     [:tr
      [:td [:label "Title"]]
@@ -77,6 +81,7 @@
    feed-selector is used as optional component, thus may be nil."
   [title-linked-or-plain
    feed-selector
+   noscript-for-admin
    {:keys [slug title created_timestamp updated_timestamp content]}]
   (let [[timestamps css-class-updated?] (time/derive-from-timestamps slug
                                                                      created_timestamp
@@ -86,12 +91,13 @@
       [:h2 (title-linked-or-plain slug title)]
       timestamps
       feed-selector]
+     noscript-for-admin
      [:div {:id (str "content_" slug)
             :class (str "article-body hyphenate admin-editable " css-class-updated?)} content]]))
 
 (def article-solo
   "Render article content. Use article-generic specialized for one article on its own page"
-  (partial article-generic title-plain nil))
+  (partial article-generic title-plain nil nil))
 
 (defn article-solo-admin
   "Render article content. Use article-generic specialized for one article on its own page, with
@@ -99,4 +105,6 @@
   [article-map]
   (article-generic title-plain
                    (feed-selector (feed/feed-pairs-for-article (:slug article-map)))
+                   (html [:noscript [:div.noscript-warning
+                                     "Editing articles won't work with JavaScript disabled."]])
                    article-map))

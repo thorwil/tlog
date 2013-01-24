@@ -79,7 +79,6 @@
   (skeleton (merge {:title "Write"
                     :scripts script/aloha-admin-create
                     :main main/article-form}
-                   admin/noscript-warning
                    (admin/admin-bar :write))))
 
 (defn article
@@ -91,8 +90,7 @@
                                              :scripts script/client-time-offset
                                              :main (main/article-solo article-map)}
                                   :tlog.data.account/admin
-                                  (merge admin/noscript-warning
-                                         {:main (main/article-solo-admin article-map)
+                                  (merge {:main (main/article-solo-admin article-map)
                                           :append {:scripts (str script/aloha-admin-edit
                                                                  script/feed-selection)}}))))
 

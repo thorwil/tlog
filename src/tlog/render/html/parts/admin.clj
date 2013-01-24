@@ -22,9 +22,6 @@
   [[text href]]
   [:span text])
 
-(defopt noscript-warning
-  (html [:noscript [:div#noscript-warning "This won't work with JavaScript disabled ;)"]]))
-
 (defopt-fn admin-bar
   "Take no argument or a key referring to the current page. Render area with links for the logged in
    admin, with the link, that is associated with the key (if any), turned into plain text."

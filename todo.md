@@ -1,8 +1,8 @@
 Reconsider option macros
 Disable all styling buttons on Aloha floating menu, when editing a title
-Put noscript-warning on article pages for admin
 Get strong and emphasis to show up on Aloha floating menu (https://github.com/alohaeditor/Aloha-Editor/issues/861)
 Journal
+Switch between h1 and h2 in article-generic, depending on appearance in journal or solo
 Comments (form, create, edit, delete)
 Delete article
 Move article
