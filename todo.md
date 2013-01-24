@@ -1,7 +1,6 @@
-Disable feed checkbox until response
 Reconsider option macros
 Disable all styling buttons on Aloha floating menu, when editing a title
-Put noscript-warning on article pages
+Put noscript-warning on article pages for admin
 Get strong and emphasis to show up on Aloha floating menu (https://github.com/alohaeditor/Aloha-Editor/issues/861)
 Journal
 Comments (form, create, edit, delete)
@@ -12,13 +11,11 @@ Decide on home page content and journal URL
 Disable Aloha Save button until there are changes (even better: unless), look into smartContentChange
 Use ring-json?
 Docstring style, consider to use Marginalia
-Consider Typed Clojure
 Make sure the slug is valid and free, before PUTing an article
 Validate that the slug exists, before accepting a POST for an article
 Flash updated timestamps after saving an article and/or other feedback
 Note on login form if already logged in
 Consider generic XMLHttpRequest function or relying on JQuery for that
-Look into minimizing tlog.render.html.script/aloha
 
 # Mostly copied from tlog-gae-clj:
 
@@ -48,7 +45,8 @@ Cross-Browser
 ## Optimization
 
 Memchache/memoization
-Minify JS and CSS
+Minify JS and CSS files
+Minify inline JS (tlog.render.html.parts.script/aloha)
 Try to load less JS
 Etags?
 Do not try to remove CSS class empty for every single comment submission
@@ -61,6 +59,7 @@ Do something about relying on JSON.stringify (http://caniuse.com/json)?
 Update slugsInUse asynchronously
 Improve defopt macro to not mistake a sole string as body for a docstring
 Avoid error on attempting to insert an article_feed_rel with invalid slug and/or feed
+Consider Typed Clojure
 
 
 ## Comments

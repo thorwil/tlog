@@ -3,6 +3,9 @@
 /* Send updates on clicking feed selection checkboxes */
 
 function postFeedSelectionChange(slug, feed, checked, checkbox) {
+    // Disable checkbox, POST to server, enable checkbox on response.
+
+    checkbox.disabled = true;
     var body = JSON.stringify({feed: feed,
 			       checked: checked});
     var r = new XMLHttpRequest();
@@ -19,6 +22,7 @@ function postFeedSelectionChange(slug, feed, checked, checkbox) {
 		}
     	    }
     	}
+	checkbox.disabled = false;
     };
 }
 
