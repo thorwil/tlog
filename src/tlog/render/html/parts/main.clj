@@ -108,3 +108,13 @@
                    (html [:noscript [:div.noscript-warning
                                      "Editing articles won't work with JavaScript disabled."]])
                    article-map))
+
+(def article-in-journal
+  "Render article content. Use article-generic specialized for an article appearing among other in
+   the journal."
+  (partial article-generic title-linked nil nil))
+
+
+(defn journal
+  [articles]
+  (map article-in-journal articles))

@@ -1,13 +1,19 @@
 (ns tlog.interface.respond
-  "Take requests from routing. Build responses, usually by calling tlog.render.html.assemble functions
-   with database query results obtained via tlog.data.*."
+  "Take requests from routing. Build responses, usually by calling tlog.render.html.assemble
+   functions with database query results obtained via tlog.data.*."
   (:require [ring.util.response :refer [response redirect]]
             [net.cgrand.moustache :refer [alter-response]]
-            [tlog.render.html.assemble :as p]
+            [tlog.render.html.assemble :as h]
             [tlog.data.article :as article]
             [tlog.data.resource :as resource]
             [tlog.data.feed :as feed]
             [tlog.render.html.parts.time]))
+
+
+;; Configuration
+
+(def articles-per-journal-page 5)
+
 
 ;; Utility
 
@@ -32,7 +38,7 @@
 
 (def ^:private table-ref->page
   "Associate resource table-references with functions for rendering them."
-  {"article" p/article})
+  {"article" h/article})
 
 (defn- roles
   "Extract the value of :roles from a request map (passed through Friend)."
@@ -42,14 +48,30 @@
 
 ;; Handlers
 
+(defn article-range
+  "Take index numbers for a first and last article. Return response with HTML representation of all
+   articles within that range.
+
+   There are no fixed article index numbers. The association happens only for being able to have
+   URI-fragments like 32-28 as a short way to specify a range (continuous selection) of articles.
+   The oldest article has index 1, so that adding articles will not alter the mapping. As long as no
+   deletions happen, a given range will always contain the same articles."
+  [from to]
+  (let [offset (- (article/a-count) from)
+        ;; from must be greater than to, as long as no logic for reverse sorting is implemented:
+        limit (inc (- from to))]
+    (article/range offset limit)))
+
 (defn journal
   [r]
-  (-> p/journal
+  (-> (let [a-count (article/a-count)]
+        (article-range a-count (- a-count articles-per-journal-page)))
+      h/journal
       response))
 
 (defn login
   [r]
-  (-> p/login
+  (-> h/login
       response))
 
 (defn logout
@@ -58,12 +80,12 @@
 
 (defn admin
   [r]
-  (-> p/admin
+  (-> h/admin
       response))
 
 (defn write
   [r]
-  (-> p/write
+  (-> h/write
       response))
 
 (defn put-article
@@ -127,7 +149,7 @@
     (fn [request] (response (page (roles request) item)))))
 
 (def not-found
-  (-> p/not-found
+  (-> h/not-found
       response
       constantly
       (alter-response #(assoc % :status 404))))

@@ -41,10 +41,15 @@ db
   "List of all article slugs"
   (map :slug (k/select article (k/fields :slug))))
 
-(defn article-range
+(defn range
   "Take: - offset into the list of article resources sorted by creation time.
          - limit to number of results.
    Return matching vector of merged resource and article maps."
   [offset limit]
   (let [rs (resource/article-range offset limit)]
     (map resource/resolve rs)))
+
+(defn a-count
+  "Return number of stored articles."
+  []
+  (-> (k/select article (k/aggregate (count :*) :cnt)) first :cnt))

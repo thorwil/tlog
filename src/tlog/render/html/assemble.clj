@@ -63,9 +63,10 @@
 
 ;; Pages
 
-(def journal
+(defn journal
+  [articles]
   (skeleton {:title "Journal"
-             :main "Journal"}))
+             :main (main/journal articles)}))
 
 (def login
   (skeleton {:title "Login"
