@@ -40,3 +40,11 @@ db
 (def slugs
   "List of all article slugs"
   (map :slug (k/select article (k/fields :slug))))
+
+(defn article-range
+  "Take: - offset into the list of article resources sorted by creation time.
+         - limit to number of results.
+   Return matching vector of merged resource and article maps."
+  [offset limit]
+  (let [rs (resource/article-range offset limit)]
+    (map resource/resolve rs)))

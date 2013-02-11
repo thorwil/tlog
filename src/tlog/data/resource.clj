@@ -45,6 +45,16 @@ db
         (first (k/select (:table_reference rsc)
                          (k/where {:slug (:slug rsc)})))))
 
+(defn article-range
+  "Take: - offset into the list of article resources sorted by creation time.
+         - limit to number of results.
+   Return matching vector of article resource maps."
+  [offset limit]
+  (k/select resource
+            (k/where {:table_reference "article"})
+            (k/order :created_timestamp :DESC)
+            (k/offset offset)
+            (k/limit limit)))
 
 ;; For testing
 
