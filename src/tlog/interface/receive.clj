@@ -7,8 +7,9 @@
             [ring.middleware.file-info :refer [wrap-file-info]]
             [ring.middleware.params :refer [wrap-params]]
             [clojure.data.json :as json]
-            [tlog.data.resource]
-            [tlog.interface.respond :as r]))
+            [tlog.interface.respond :as r]
+            [tlog.interface.validate :as v]
+            [tlog.data.resource]))
 
 
 ;; Utility
@@ -41,8 +42,9 @@
 (def routes
   (app :get [(wrap-resource "/")
              wrap-file-info
-             [] r/journal
+             [] r/journal-default
              [[slug tlog.data.resource/slug->resource-or-nil]] (r/resource slug)
+             [[from-to v/dash-separated-integer-pair]] (r/journal from-to)
              ["login"] r/login
              ["logout"] (friend/logout r/logout)
              ["admin" &] (-> (app [] r/admin

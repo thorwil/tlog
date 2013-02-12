@@ -15,23 +15,23 @@
 (tabular "Routing calls the right handlers for all static GET cases."
   (fact 
      (with-redef-handler ?handler ?uri) => ?handler-and-params)
-     ?handler      ?uri           ?handler-and-params
-     #'r/journal   "/"            {:request-method :get
-                                   :uri "/"}
-     #'r/login     "/login"       {:request-method :get
-                                   :uri "/login"}
-     #'r/logout    "/logout"      {:session nil
-                                   :request-method :get
-                                   :uri "/logout"}
-     #'r/admin     "/admin"       {:path-info "/"
-                                   :request-method :get
-                                   :uri "/admin"}
-     #'r/write     "/admin/write" {:path-info "/write"
-                                   :request-method :get
-                                   :uri "/admin/write"}
-     #'r/not-found "/admin/xrtgy" {:path-info "/xrtgy"
-                                    :request-method :get
-                                    :uri "/admin/xrtgy"}
-     #'r/not-found "/xrtgy"       {:path-info "/xrtgy"
-                                   :request-method :get
-                                   :uri "/xrtgy"})
+     ?handler            ?uri           ?handler-and-params
+     #'r/journal-default "/"            {:request-method :get
+                                         :uri "/"}
+     #'r/login           "/login"       {:request-method :get
+                                         :uri "/login"}
+     #'r/logout          "/logout"      {:session nil
+                                         :request-method :get
+                                         :uri "/logout"}
+     #'r/admin           "/admin"       {:path-info "/"
+                                         :request-method :get
+                                         :uri "/admin"}
+     #'r/write           "/admin/write" {:path-info "/write"
+                                         :request-method :get
+                                         :uri "/admin/write"}
+     #'r/not-found       "/admin/xrtgy" {:path-info "/xrtgy"
+                                         :request-method :get
+                                         :uri "/admin/xrtgy"}
+     #'r/not-found       "/xrtgy"       {:path-info "/xrtgy"
+                                         :request-method :get
+                                         :uri "/xrtgy"})

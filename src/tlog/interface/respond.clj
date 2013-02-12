@@ -62,12 +62,22 @@
         limit (inc (- from to))]
     (article/range offset limit)))
 
-(defn journal
+(defn journal-default
+  "Take a request. Return a response with a page with the default-n last articles."
   [r]
   (-> (let [a-count (article/a-count)]
         (article-range a-count (- a-count articles-per-journal-page)))
       h/journal
       response))
+
+(defn journal
+  "Take a vector of 2 index numbers. Return a function that will take a request and return a
+   response with a page of articles matching the range specified by the 2 index numbers."
+  [[from to]]
+  (-> (article-range from to)
+      h/journal
+      response
+      constantly))
 
 (defn login
   [r]

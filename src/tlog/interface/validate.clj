@@ -7,7 +7,7 @@
 
 ;; Template for validators
 
-(defn valid
+(defn- valid
   "Take a predicate. Return a function that returns its single argument, if the predicate on the
    argument is true, otherwise nil."
   [pred]
@@ -16,27 +16,27 @@
 
 ;; Validators
 
-(defn ->int
+(defn- ->int
   "Validate/convert argument to integer"
   [s]
   (try (Integer. s)
        (catch Exception e nil)))
 
-(def >zero
+(def ^:private >zero
   "Validate integer being > 0."
   (valid #(> % 0)))
 
-(defn int-gt-zero
+(defn- int-gt-zero
   [s]
   (some-> s ->int >zero))
 
-(defn ->pair
+(defn- ->pair
   "Validate string consisting of 2 parts with '-' in the middle."
   [s]
   (when (re-matches #"[^-]+-[^-]+" s)
     (split s #"-")))
 
-(defn int-gt-zero-pair
+(defn dash-separated-integer-pair
   "Validate string consisting of 2 parts with '-' in the middle, the 2 parts converting to integers
    > 0."
   [s]
