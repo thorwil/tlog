@@ -3,7 +3,7 @@
   :url "https://github.com/thorwil/tlog"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.4.0"]
+  :dependencies [[org.clojure/clojure "1.5.0-RC15"]
 
                  ;; Not needed when using "lein immutant run", but for "lein midje":
                  [org.immutant/immutant "0.8.0" :exclusions [org.clojure/java.jdbc]]
@@ -25,7 +25,7 @@
 ;; [net.cgrand/moustache "1.1.0"] would like [ring/ring-core "1.2.0-20120922.214238-3"],
 ;;   but I prefer to stay with [ring/ring-core "1.1.6"].
 ;; [net.cgrand/moustache "1.1.0"] would like [org.clojure/clojure "1.5.0-beta1"],
-;;   but I prefer to stay with [org.clojure/clojure "1.4.0"].
+;;   but I prefer [org.clojure/clojure "1.5.0-RC15"].
 ;; [midje "1.4.0"] would bring in [org.clojure/core.incubator "0.1.0"],
 ;;   but [com.cemerick/friend "0.1.3"] asks for [org.clojure/core.incubator "0.1.1"]
 ;;   and shall have it.
