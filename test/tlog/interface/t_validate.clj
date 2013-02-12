@@ -31,7 +31,7 @@
                   "a-"   nil
                   "a-b"  ["a" "b"]
                   "a-b-" nil
-                  "1-2"  [1 2])
+                  "1-2"  ["1" "2"])
 
 (tabular "int-gt-zero-pair validates strings that can be split into 2 parts before and after '-',
           the parts convertible to integers > 0."
@@ -43,6 +43,6 @@
                             "a-b-"  nil
                             "a-1"   nil
                             "1-a"   nil
-                            "1-2"   [1 2] ;; midje run claims: Actual: ["1" "2"]
+                            "1-2"   [1 2]
                             "1.1-1" nil
                             "1-1.1" nil)
