@@ -114,7 +114,6 @@
    the journal."
   (partial article-generic title-linked nil nil))
 
-
-(defn journal
+(defhtml journal
   [articles]
-  (map article-in-journal articles))
+  [:ul#journal (map #(conj [:li] (article-in-journal %)) articles)])
