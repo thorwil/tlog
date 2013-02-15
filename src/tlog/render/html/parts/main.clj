@@ -4,7 +4,8 @@
             [hiccup.def :refer [defhtml]]
             [tlog.data.feed :as feed]
             [tlog.data.article]
-            [tlog.render.html.parts.time :as time]))
+            [tlog.render.html.parts.time :as time]
+            [tlog.render.html.parts.pagination :as p]))
 
 
 ;; Sub-parts
@@ -115,5 +116,9 @@
   (partial article-generic title-linked nil nil))
 
 (defhtml journal
-  [articles]
-  [:ul#journal (map #(conj [:li] (article-in-journal %)) articles)])
+  "Take a seq of article maps, index numbers of articles appearing on the page due to pagination,
+   the maximum number of articles that appear on a page and the total number of articles stored.
+   Return inner HTML for a journal page."
+  [articles from-to per-page total]
+  [:ul#journal (map #(conj [:li] (article-in-journal %)) articles)]
+  (p/when-page-navigation from-to per-page total))

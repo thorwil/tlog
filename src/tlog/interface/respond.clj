@@ -3,16 +3,12 @@
    functions with database query results obtained via tlog.data.*."
   (:require [ring.util.response :refer [response redirect]]
             [net.cgrand.moustache :refer [alter-response]]
+            [tlog.interface.configuration :refer [articles-per-journal-page]]
             [tlog.render.html.assemble :as h]
             [tlog.data.article :as article]
             [tlog.data.resource :as resource]
             [tlog.data.feed :as feed]
             [tlog.render.html.parts.time]))
-
-
-;; Configuration
-
-(def articles-per-journal-page 5)
 
 
 ;; Utility
@@ -45,37 +41,39 @@
   [r]
   (-> r :session :cemerick.friend/identity :authentications vals first :roles))
 
-
-;; Handlers
-
 (defn article-range
-  "Take index numbers for a first and last article. Return response with HTML representation of all
-   articles within that range.
-
-   There are no fixed article index numbers. The association happens only for being able to have
-   URI-fragments like 32-28 as a short way to specify a range (continuous selection) of articles.
-   The oldest article has index 1, so that adding articles will not alter the mapping. As long as no
-   deletions happen, a given range will always contain the same articles."
+  "Take index numbers for a first and last article. Return seq of maps of all articles within that
+   range. There are no fixed article index numbers. The association happens only for being able to
+   have URI-fragments like 32-28 as a short way to specify a range (continuous selection) of
+   articles. The oldest article has index 1, so that adding articles will not alter the mapping. As
+   long as no deletions happen, a given range will always contain the same articles."
   [from to]
   (let [offset (- (article/a-count) from)
         ;; from must be greater than to, as long as no logic for reverse sorting is implemented:
         limit (inc (- from to))]
     (article/range offset limit)))
 
+
+;; Handlers
+
 (defn journal-default
   "Take a request. Return a response with a page with the default-n last articles."
   [r]
-  (-> (let [a-count (article/a-count)]
-        (article-range a-count (- a-count articles-per-journal-page)))
-      h/journal
-      response))
+  (let [from (article/a-count) ;; from is also total
+        to (- from articles-per-journal-page)]
+    (response (h/journal (article-range from to)
+                         [from to]
+                         articles-per-journal-page
+                         from))))
 
 (defn journal
   "Take a vector of 2 index numbers. Return a function that will take a request and return a
    response with a page of articles matching the range specified by the 2 index numbers."
   [[from to]]
-  (-> (article-range from to)
-      h/journal
+  (-> (h/journal (article-range from to)
+                 [from to]
+                 articles-per-journal-page
+                 (article/a-count))
       response
       constantly))
 

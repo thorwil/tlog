@@ -1,6 +1,5 @@
 # Pages and entities
 
-Pagination
 Add static area to journal(?)
 Switch between h1 and h2 in article-generic, depending on appearance in journal or solo
 Comments (form, create, edit, delete)
@@ -39,6 +38,7 @@ Pingbacks
 Blog-wide search
 Look into offering older articles via the feed
 Consider "N minutes/hours/days/... ago" as addition or replacement for current timestamps
+Handle older-newer sorting of articles
 
 
 ## Testing

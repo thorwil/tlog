@@ -64,9 +64,12 @@
 ;; Pages
 
 (defn journal
-  [articles]
+  "Take a seq of article maps, index numbers of articles appearing on the page due to pagination,
+   the maximum number of articles that appear on a page and the total number of articles stored.
+   Return complete HTML for a journal page."
+  [articles from-to per-page total]
   (skeleton {:title "Journal"
-             :main (main/journal articles)}))
+             :main (main/journal articles from-to per-page total)}))
 
 (def login
   (skeleton {:title "Login"
