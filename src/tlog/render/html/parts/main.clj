@@ -95,15 +95,21 @@
      [:div {:id (str "content_" slug)
             :class (str "article-body hyphenate admin-editable " css-class-updated?)} content]]))
 
+(defhtml ^:private article-generic-solo
+  "Put navigation in front of article-generic."
+  [& more]
+  (navigation/main-pages)
+  (apply article-generic more))
+
 (def article-solo
   "Render article content. Use article-generic specialized for one article on its own page"
-  (partial article-generic title-plain nil nil))
+  (partial article-generic-solo title-plain nil nil))
 
 (defn article-solo-admin
   "Render article content. Use article-generic specialized for one article on its own page, with
    feed-selector for admin."
   [article-map]
-  (article-generic title-plain
+  (article-generic-solo title-plain
                    (feed-selector (feed/feed-pairs-for-article (:slug article-map)))
                    (html [:noscript [:div.noscript-warning
                                      "Editing articles won't work with JavaScript disabled."]])
