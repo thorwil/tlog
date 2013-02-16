@@ -20,11 +20,26 @@ html > body { /* hide from IE 6 */
 
 /* 1em now equals 20px */
 
-#top {
+#admin-bar {
    text-align:left; /* Centering content for IE 6, reset. */
    background-color:black;
 }
-
+#admin-bar ul li {
+   display:inline;
+   margin-left:1em;
+}
+nav {
+   font-weight:900;
+   margin-bottom:1.5em;
+}
+nav#pages {
+   border-top:0.05em solid #000;
+   padding-top:1.5em;
+   color:#999;
+}
+nav#pages * {
+   margin-right:1em;
+}
 .noscript-warning {
    background-color:#ff9;
    margin-left:-1ex;
@@ -32,12 +47,6 @@ html > body { /* hide from IE 6 */
    padding-left:1ex;
    padding-right:1ex;
 }
-
-#top ul li {
-   display:inline;
-   margin-left:1em;
-}
-
 #main {
    text-align:left; /* Centering content for IE 6, reset. */
    margin:0px auto; /* Centering content in sane browsers */
@@ -52,10 +61,7 @@ html > body { /* hide from IE 6 */
          rgba(255,255,255,40),
             rgba(255,255,255,0));
 }
-nav {
-   font-weight:900;
-   margin-bottom:1.5em;
-}
+
 article {
    border-top:0.05em solid;
    margin-top:-0.05em;
@@ -63,14 +69,6 @@ article {
 }
 article header {
    margin-bottom:1.5em;
-}
-nav#pages {
-   border-top:0.05em solid #000;
-   padding-top:1.5em;
-   color:#999;
-}
-nav#pages * {
-   margin-right:1em;
 }
 .times { /* also note "div#comments div.times" */
    float:left;

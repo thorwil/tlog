@@ -5,7 +5,8 @@
             [tlog.data.feed :as feed]
             [tlog.data.article]
             [tlog.render.html.parts.time :as time]
-            [tlog.render.html.parts.pagination :as p]))
+            [tlog.render.html.parts.pagination :as p]
+            [tlog.render.html.parts.navigation :as navigation]))
 
 
 ;; Sub-parts
@@ -43,7 +44,6 @@
 (def login-form
   "Form for submitting username and password."
   (html
-   [:h2 "Login"]
    [:form {:action "/login" :method "POST"}
     [:table
      [:tr
@@ -120,5 +120,6 @@
    the maximum number of articles that appear on a page and the total number of articles stored.
    Return inner HTML for a journal page."
   [articles from-to per-page total]
+  (navigation/main-pages :journal)
   [:ul#journal (map #(conj [:li] (article-in-journal %)) articles)]
   (p/when-page-navigation from-to per-page total))

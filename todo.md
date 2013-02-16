@@ -1,7 +1,5 @@
 # Pages and entities
 
-Add static area to journal(?)
-Switch between h1 and h2 in article-generic, depending on appearance in journal or solo
 Comments (form, create, edit, delete)
 Delete article
 Move article

@@ -1,8 +1,9 @@
 (ns tlog.render.html.assemble
   "Take data from tlog.interface.receive and build HTML responses, using tlog.render.html.*."
-  (:require [tlog.render.html.skeleton :refer [skeleton]]
+  (:require [tlog.render.configuration :refer [title-main]]
+            [tlog.render.html.skeleton :refer [skeleton]]
             [tlog.render.html.parts.main :as main]
-            [tlog.render.html.parts.admin :as admin]
+            [tlog.render.html.parts.navigation :as navigation]
             [tlog.render.html.parts.script :as script]))
 
 
@@ -69,6 +70,7 @@
    Return complete HTML for a journal page."
   [articles from-to per-page total]
   (skeleton {:title "Journal"
+             :headline title-main
              :main (main/journal articles from-to per-page total)}))
 
 (def login
@@ -76,14 +78,15 @@
              :main main/login-form}))
 
 (def admin
-  (skeleton {:title "Admin"
-             :main "Admin"}))
+  (skeleton (merge {:title "Admin"
+                    :main "Admin"}
+                   (navigation/admin-bar :list))))
 
 (def write
   (skeleton (merge {:title "Write"
                     :scripts script/aloha-admin-create
                     :main main/article-form}
-                   (admin/admin-bar :write))))
+                   (navigation/admin-bar :write))))
 
 (defn article
   "Take roles (for now, can only be nil or #{:tlog.data.account/admin}) and an article map. Return a
@@ -91,6 +94,7 @@
   [roles article-map]
   (skeleton (select-by-role-merge roles
                                   :everyone {:title (:title article-map)
+                                             :headline title-main
                                              :scripts script/client-time-offset
                                              :main (main/article-solo article-map)}
                                   :tlog.data.account/admin
