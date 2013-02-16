@@ -61,7 +61,6 @@
 (def article-form
   "Form for adding articles."
   (html
-   [:h1 "Write Article"]
    [:noscript
     [:div.noscript-warning "Writing articles won't work with JavaScript disabled."]]
    [:table.form

@@ -83,7 +83,7 @@
                    (navigation/admin-bar :list))))
 
 (def write
-  (skeleton (merge {:title "Write"
+  (skeleton (merge {:title "Write Article"
                     :scripts script/aloha-admin-create
                     :main main/article-form}
                    (navigation/admin-bar :write))))
