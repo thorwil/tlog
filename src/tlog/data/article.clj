@@ -47,7 +47,7 @@ db
    Return matching vector of merged resource and article maps."
   [offset limit]
   (let [rs (resource/article-range offset limit)]
-    (map resource/resolve rs)))
+    (map resource/resolve-table-reference rs)))
 
 (defn a-count
   "Return number of stored articles."

@@ -270,8 +270,7 @@ fieldset {
    -------- */
 
 #comments > div { /* Black line on the left of the comment block (without headline): */
-   border-left:0.05em solid #999; /* same for ".comment .comment" */
-   padding-left:1em;
+   /* border-left:0.05em solid #999; */
 }
 #comments > div.empty {;
    border-left:none;
@@ -282,46 +281,49 @@ fieldset {
 }
 #comments > div > div:nth-last-child(2) div {
    /* Make sure gap between last 2nd level comment field and last first level comment field is one line */
-   margin-bottom:-0.05em;
+   /* margin-bottom:-0.05em; */
+}
+.thread {
+  padding-left:1em;
+}
+.thread .thread {
+  border-left:0.05em solid #999;
 }
 
-/* Ugly, but how else to get the margin notes to line up? Odd values determined by testing. */
+/* Ugly, but how else to get the margin notes to line up? */
 #comments .times {
    margin-top:0;
-   margin-left:-14.05em;
 }
-.branch .branch .times {
-   margin-left:-15.1em!important;
+.thread .thread .thread .times {
+   margin-left:-15em;
 }
-.branch .branch .branch .times {
-   margin-left:-16.2em!important;
+.thread .thread .thread .thread .times {
+   margin-left:-16em;
 }
-.branch .branch .branch .branch .times {
-   margin-left:-17.25em!important;
+.thread .thread .thread .thread .thread .times {
+   margin-left:-17em;
 }
-.branch .branch .branch .branch .branch .times {
-   margin-left:-18.3em!important;
+.thread .thread .thread .thread .thread .thread .times {
+   margin-left:-18em
 }
-.branch .branch .branch .branch .branch .branch .times {
-   margin-left:-19.4em!important;
+.thread .thread .thread .thread .thread .thread .thread .times {
+   margin-left:-19em;
 }
-.branch .branch .branch .branch .branch .branch .branch .times {
-   margin-left:-20.45em!important;
+.thread .thread .thread .thread .thread .thread .thread .thread .times {
+   margin-left:-20em;
 }
-.branch .branch .branch .branch .branch .branch .branch .branch .times {
-   margin-left:-21.5em!important;
+.thread .thread .thread .thread .thread .thread .thread .thread .thread .times {
+   margin-left:-21em;
 }
-.branch .branch .branch .branch .branch .branch .branch .branch .branch .times {
-   margin-left:-22.55em!important;
-}
-.branch .branch .branch .branch .branch .branch .branch .branch .branch .branch .times {
-   margin-left:-23.6em!important;
+.thread .thread .thread .thread .thread .thread .thread .thread .thread .thread .times {
+   margin-left:-22em;
 }
 
 .comment {
-   margin-top:1.5em;
+   padding-top:1.5em;
+   padding-bottom:1.5em;
 }
-.branch + .branch > .comment {
+.thread + .thread > .comment {
    margin-top:0;
 }
 #comments > div > div {
@@ -340,26 +342,21 @@ fieldset {
    padding-right:0.1em;
    margin-bottom:-0.09em!important; /* Counter-act drift */
 }
-.branch .editable {
+.thread .editable {
    margin-bottom:1.5em;
 }
 .expanded .editable {
    margin-bottom:0;
 }
-.branch .branch .editable {
+.thread .thread .editable {
    margin-bottom:0!important;
 }
-.branch + .comment-form > .editable {
+.thread + .comment-form > .editable {
    margin-top:0!important;
 }
 #comments .internal-label {
    font-style:italic;
    color:#48c;
-}
-.comment .comment {
-   padding-bottom:1.5em;
-   padding-left:1em;
-   border-left:0.05em solid #999;
 }
 #comments table {
    margin-top:-0.1em; /* Gets the borders of the editable and the table cell in alignment. */
@@ -430,16 +427,16 @@ article .to-be-replied-to,
 }
 #comments > div > div:last-child {
    /* Get bottom comment form out of the div to not clash with the border-left */
-   float:left;
+   /* float:left; */
    margin:0;
    margin-left:-1em;
-   padding-bottom:1.5em;
+   /* padding-bottom:1.5em; */
    width:40em;
-}
+} 
 #comments .to-be-deleted, #comments .delete-queued {
    text-decoration:line-through;
 }
-#comments .anchored > p > a, a:target {
+.anchored {
    /*font-weight:900;*/
    background-color:#b30;
    color:#fff;

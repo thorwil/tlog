@@ -4,9 +4,10 @@
   (:require [ring.util.response :refer [response redirect]]
             [net.cgrand.moustache :refer [alter-response]]
             [tlog.interface.configuration :refer [articles-per-journal-page]]
-            [tlog.render.html.assemble :as h]
+            [tlog.render.html.assemble :as a]
             [tlog.data.article :as article]
             [tlog.data.resource :as resource]
+            [tlog.data.comment :as comment]
             [tlog.data.feed :as feed]
             [tlog.render.html.parts.time]))
 
@@ -31,10 +32,6 @@
 (defn- cleanup-html-string
   [s]
   (-> s remove-empty-<p> remove-empty-style remove-<br>-cleanme))
-
-(def ^:private table-ref->page
-  "Associate resource table-references with functions for rendering them."
-  {"article" h/article})
 
 (defn- roles
   "Extract the value of :roles from a request map (passed through Friend)."
@@ -61,7 +58,7 @@
   [r]
   (let [from (article/a-count) ;; from is also total
         to (- from articles-per-journal-page)]
-    (response (h/journal (article-range from to)
+    (response (a/journal (article-range from to)
                          [from to]
                          articles-per-journal-page
                          from))))
@@ -70,7 +67,7 @@
   "Take a vector of 2 index numbers. Return a function that will take a request and return a
    response with a page of articles matching the range specified by the 2 index numbers."
   [[from to]]
-  (-> (h/journal (article-range from to)
+  (-> (a/journal (article-range from to)
                  [from to]
                  articles-per-journal-page
                  (article/a-count))
@@ -79,7 +76,7 @@
 
 (defn login
   [r]
-  (-> h/login
+  (-> a/login
       response))
 
 (defn logout
@@ -88,12 +85,12 @@
 
 (defn admin
   [r]
-  (-> h/admin
+  (-> a/admin
       response))
 
 (defn write
   [r]
-  (-> h/write
+  (-> a/write
       response))
 
 (defn put-article
@@ -148,16 +145,20 @@
       (update-article-title+content slug title content)
       (update-article-feed-rel slug feed checked))))
 
+(defn article
+  "Called from resource, if :table_reference is 'article'."
+  [roles article-map]
+  (a/article roles article-map (comment/nested-comments (:slug article-map))))
+
 (defn resource
-  "Take a resource map. Return a rendition of the combined resource and referenced table (for now
-   only article) map."
-  [rsc]
-  (let [item (resource/resolve rsc)
-        page (-> rsc :table_reference table-ref->page)]
-    (fn [request] (response (page (roles request) item)))))
+  "Take a resource map, consisting of the merged query results from the resource table and the
+   referenced table (for now always the article table). Return a rendition of the map."
+  [resource-map]
+  (let [handler (-> resource-map :table_reference {"article" article})]
+    (fn [request] (response (handler (roles request) resource-map)))))
 
 (def not-found
-  (-> h/not-found
+  (-> a/not-found
       response
       constantly
       (alter-response #(assoc % :status 404))))

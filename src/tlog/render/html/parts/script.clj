@@ -19,7 +19,7 @@
 
 (defn- aloha
   "JS to link and configure Aloha editor."
-  [{:keys [aloha-save-plugin aloha-admin-editables]}] 
+  [{:keys [aloha-save-plugin aloha-ready]}] 
   (html
    (include-css "/scripts/aloha/css/aloha.css")
    [:script
@@ -72,17 +72,22 @@
                                        common/paste,
                                        common/undo"
                                       aloha-save-plugin)}]
-    aloha-admin-editables
+    aloha-ready
     ))
 
 (def ^:private jquery
   "Use JQuery 1.7.2 from Google Hosted Libraries."
   "<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></script>")
 
-(def ^:private aloha-ready-admin-editable
+(def ^:private aloha-ready-admin
   "Fragment to make DOM elements with the .admin-editable CSS class editable via Aloha."
-  {:aloha-admin-editables
+  {:aloha-ready
    (html [:script "Aloha.ready( function() {Aloha.jQuery('.admin-editable').aloha();});"])})
+
+(def ^:private aloha-ready-guest
+  "Fragment to make DOM elements with the .editable CSS class editable via Aloha."
+  {:aloha-ready
+   (html [:script "Aloha.ready( function() {Aloha.jQuery('.editable').aloha();});"])})
 
 (def ^:private aloha-save-plugin
   "Fragments to load the tlog_save Aloha plugin for a Save button on the floating menu."
@@ -91,15 +96,15 @@
 
 (def aloha-admin-create
   "Assemble parts to set up Aloha editor for creating new articles by the admin."
-  (str jquery article-form-js (aloha aloha-ready-admin-editable)))
+  (str jquery article-form-js (aloha aloha-ready-admin)))
 
 (def aloha-admin-edit
   "Assemble parts to set up Aloha editor for editing articles by the admin."
-  (str jquery (aloha (merge aloha-ready-admin-editable aloha-save-plugin))))
+  (str jquery (aloha (merge aloha-ready-admin aloha-save-plugin))))
 
 (def aloha-guest
-  "Assemble parts to set up Aloha editor for guests."
-  (str jquery (aloha nil)))
+  "Assemble parts to set up Aloha editor to let guests leave comments."
+  (str jquery (aloha aloha-ready-guest)))
 
 (def client-time-offset
   "Link time.js script for converting UTC to the client's local time."
@@ -109,3 +114,7 @@
 (def feed-selection
   "Link JS for posting changes of which feeds an article belongs to."
   (html [:script {:src "/scripts/feed-membership.js"}]))
+
+(def comment
+  "Link JS for commenting."
+  (html [:script {:src "/scripts/comment.js"}]))

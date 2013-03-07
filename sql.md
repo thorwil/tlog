@@ -54,6 +54,17 @@ CREATE TABLE article_feed_rel (
    feed_slug text REFERENCES feed(slug),
    PRIMARY KEY (article_slug, feed_slug));
 
+CREATE TABLE comment (
+   -- parent and number or preceding siblings would be enough, but since a number is needed, it can easily be unique across all comments
+   number serial PRIMARY KEY,
+   parent text,
+   created_timestamp timestamp,
+   updated_timestamp timestamp,
+   author text,
+   email text,
+   link text,
+   content text
+);
 
 # For testing article creation
 

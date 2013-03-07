@@ -1,12 +1,9 @@
 (ns tlog.data.resource
   "Storing and retrieving resources."
   (:require [korma.core :as k]
-            [tlog.data.access :refer [db]]))
+            [tlog.data.access :refer [db]]
+            [tlog.data.time :refer [now]]))
 
-(defn- now
-  "Get the current time as java.sql.Timestamp."
-  []
-  (java.sql.Timestamp. (.getTime (java.util.Date.))))
 
 db
 
@@ -32,18 +29,21 @@ db
                     (k/where {:slug slug}))
       now)))
 
-(defn slug->resource-or-nil
-  "Take a slug (string). Return a resource for the slug, or nil if there is none."
-  [slug]
-  (first (k/select resource (k/where {:slug slug}))))
-
-(defn resolve
+(defn resolve-table-reference
   "Take a resource map. Retrieve the entity associated via :table_reference and :slug. Return a
-   combined map."
-  [rsc]
-  (into rsc
-        (first (k/select (:table_reference rsc)
-                         (k/where {:slug (:slug rsc)})))))
+   merged map."
+  [resource-map]
+  (into resource-map
+        (first (k/select (:table_reference resource-map)
+                         (k/where {:slug (:slug resource-map)})))))
+
+(defn slug->resource-or-nil
+  "Take a slug (string). Retrieve the resource for :slug and the entity referenced via
+   :table_reference and :slug . Return nil if there is no resource for the slug."
+  [slug]
+  (-> (k/select resource (k/where {:slug slug}))
+      first
+      resolve-table-reference))
 
 (defn article-range
   "Take: - offset into the list of article resources sorted by creation time.
@@ -55,6 +55,7 @@ db
             (k/order :created_timestamp :DESC)
             (k/offset offset)
             (k/limit limit)))
+
 
 ;; For testing
 

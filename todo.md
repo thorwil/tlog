@@ -1,6 +1,11 @@
+Highlight article on hovering its Reply field
+Consider highlighting entire comment on hovering Reply field
+Try to get rid of the div that may have css-class "empty"
+
 # Pages and entities
 
-Comments (form, create, edit, delete)
+Comments (form, create, edit, delete, editable by admin)
+Add footer
 Delete article
 Move article
 Note on login form if already logged in
@@ -13,7 +18,7 @@ Disable Aloha Save button until there are changes (even better: unless), look in
 Flash updated timestamps after saving an article and/or other feedback
 
 
-## Comments
+# Comments
 
 Try switching box model for better comment section layout (Cause not implemented, yet)
 Do not write "Reply" in comment fields, if JS is disabled (Cause not implemented, yet)
@@ -39,14 +44,14 @@ Consider "N minutes/hours/days/... ago" as addition or replacement for current t
 Handle older-newer sorting of articles
 
 
-## Testing
+# Testing
 
 Validate HTML
 Validate CSS
 Cross-Browser
 
 
-## Optimization
+# Optimization
 
 Memchache/memoization
 Minify JS and CSS files
@@ -63,7 +68,7 @@ Docstring style, consider to use Marginalia
 Consider generic XMLHttpRequest function or relying on JQuery for that
 
 
-## Correctness
+# Correctness
 
 Do something about older IEs lacking getElementsByClassName, used in time.js?
 Do something about relying on JSON.stringify (http://caniuse.com/json)?

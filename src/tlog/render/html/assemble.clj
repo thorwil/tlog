@@ -9,14 +9,6 @@
 
 ;; Utility
 
-(defn- first-or-into
-  "Take a condition and 2 expressions. If the condition is met, return the expressions combined via
-   into. Otherwise return the first expression."
-  [cond a b]
-  (if cond
-    (into a b)
-    a))
-
 (defn- concat-per-key
   "Take a map and a sequence of maps. Return a map with keys from the maps in the sequence, each
    with a value that is all values associated to the key in the input maps concatenated.
@@ -89,16 +81,21 @@
                    (navigation/admin-bar :write))))
 
 (defn article
-  "Take roles (for now, can only be nil or #{:tlog.data.account/admin}) and an article map. Return a
-   HTML page representing the article."
-  [roles article-map]
+  "Take roles (for now, can only be nil or #{:tlog.data.account/admin}) and a sequence with an
+   article map followed by a nested map of comments. Return a HTML page representing the article
+   with comments."
+  [roles article-map comments-map]
   (skeleton (select-by-role-merge roles
                                   :everyone {:title (:title article-map)
                                              :headline title-main
-                                             :scripts script/client-time-offset
-                                             :main (main/article-solo article-map)}
+                                             :scripts (str script/client-time-offset
+                                                           script/aloha-guest
+                                                           script/comment)
+                                             :main (main/article-with-comments article-map
+                                                                               comments-map)}
                                   :tlog.data.account/admin
-                                  (merge {:main (main/article-solo-admin article-map)
+                                  (merge {:main (main/article-with-comments-admin article-map
+                                                                                  comments-map)
                                           :append {:scripts (str script/aloha-admin-edit
                                                                  script/feed-selection)}}))))
 
