@@ -1,470 +1,437 @@
 /* Divisions
-   --------- */
+  --------- */
 
 * {
-   margin:0;
-   padding:0;
+  margin:0;
+  padding:0;
 }
 body {
-   font-family:Lato, "Dejavu Sans", Helvetica, Arial, sans-serif;
-   /* Lato variants:300, 400 (regular), 700, 900. Left out 100 and italics for 700 and 900. */
-   text-align:center; /* Centering content for IE 6, See http://www.bluerobot.com/web/css/center1.html */
-   font-size:100%;
-   line-height:1.5em;
-   word-spacing:0.05em;
+  font-family:Lato, "Dejavu Sans", Helvetica, Arial, sans-serif;
+  /* Lato variants:300, 400 (regular), 700, 900. Left out 100 and italics for 700 and 900. */
+  text-align:center; /* Centering content for IE 6, See http://www.bluerobot.com/web/css/center1.html */
+  font-size:100%;
+  line-height:1.5em;
+  word-spacing:0.05em;
 }
 html > body { /* hide from IE 6 */
-   font-size:16px;
-   background:url('baseline.png');
+  font-size:16px;
+  background:url('baseline.png');
 }
 
 /* 1em now equals 20px */
 
 #admin-bar {
-   text-align:left; /* Centering content for IE 6, reset. */
-   background-color:black;
+  text-align:left; /* Centering content for IE 6, reset. */
+  background-color:black;
 }
 #admin-bar ul li {
-   display:inline;
-   margin-left:1em;
+  display:inline;
+  margin-left:1em;
 }
 nav {
-   font-weight:900;
-   margin-bottom:1.5em;
+  font-weight:900;
+  margin-bottom:1.5em;
 }
 nav#pages {
-   border-top:0.05em solid #000;
-   padding-top:1.5em;
-   color:#999;
+  border-top:0.05em solid #000;
+  padding-top:1.5em;
+  color:#999;
 }
 nav#pages * {
-   margin-right:1em;
+  margin-right:1em;
 }
 .noscript-warning {
-   background-color:#ff9;
-   margin-left:-1ex;
-   margin-right:-1ex;
-   padding-left:1ex;
-   padding-right:1ex;
+  background-color:#ff9;
+  margin-left:-1ex;
+  margin-right:-1ex;
+  padding-left:1ex;
+  padding-right:1ex;
 }
 #main {
-   text-align:left; /* Centering content for IE 6, reset. */
-   margin:0px auto; /* Centering content in sane browsers */
-   max-width:40em;
-   padding:0 4em;
-   background:-moz-linear-gradient(left, rgba(255,255,255,0),
-      rgba(255,255,255,40),
-         rgba(255,255,255,40),
-            rgba(255,255,255,0));
-   background:-webkit-linear-gradient(left, rgba(255,255,255,0),
-      rgba(255,255,255,40),
-         rgba(255,255,255,40),
-            rgba(255,255,255,0));
+  text-align:left; /* Centering content for IE 6, reset. */
+  margin:0px auto; /* Centering content in sane browsers */
+  max-width:40em;
+  padding:0 4em;
+  background:-moz-linear-gradient(left, rgba(255,255,255,0),
+    rgba(255,255,255,40),
+    rgba(255,255,255,40),
+    rgba(255,255,255,0));
+  background:-webkit-linear-gradient(left, rgba(255,255,255,0),
+    rgba(255,255,255,40),
+    rgba(255,255,255,40),
+    rgba(255,255,255,0));
 }
-
 article {
-   border-top:0.05em solid;
-   margin-top:-0.05em;
-   margin-bottom:1.5em;
+  border-top:0.05em solid;
+  margin-top:-0.05em;
+  margin-bottom:1.5em;
 }
 article header {
-   margin-bottom:1.5em;
+  margin-bottom:1.5em;
 }
 .times { /* also note "div#comments div.times" */
-   float:left;
-   margin-left:-13em;
-   width:12em;
-   font-weight:300;
-   text-align:right;
+  float:left;
+  margin-left:-13em;
+  width:12em;
+  font-weight:300;
+  text-align:right;
 }
 .hour-minute {
-   min-width:3em;
-   display:inline-block;
-   text-indent:0; /* undo from p + p */
+  min-width:3em;
+  display:inline-block;
+  text-indent:0; /* undo from p + p */
 }
 .article-meta p {
-   text-indent:0;
+  text-indent:0;
 }
 .not-updated {
-   /* 2 lines minimum to make the article body as high
-      as the Created timestamp to the left of it*/
-   min-height:3em; 
+  /* 2 lines minimum to make the article body as high
+    as the Created timestamp to the left of it*/
+  min-height:3em; 
 }
 .updated {
-   /* 3 lines minimum to make the article body as high
-      as the Created and Updated timestamps to the left of it*/
-   min-height:4.5em;
+  /* 3 lines minimum to make the article body as high
+    as the Created and Updated timestamps to the left of it*/
+  min-height:4.5em;
 }
 footer {
-   margin-top:1.5em;
-   margin-bottom:0.75em;
-   font-weight:300;
+  margin-top:1.5em;
+  margin-bottom:0.75em;
+  font-weight:300;
 }
 
 
 /* Headlines
-   --------- */
+  --------- */
 
 h1 {
-   font-size:150%;
-   font-weight:700;
-   line-height:2em;
+  font-size:150%;
+  font-weight:700;
+  line-height:2em;
 }
 h2 {
-   font-size:125%; /* 20px, room for margin:48px */
-   font-weight:900;
-   margin-top:1.1em;
-   margin-bottom:1.5em;
-   height:1em;
+  font-size:125%; /* 20px, room for margin:48px */
+  font-weight:900;
+  margin-top:1.1em;
+  margin-bottom:1.5em;
+  height:1em;
 }
 h2 span.admin-editable { /* Keep the Aloha-editable element from colapsing, if emptied */
-   display:block;
-   min-height:1em;
+  display:block;
+  min-height:1em;
 }
 h3 {
-   font-size:125%;
-   font-weight:700;
-   margin-top:1.2em;
-   margin-bottom:1.2em;
+  font-size:125%;
+  font-weight:700;
+  margin-top:1.2em;
+  margin-bottom:1.2em;
 }
 h4, h5, h6 {
-   font-size:100%;
-   font-weight:400;
-   margin-top:1.5em;
+  font-size:100%;
+  font-weight:400;
+  margin-top:1.5em;
 }
 
 
 /* Plain text and paragraphs
-   ------------------------- */
+  ------------------------- */
 
 p + p { /* first line indents for all but first paragraphs */
-   text-indent:1.5em;
+  text-indent:1.5em;
 }
 
 
 /* Lists
-   ----- */
+  ----- */
 
 ul {
-   margin-left:1em;
+  margin-left:1em;
 }
 nav ul {
-   margin-left:0;
+  margin-left:0;
 }
 nav ul li {
-   display:inline;
-   margin-right:1em;
+  display:inline;
+  margin-right:1em;
 }
 ul#journal {
-   margin-left:0;
+  margin-left:0;
 }
 ul#journal > li {
-   display:inline;
+  display:inline;
 }
 li {
-   list-style:disc;
+  list-style:disc;
 }
 
 
 /* Item tables
-   ----------- */
+  ----------- */
 
 table#stored-items {
-   border-collapse:collapse;
-   font-weight:300;
-   margin-bottom:1.5em;
+  border-collapse:collapse;
+  font-weight:300;
+  margin-bottom:1.5em;
 }
 table#stored-items td {
-   margin:0;
-   padding-right:1em;
+  margin:0;
+  padding-right:1em;
 }
 #stored-items .view {
-   font-weight:400;
+  font-weight:400;
 }
 
 
 /* Links
-   ----- */
+  ----- */
 
 a {
-   text-decoration:none;
-   color:#b30;
+  text-decoration:none;
+  color:#b30;
 }
 a:hover {
-   color:#d40;
+  color:#d40;
 }
 a:active {
-   color:#a20;
+  color:#a20;
 }
 #admin-bar {
-   color:#666;
-   font-weight:400;
+  color:#666;
+  font-weight:400;
 }
 #admin-bar a {
-   color:#c40;
+  color:#c40;
 }
 a.comment-anchor {
-   font-weight:300;
+  font-weight:300;
 }
 
 
 /* Forms
-   ----- */
+  ----- */
 
 p#slug * {
-   margin-top:1.3em;
+  margin-top:1.3em;
 }
 table.form {
-   border-collapse:collapse;
-   margin-top:-0.2em;
+  border-collapse:collapse;
+  margin-top:-0.2em;
 }
 label {
-   margin-right:1ex;
+  margin-right:1ex;
 }
 input+label {
-   margin-right:1.5em;
+  margin-right:1.5em;
 }
 label:after { /* colon after labels ... */
-   content:":";
+  content:":";
 }
 input+label:after { /* ... but not for labels following inputs */
-   content:"";
+  content:"";
 }
 input {
-   font-size:100%;
-   margin-right:0.5ex!important; /* has to top ext.js CSS */
+  font-size:100%;
+  margin-right:0.5ex!important; /* has to top ext.js CSS */
 }
 input[type='text'] {
-   height:1.4em;
-   border:0.05em solid #999;
+  height:1.4em;
+  border:0.05em solid #999;
 }
 input[type='submit'] {
-   margin-top:1.5em;
-   height:1.7em;
+  margin-top:1.5em;
+  height:1.7em;
 }
 input[type='checkbox'] {
-   margin-right:0.5em!important; /* Has to trump ext-all.css */
+  margin-right:0.5em!important; /* Has to trump ext-all.css */
 }
 input[type='checkbox'] + input[type='checkbox'] {
-   margin-left:1.5em;
+  margin-left:1.5em;
 }
 .warning {
-   background:#fe9;
+  background:#fe9;
 }
 .start-blank { /* Editables that start with no content need a frame and min-height: */
-   margin-top:1.4em;
-   margin-bottom:-0.125em;
-   min-height:1.5em;
-   border:0.05em solid #999;
+  margin-top:1.4em;
+  margin-bottom:-0.125em;
+  min-height:1.5em;
+  border:0.05em solid #999;
 }
 .editable {
-   cursor:text;
-   word-wrap: break-word;
+  cursor:text;
+  word-wrap: break-word;
 }
 fieldset {
-   margin-top:1.5em!important; /* Has to trump ext-all.css */
-   border-style:none;
+  margin-top:1.5em!important; /* Has to trump ext-all.css */
+  border-style:none;
 }
 
 /* Comments
-   -------- */
+  -------- */
 
-#comments > div { /* Black line on the left of the comment block (without headline): */
-   /* border-left:0.05em solid #999; */
-}
-#comments > div.empty {;
-   border-left:none;
-}
-#comments > div.empty div {
-/* Reduce gap between comment section headline and initial lonely comment field to a single line */
-   margin-top:-1.5em;
-}
-#comments > div > div:nth-last-child(2) div {
-   /* Make sure gap between last 2nd level comment field and last first level comment field is one line */
-   /* margin-bottom:-0.05em; */
-}
 .thread {
-  padding-left:1em;
+  margin-bottom:0;
+  padding-bottom:1.5em;
 }
 .thread .thread {
+  padding-left:1em;
   border-left:0.05em solid #999;
 }
 
 /* Ugly, but how else to get the margin notes to line up? */
 #comments .times {
-   margin-top:0;
+  margin-top:0;
+}
+.thread .thread .times {
+  margin-left:-14em;
 }
 .thread .thread .thread .times {
-   margin-left:-15em;
+  margin-left:-15em;
 }
 .thread .thread .thread .thread .times {
-   margin-left:-16em;
+  margin-left:-16em;
 }
 .thread .thread .thread .thread .thread .times {
-   margin-left:-17em;
+  margin-left:-17em
 }
 .thread .thread .thread .thread .thread .thread .times {
-   margin-left:-18em
+  margin-left:-18em;
 }
 .thread .thread .thread .thread .thread .thread .thread .times {
-   margin-left:-19em;
+  margin-left:-19em;
 }
 .thread .thread .thread .thread .thread .thread .thread .thread .times {
-   margin-left:-20em;
+  margin-left:-20em;
 }
 .thread .thread .thread .thread .thread .thread .thread .thread .thread .times {
-   margin-left:-21em;
+  margin-left:-21em;
 }
-.thread .thread .thread .thread .thread .thread .thread .thread .thread .thread .times {
-   margin-left:-22em;
-}
-
 .comment {
-   padding-top:1.5em;
-   padding-bottom:1.5em;
+  padding-top:1.5em;
 }
-.thread + .thread > .comment {
-   margin-top:0;
+#comments > .thread > .thread > .comment { /* Reduce from 2 to 1 empty line above first level comments */
+  padding-top:0;
 }
-#comments > div > div {
-   margin-top:1.5em;
-}
-.comment-form {
-   margin-bottom:-0.1em; /* Counter-act downward drift, likely not quite accurate. */
+.thread + .comment-form { /* Close gap between thread and following comment-form, to have the border-left touch the comment-form rectangle */
+  margin-top:-1.5em;
 }
 .comment-form * {
-   color:#048;
+  color:#048;
 }
 #comments .editable {
-   margin-top:1.5em;
-   border-color:#37b;
-   padding-left:0.1em;
-   padding-right:0.1em;
-   margin-bottom:-0.09em!important; /* Counter-act drift */
+  margin-top:1.5em;
+  border-color:#37b;
+  padding-left:0.1em;
+  padding-right:0.1em;
+  margin-bottom:-0.09em!important; /* Counter-act drift */
 }
 .thread .editable {
-   margin-bottom:1.5em;
+  margin-bottom:1.5em;
 }
 .expanded .editable {
-   margin-bottom:0;
+  margin-bottom:0;
 }
 .thread .thread .editable {
-   margin-bottom:0!important;
-}
-.thread + .comment-form > .editable {
-   margin-top:0!important;
+  margin-bottom:0!important;
 }
 #comments .internal-label {
-   font-style:italic;
-   color:#48c;
+  font-style:italic;
+  color:#48c;
 }
 #comments table {
-   margin-top:-0.1em; /* Gets the borders of the editable and the table cell in alignment. */
-   border-spacing:0; /* Make the table tight: */
-   border-collapse:collapse;
-   width:100%;
+  margin-top:-0.1em; /* Gets the borders of the editable and the table cell in alignment. */
+  border-spacing:0; /* Make the table tight: */
+  border-collapse:collapse;
+  width:100%;
 }
 #comments table input[type='text'] {
-   width:100%;
+  width:100%;
 }
 #comments table input { /* No border on the inputs in the table, as they don't meat cleanly ... */
-   border:none;
+  border:none;
 }
 #comments td +td { /* ... instead borders on their cells. */
-   border-collapse:collapse;
-   border:0.05em solid;
-   width:100%;
+  border-collapse:collapse;
+  border:0.05em solid;
+  width:100%;
 }
 #comments input[type='submit'] {
-   margin-top:1.2em; /* Get Submit button to be on baseline grid, as the comment table refuses to fit. */
-   margin-bottom:0.15em;
-   height:1.5em;
-   width:100%;
-   border:0.05em solid #acf;
-   border-radius:4px;
-   background-color:#def;
-   background:-moz-linear-gradient(center top, #f4faff 25%, #eef4fd 100%);
-   background:-webkit-gradient(linear, left top, left bottom,
-                               color-stop(0.25, #f4faff),
-                               color-stop(1, #eef4fd));
-   box-shadow:0 0.05em 0.05em 0.05em rgba(0,20,80,0.1);
-   text-shadow:0 0.05em #fff;
-   color:#048;
+  margin-top:1.2em; /* Get Submit button to be on baseline grid, as the comment table refuses to fit. */
+  margin-bottom:0.15em;
+  height:1.5em;
+  width:100%;
+  border:0.05em solid #acf;
+  border-radius:4px;
+  background-color:#def;
+  background:-moz-linear-gradient(center top, #f4faff 25%, #eef4fd 100%);
+  background:-webkit-gradient(linear, left top, left bottom,
+                     color-stop(0.25, #f4faff),
+                     color-stop(1, #eef4fd));
+  box-shadow:0 0.05em 0.05em 0.05em rgba(0,20,80,0.1);
+  text-shadow:0 0.05em #fff;
+  color:#048;
 }
 #comments input[type='submit']:hover {
-   background-color:#dffaff;
-   background:-moz-linear-gradient(center top, #f8feff 25%, #eef4fd 100%);
-   background:-webkit-gradient(linear, left top, left bottom,
-                               color-stop(0.25, #f8feff),
-                               color-stop(1, #eef4fd));
+  background-color:#dffaff;
+  background:-moz-linear-gradient(center top, #f8feff 25%, #eef4fd 100%);
+  background:-webkit-gradient(linear, left top, left bottom,
+                     color-stop(0.25, #f8feff),
+                     color-stop(1, #eef4fd));
 }
 #comments input[type='submit']:active {
-   background-color:#dbecfd;
-   background:-moz-linear-gradient(center top, #f2f8fd 25%, #ecf2fb 100%);
-   background:-webkit-gradient(linear, left top, left bottom,
-                               color-stop(0.25, #f2f8fd),
-                               color-stop(1, #ecf2fb));
+  background-color:#dbecfd;
+  background:-moz-linear-gradient(center top, #f2f8fd 25%, #ecf2fb 100%);
+  background:-webkit-gradient(linear, left top, left bottom,
+                     color-stop(0.25, #f2f8fd),
+                     color-stop(1, #ecf2fb));
 }
 #comments input[disabled], #comments input[disabled]:hover { /* Disabled button */
-   background:white;
-   border-style:dashed;
-   color:#48c;
-   box-shadow:none;
+  background:white;
+  border-style:dashed;
+  color:#48c;
+  box-shadow:none;
 }
 article .to-be-replied-to,
 .to-be-replied-to > .meta,
 .to-be-replied-to > .body {
-   /* For highlighting what will be replied to on hovering a reply field */
-   box-shadow:0 0 0 0.5em #cef;
-   background-color:#cef;
+  /* For highlighting what will be replied to on hovering a reply field */
+  box-shadow:0 0 0 0.5em #cef;
+  background-color:#cef;
 }
 .comment-deleter {
-   float:right;
-   font-weight:300;
+  float:right;
+  font-weight:300;
 }
 #comments > div {
-   padding-bottom:1.5em;
+  padding-bottom:1.5em;
 }
-#comments > div > div:last-child {
-   /* Get bottom comment form out of the div to not clash with the border-left */
-   /* float:left; */
-   margin:0;
-   margin-left:-1em;
-   /* padding-bottom:1.5em; */
-   width:40em;
-} 
 #comments .to-be-deleted, #comments .delete-queued {
-   text-decoration:line-through;
+  text-decoration:line-through;
 }
 .anchored {
-   /*font-weight:900;*/
-   background-color:#b30;
-   color:#fff;
-   padding-left:1ex;
-   padding-right:0.8ex;
-   margin-right:0.5ex;
-   border-radius:100%;
-}
-#comments > div > .comment-form { /* Correction for the last comment field: */
-   margin-top:1.5em!important;
-   margin-left:-1.05em!important;
+  /*font-weight:900;*/
+  background-color:#b30;
+  color:#fff;
+  padding-left:1ex;
+  padding-right:0.8ex;
+  margin-right:0.5ex;
+  border-radius:100%;
 }
 #comments .updated > div:nth-child(3) {
 /* Make sure there is one line free below the timestamp marginalia for updated comments */
-   min-height:3em;
+  min-height:3em;
 }
 
 /* Counteract Ext.js CSS
-   --------------------- */
+  --------------------- */
 
 article strong {
-   font-weight:700;
+  font-weight:700;
 }
 article em {
-   font-style:italic;
+  font-style:italic;
 }
 
 /* Fix Aloha list-style to get rid of dots in the floating menu */
 .GENTICS_floatingmenu li, .GENTICS_multisplit li {
-   list-style-type:none;
+  list-style-type:none;
 }

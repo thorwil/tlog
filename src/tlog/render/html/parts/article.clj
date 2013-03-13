@@ -80,7 +80,7 @@
   [article-fn article-map comments-map]
   (navigation/main-pages)
   (article-fn article-map)
-  (comment/section comments-map))
+  (comment/section (:slug article-map) comments-map))
 
 ;; article-form is in tlog.render.html.parts.main, as it is complete to be handed to skeleton as
 ;; value of :main

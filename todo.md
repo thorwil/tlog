@@ -1,6 +1,6 @@
 Highlight article on hovering its Reply field
 Consider highlighting entire comment on hovering Reply field
-Try to get rid of the div that may have css-class "empty"
+Enforce max comment nesting level
 
 # Pages and entities
 
