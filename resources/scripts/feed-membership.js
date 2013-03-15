@@ -33,8 +33,8 @@ function armCheckboxes() {
 	checkboxes[i].disabled = false;
 	checkboxes[i].onclick = function(){
 	    postFeedSelectionChange(
-		// Input in fieldset in header in article with data-slug attribute:
-	    	this.parentNode.parentNode.parentNode.getAttribute('data-slug'),
+		// Input in fieldset in header in article with data-id attribute:
+	    	this.parentNode.parentNode.parentNode.getAttribute('data-id'),
 	    	this.name,
 	    	this.checked, // the state after the click.
 		this);

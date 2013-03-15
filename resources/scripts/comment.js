@@ -2,8 +2,8 @@
 
 /* Each comment form starts as a single Aloha-editable <div>, Prefilled with a "Reply" hint.
  *
- * configureField is called onmouseover, causes highlighting of the comment that will be replied to
- * by adding a CSS class and (re)binds event handlers for the field.
+ * configureField is called on mouseover. It causes highlighting of the article or comment that will be
+ * replied to by adding a CSS class and (re)binds event handlers for the field.
  *
  * prepareCommentForm (then bound to onclick) stores a clone of the field, clears the original and binds
  * expandCommentForm to onkeypress.
@@ -15,28 +15,26 @@
 
 
 // Initially bound to each reply field's onmouseover:
-function configureField(parentId, field){
+function configureField(subjectId, field){
     /* Cause comment-highlighting on hovering the reply field once, then rebind onmouseover for
      * future hovering: */
     var cssClass = 'to-be-replied-to';
-    function addCssClass() {$("#" + parentId).addClass(cssClass);
-			    $('[data-slug=' + parentId + ']').addClass(cssClass);};
+    function addCssClass() {$('[data-id=' + subjectId + ']').addClass(cssClass);};
     addCssClass();
 
     field.onmouseover = function (){addCssClass();};
-    field.onmouseout = function (){$("#" + parentId).removeClass(cssClass);
-				   $('[data-slug=' + parentId + ']').removeClass(cssClass);};
-    field.onclick = function (){prepareCommentForm(parentId, field);};
+    field.onmouseout = function (){$('[data-id=' + subjectId + ']').removeClass(cssClass);};
+    field.onclick = function (){prepareCommentForm(subjectId, field);};
 }
 
-function prepareCommentForm(parentId, bodyField) {
+function prepareCommentForm(subjectId, bodyField) {
     var bodyFieldClone = bodyField.parentNode.cloneNode(true);
 
     bodyField.innerHTML = '';
     bodyField.onclick = '';
 
     bodyField.onkeypress = function (){
-    	expandCommentForm(parentId, bodyField, bodyFieldClone);
+    	expandCommentForm(subjectId, bodyField, bodyFieldClone);
     };
 }
 
@@ -49,14 +47,14 @@ function updateSubmitButton(bodyId, authorId, button){
     }
 }
 
-function expandCommentForm (parentId, bodyField, bodyFieldClone) {
+function expandCommentForm (subjectId, bodyField, bodyFieldClone) {
     // Keep further keypresses from triggering this function:
     bodyField.onkeypress = '';
 
     // Construct a table for the labels and inputs:
 
-    var authorId = 'author_' + parentId;
-    var linkId = 'link_' + parentId;
+    var authorId = 'author_' + subjectId;
+    var linkId = 'link_' + subjectId;
     var table = document.createElement('table');
 
     function tr(id, label, title) {
@@ -75,7 +73,7 @@ function expandCommentForm (parentId, bodyField, bodyFieldClone) {
     submitButton.type = 'submit';
     submitButton.value = 'Publish';
     submitButton.disabled = 'true';
-    submitButton.onclick = function(){addComment(parentId, bodyField, bodyFieldClone,
+    submitButton.onclick = function(){addComment(subjectId, bodyField, bodyFieldClone,
 					     authorId, linkId);};
 
     // Initially hide the table and button, prepare for slideDown:
@@ -113,8 +111,8 @@ function htmlStringToNodes(string){
     return div.firstChild;
 }
 
-function addComment(parentId, bodyField, bodyFieldClone, authorId, linkId) {
-    var commentData = {parent: parentId,
+function addComment(subjectId, bodyField, bodyFieldClone, authorId, linkId) {
+    var commentData = {parent: subjectId,
     		       body: getBody(bodyField.id).replace(/<br>$/, ''), // Drop trailing <br>
     		       author: document.getElementById(authorId).value,
     		       link: document.getElementById(linkId).value};

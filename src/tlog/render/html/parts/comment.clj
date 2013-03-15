@@ -27,7 +27,7 @@
   (let [[timestamps css-class] (t/derive-from-timestamps number
                                                          created_timestamp
                                                          updated_timestamp)]
-    [:div {:id number, :class (str "comment " css-class)}
+    [:div {:data-id number, :class (str "comment " css-class)}
      timestamps
      [:p.meta
       [:a.comment-anchor {:id (str "comment-anchor-for_" number)

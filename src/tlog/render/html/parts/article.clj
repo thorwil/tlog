@@ -46,7 +46,7 @@
   (let [[timestamps css-class-updated?] (time/derive-from-timestamps slug
                                                                      created_timestamp
                                                                      updated_timestamp)]
-    [:article {:data-slug slug}
+    [:article {:data-id slug}
      [:header
       [:h2 (title-linked-or-plain slug title)]
       timestamps
