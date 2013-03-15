@@ -43,7 +43,6 @@
   (app :get [(wrap-resource "/")
              wrap-file-info
              [] r/journal-default
-             [[slug tlog.data.resource/slug->resource-or-nil]] (r/resource slug)
              [[from-to v/dash-separated-integer-pair]] (r/journal from-to)
              ["login"] r/login
              ["logout"] (friend/logout r/logout)
@@ -51,6 +50,7 @@
                                   ["write"] r/write
                                   [&] r/not-found)
                              (friend/wrap-authorize [:tlog.data.account/admin]))
+             [[slug tlog.data.resource/slug->resource-or-nil]] (r/resource slug)
              [&] r/not-found]
        :put [[slug] (-> r/put-article
                         wrap-json
