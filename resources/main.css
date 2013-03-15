@@ -390,9 +390,7 @@ fieldset {
   color:#48c;
   box-shadow:none;
 }
-article .to-be-replied-to,
-.to-be-replied-to > .meta,
-.to-be-replied-to > .body {
+.to-be-replied-to {
   /* For highlighting what will be replied to on hovering a reply field */
   box-shadow:0 0 0 0.5em #cef;
   background-color:#cef;

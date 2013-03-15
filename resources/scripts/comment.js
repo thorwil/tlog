@@ -19,11 +19,13 @@ function configureField(parentId, field){
     /* Cause comment-highlighting on hovering the reply field once, then rebind onmouseover for
      * future hovering: */
     var cssClass = 'to-be-replied-to';
-    function addCssClass() {$("#" + parentId).addClass(cssClass);};
+    function addCssClass() {$("#" + parentId).addClass(cssClass);
+			    $('[data-slug=' + parentId + ']').addClass(cssClass);};
     addCssClass();
-    field.onmouseover = function (){$("#" + parentId).addClass(cssClass);};
 
-    field.onmouseout = function (){$("#" + parentId).removeClass(cssClass);};
+    field.onmouseover = function (){addCssClass();};
+    field.onmouseout = function (){$("#" + parentId).removeClass(cssClass);
+				   $('[data-slug=' + parentId + ']').removeClass(cssClass);};
     field.onclick = function (){prepareCommentForm(parentId, field);};
 }
 
