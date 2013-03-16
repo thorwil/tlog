@@ -41,9 +41,8 @@ db
   "Take a slug (string). Retrieve the resource for :slug and the entity referenced via
    :table_reference and :slug . Return nil if there is no resource for the slug."
   [slug]
-  (-> (k/select resource (k/where {:slug slug}))
-      first
-      resolve-table-reference))
+  (if-let [r (first (k/select resource (k/where {:slug slug})))]
+    (resolve-table-reference r)))
 
 (defn article-range
   "Take: - offset into the list of article resources sorted by creation time.
