@@ -1,5 +1,3 @@
-Highlight entire comment on hovering Reply field
-Highlight article on hovering its Reply field
 Get reply fields into baseline grid
 Enforce max comment nesting level
 

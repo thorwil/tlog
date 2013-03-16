@@ -3,10 +3,10 @@
   :url "https://github.com/thorwil/tlog"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.5.0-RC15"]
+  :dependencies [[org.clojure/clojure "1.5.1"]
 
                  ;; Not needed when using "lein immutant run", but for "lein midje":
-                 [org.immutant/immutant "0.8.0" :exclusions [org.clojure/java.jdbc]]
+                 [org.immutant/immutant "0.9.0" :exclusions [org.clojure/java.jdbc]]
                  
                  [ring/ring-core "1.1.6"]
 		 [net.cgrand/moustache "1.1.0" :exclusions [org.clojure/clojure ring/ring-core]]
@@ -16,8 +16,8 @@
                  [hiccup "1.0.1"]
                  [org.clojure/data.json "0.2.0"]
                  [org.clojure/tools.nrepl "0.2.0-beta10"]]
-  :profiles {:dev {:dependencies [[midje "1.4.0" :exclusions [org.clojure/core.incubator]]]
-                   :plugins [[lein-midje "2.0.1"]]}}
+  :profiles {:dev {:dependencies [[midje "1.5.0" :exclusions [org.clojure/core.incubator]]]
+                   :plugins [[lein-midje "3.0.0"]]}}
   :immutant {:nrepl-port 4242
              :context-path "/"})
 
