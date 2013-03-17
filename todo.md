@@ -1,5 +1,7 @@
 Get reply fields into baseline grid
 Enforce max comment nesting level
+Check "#comments .updated > div:nth-child(3)" CSS
+
 
 # Pages and entities
 

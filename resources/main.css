@@ -30,10 +30,10 @@ html > body { /* hide from IE 6 */
 }
 nav {
   font-weight:900;
-  margin-bottom:1.5em;
+  margin-bottom:1.45em;
 }
 nav#pages {
-  border-top:0.05em solid #000;
+  border-top:1px solid; /* Chromium does not draw a border at all, if asked for 0.05em width, unless zoomed in */
   padding-top:1.5em;
   color:#999;
 }
@@ -62,9 +62,8 @@ nav#pages * {
     rgba(255,255,255,0));
 }
 article {
-  border-top:0.05em solid;
-  margin-top:-0.05em;
-  margin-bottom:1.5em;
+  border-top:1px solid;
+  margin-top:-1px;
 }
 article header {
   margin-bottom:1.5em;
@@ -83,11 +82,6 @@ article header {
 }
 .article-meta p {
   text-indent:0;
-}
-.not-updated {
-  /* 2 lines minimum to make the article body as high
-    as the Created timestamp to the left of it*/
-  min-height:3em; 
 }
 .updated {
   /* 3 lines minimum to make the article body as high
@@ -109,22 +103,18 @@ h1 {
   font-weight:700;
   line-height:2em;
 }
-h2 {
+h2, h3 {
   font-size:125%; /* 20px, room for margin:48px */
   font-weight:900;
-  margin-top:1.1em;
-  margin-bottom:1.5em;
-  height:1em;
+  margin-top:1.2em;
+  margin-bottom:1.2em;
 }
 h2 span.admin-editable { /* Keep the Aloha-editable element from colapsing, if emptied */
   display:block;
   min-height:1em;
 }
 h3 {
-  font-size:125%;
   font-weight:700;
-  margin-top:1.2em;
-  margin-bottom:1.2em;
 }
 h4, h5, h6 {
   font-size:100%;
@@ -139,7 +129,9 @@ h4, h5, h6 {
 p + p { /* first line indents for all but first paragraphs */
   text-indent:1.5em;
 }
-
+.article-body {
+  margin-bottom:1.5em;
+}
 
 /* Lists
   ----- */
@@ -235,14 +227,14 @@ input {
 }
 input[type='text'] {
   height:1.4em;
-  border:0.05em solid #999;
+  border:1px solid #999;
 }
 input[type='submit'] {
   margin-top:1.5em;
   height:1.7em;
 }
 input[type='checkbox'] {
-  margin-right:0.5em!important; /* Has to trump ext-all.css */
+  margin-right:1px!important; /* Has to trump ext-all.css */
 }
 input[type='checkbox'] + input[type='checkbox'] {
   margin-left:1.5em;
@@ -251,10 +243,10 @@ input[type='checkbox'] + input[type='checkbox'] {
   background:#fe9;
 }
 .start-blank { /* Editables that start with no content need a frame and min-height: */
-  margin-top:1.4em;
+  margin-top:1.5em;
   margin-bottom:-0.125em;
   min-height:1.5em;
-  border:0.05em solid #999;
+  border:1px solid #999;
 }
 .editable {
   cursor:text;
@@ -274,7 +266,7 @@ fieldset {
 }
 .thread .thread {
   padding-left:1em;
-  border-left:0.05em solid #999;
+  border-left:1px solid #999;
 }
 
 /* Ugly, but how else to get the margin notes to line up? */
@@ -320,9 +312,10 @@ fieldset {
 #comments .editable {
   margin-top:1.5em;
   border-color:#37b;
+  padding:0;
   padding-left:0.1em;
   padding-right:0.1em;
-  margin-bottom:-0.09em!important; /* Counter-act drift */
+  margin-bottom:-0.15em!important; /* Counter-act drift */
 }
 .thread .editable {
   margin-bottom:1.5em;
@@ -351,7 +344,7 @@ fieldset {
 }
 #comments td +td { /* ... instead borders on their cells. */
   border-collapse:collapse;
-  border:0.05em solid;
+  border:1px solid;
   width:100%;
 }
 #comments input[type='submit'] {
@@ -359,7 +352,7 @@ fieldset {
   margin-bottom:0.15em;
   height:1.5em;
   width:100%;
-  border:0.05em solid #acf;
+  border:1px solid #acf;
   border-radius:4px;
   background-color:#def;
   background:-moz-linear-gradient(center top, #f4faff 25%, #eef4fd 100%);
