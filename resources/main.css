@@ -416,6 +416,32 @@ fieldset {
   min-height:3em;
 }
 
+
+/* Tooltips
+   -------- */
+
+.has-tooltip {
+  cursor: help;
+}
+.has-tooltip::after {
+  content: attr(data-tooltip);
+  position:absolute;
+  z-index: 999;
+  background:#fff;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  margin-top:1.5em;
+  margin-left:1ex;
+  margin-right:1ex;
+  padding-left:1ex;
+  padding-right:1ex;
+  transition:opacity 0.4s ease-out;
+}
+.has-tooltip:hover::after {
+  opacity: 1;
+}
+
+
 /* Counteract Ext.js CSS
   --------------------- */
 

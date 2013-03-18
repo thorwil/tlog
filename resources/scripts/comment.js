@@ -64,7 +64,7 @@ function editableNotBlank(id){
        Sadly, it may contain just a <br> or <br style=""> instead of an empty string. */
     var content = Aloha.getEditableById(id).getContents();
     var i = $.inArray(content, ['', '<br>', '<br style="">']); // returns -1, if not in array.
-    
+
     if (i < 0) {
 	return true;
     } else {
@@ -108,8 +108,17 @@ function expandCommentForm (subjectId, bodyField, bodyFieldClone) {
     submitButton.type = 'submit';
     submitButton.value = 'Publish';
     submitButton.disabled = 'true';
-    submitButton.onclick = function(){addComment(subjectId, bodyField, bodyFieldClone,
-					     authorId, linkId);};
+    submitButton.onclick = function(){addComment(subjectId, bodyField, bodyFieldClone, authorId,
+						 linkId);};
+
+    /* The submit button shall have a tooltip, but the data-tooltip and content ::after approach
+     * does not work with a disabled input. Rather than switching back and forth between a <div>
+     * styled as disabled button and an actual button, a <div> around the button is used just for
+     * the tooltip: */
+    var submitButtonWrapper = document.createElement('div');
+    submitButtonWrapper.setAttribute('data-tooltip', 'You have to enter text and a name, before you can publish the comment.');
+    submitButtonWrapper.className = 'has-tooltip';
+    submitButtonWrapper.appendChild(submitButton);
 
     // Initially hide the table and button, prepare for slideDown:
     table.style.display = 'none';
@@ -119,7 +128,7 @@ function expandCommentForm (subjectId, bodyField, bodyFieldClone) {
 
     // Add the table and button to the document:
     bodyField.parentNode.appendChild(table);
-    bodyField.parentNode.appendChild(submitButton);
+    bodyField.parentNode.appendChild(submitButtonWrapper);
 
     // Slide them in, avoid tyring to do it again:
     $('.slide').slideDown('fast');
