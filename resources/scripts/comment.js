@@ -13,29 +13,55 @@
  * The submit POST is answered with a HTML string rendition of the comment and its reply field,
  * which replaces the comment form. The clone is used to restore the comment field for the parent. */
 
-
-// Initially bound to each reply field's onmouseover:
-function configureField(subjectId, field){
-    /* Cause comment-highlighting on hovering the reply field once, then rebind onmouseover for
-     * future hovering: */
-    var cssClass = 'to-be-replied-to';
-    function addCssClass() {$('[data-id=' + subjectId + ']').addClass(cssClass);};
-    addCssClass();
-
-    field.onmouseover = function (){addCssClass();};
-    field.onmouseout = function (){$('[data-id=' + subjectId + ']').removeClass(cssClass);};
-    field.onclick = function (){prepareCommentForm(subjectId, field);};
+function htmlStringToNodes(string){
+    var div = document.createElement('div');
+    div.innerHTML = string;
+    return div.firstChild;
 }
 
-function prepareCommentForm(subjectId, bodyField) {
-    var bodyFieldClone = bodyField.parentNode.cloneNode(true);
+function afterAddComment(commentDiv, commentDivParent, commentRendition, bodyFieldClone){
+    commentDivParent.removeChild(commentDiv);
 
-    bodyField.innerHTML = '';
-    bodyField.onclick = '';
+    // Add new comment followed by its reply field to the page:
+    var newComment = htmlStringToNodes(commentRendition);
+    newComment.style.display = 'none';
+    commentDivParent.appendChild(newComment);
+    $(newComment).fadeIn('slow');
 
-    bodyField.onkeypress = function (){
-    	expandCommentForm(subjectId, bodyField, bodyFieldClone);
-    };
+    // Add back original reply field for the parent, update Aloha:
+    commentDivParent.appendChild(bodyFieldClone);
+    $(function() {$('.editable').aloha();});
+    if ($(newComment).find('.admin-editable').length) { // zero is false
+	$(function() {$('.admin-editable').aloha();});
+    }
+
+    // If there are no comments initially, the div wrapping all comments has a CSS class 'empty'.
+    // Remove it now:
+    $('div.empty').removeClass('empty');
+}
+
+function addComment(subjectId, bodyField, bodyFieldClone, authorId, linkId) {
+    var commentData = {parent: subjectId,
+    		       body: getBody(bodyField.id).replace(/<br>$/, ''), // Drop trailing <br>
+    		       author: document.getElementById(authorId).value,
+    		       link: document.getElementById(linkId).value};
+
+    $.post('/comment',
+    	   commentData,
+	   // On success, handler answers with HTML for the new comment:
+    	   function(commentRendition){
+    	       // Remove comment form:
+    	       var commentDiv = bodyField.parentNode;
+	       var commentDivParent = commentDiv.parentNode;
+	       $(commentDiv).fadeOut('slow',
+				     function() {afterAddComment(commentDiv, commentDivParent,
+								 commentRendition, bodyFieldClone);});
+    	   });
+}
+
+function getBody(id){
+    var editable = GENTICS.Aloha.getEditableById(id);
+    return editable.getContents();
 }
 
 function updateSubmitButton(bodyId, authorId, button){
@@ -100,55 +126,28 @@ function expandCommentForm (subjectId, bodyField, bodyFieldClone) {
     document.getElementById(authorId).onkeyup = u;
 }
 
-function getBody(id){
-    var editable = GENTICS.Aloha.getEditableById(id);
-    return editable.getContents();
+function prepareCommentForm(subjectId, bodyField) {
+    var bodyFieldClone = bodyField.parentNode.cloneNode(true);
+
+    bodyField.innerHTML = '';
+    bodyField.onclick = '';
+
+    bodyField.onkeypress = function (){
+    	expandCommentForm(subjectId, bodyField, bodyFieldClone);
+    };
 }
 
-function htmlStringToNodes(string){
-    var div = document.createElement('div');
-    div.innerHTML = string;
-    return div.firstChild;
-}
+// Initially bound to each reply field's onmouseover:
+function configureField(subjectId, field){
+    /* Cause comment-highlighting on hovering the reply field once, then rebind onmouseover for
+     * future hovering: */
+    var cssClass = 'to-be-replied-to';
+    function addCssClass() {$('[data-id=' + subjectId + ']').addClass(cssClass);};
+    addCssClass();
 
-function addComment(subjectId, bodyField, bodyFieldClone, authorId, linkId) {
-    var commentData = {parent: subjectId,
-    		       body: getBody(bodyField.id).replace(/<br>$/, ''), // Drop trailing <br>
-    		       author: document.getElementById(authorId).value,
-    		       link: document.getElementById(linkId).value};
-
-    $.post('/comment',
-    	   commentData,
-	   // On success, handler answers with HTML for the new comment:
-    	   function(commentRendition){
-    	       // Remove comment form:
-    	       var commentDiv = bodyField.parentNode;
-	       var commentDivParent = commentDiv.parentNode;
-	       $(commentDiv).fadeOut('slow',
-				     function() {afterAddComment(commentDiv, commentDivParent,
-								 commentRendition, bodyFieldClone);});
-    	   });
-}
-
-function afterAddComment(commentDiv, commentDivParent, commentRendition, bodyFieldClone){
-    commentDivParent.removeChild(commentDiv);
-
-    // Add new comment followed by its reply field to the page:
-    var newComment = htmlStringToNodes(commentRendition);
-    newComment.style.display = 'none';
-    commentDivParent.appendChild(newComment);
-    $(newComment).fadeIn('slow');
-
-    // Add back original reply field for the parent, update Aloha:
-    commentDivParent.appendChild(bodyFieldClone);
-    $(function() {$('.editable').aloha();});
-    if ($(newComment).find('.admin-editable').length) { // zero is false
-	$(function() {$('.admin-editable').aloha();});
-    }
-
-    // If there are no comments initially, the div wrapping all comments has a CSS class 'empty'.
-    // Remove it now:
-    $('div.empty').removeClass('empty');
+    field.onmouseover = function (){addCssClass();};
+    field.onmouseout = function (){$('[data-id=' + subjectId + ']').removeClass(cssClass);};
+    field.onclick = function (){prepareCommentForm(subjectId, field);};
 }
 
 function initializeCommenting() {
