@@ -342,13 +342,17 @@ fieldset {
 #comments table input { /* No border on the inputs in the table, as they don't meat cleanly ... */
   border:none;
 }
-#comments td +td { /* ... instead borders on their cells. */
+#comments td + td { /* ... instead borders on their cells. */
   border-collapse:collapse;
   border:1px solid;
+  border-top:none;
   width:100%;
 }
+#comments tr:first-child td {
+  border-bottom:none;
+}
 #comments input[type='submit'] {
-  margin-top:1.2em; /* Get Submit button to be on baseline grid, as the comment table refuses to fit. */
+  margin-top:1.35em; /* Get Submit button to be on baseline grid, as the comment table refuses to fit. */
   margin-bottom:0.15em;
   height:1.5em;
   width:100%;
