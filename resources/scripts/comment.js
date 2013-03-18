@@ -59,14 +59,23 @@ function addComment(subjectId, bodyField, bodyFieldClone, authorId, linkId) {
     	   });
 }
 
-function getBody(id){
-    var editable = GENTICS.Aloha.getEditableById(id);
-    return editable.getContents();
+function editableNotBlank(id){
+    /* Return true, iff the editable contains visible content.
+       Sadly, it may contain just a <br> or <br style=""> instead of an empty string. */
+    var content = Aloha.getEditableById(id).getContents();
+    var i = $.inArray(content, ['', '<br>', '<br style="">']); // returns -1, if not in array.
+    
+    if (i < 0) {
+	return true;
+    } else {
+	return false;
+    }
 }
 
 function updateSubmitButton(bodyId, authorId, button){
-    if (document.getElementById(authorId).value != '' &&
-	getBody(bodyId) != ''){
+    // TODO: handle <br> or <br style=""> as sole content
+
+    if (document.getElementById(authorId).value != '' && editableNotBlank(bodyId)) {
 	button.disabled = false;
     } else {
 	button.disabled = true;
@@ -120,7 +129,7 @@ function expandCommentForm (subjectId, bodyField, bodyFieldClone) {
     // Mark the field as now being part of an expanded form:
     $(bodyField.parentNode).addClass('expanded');
 
-    // dis/enable button on changes in the editable and Author field:
+    // enable or disable button on changes in the editable and author field:
     var u = function(){updateSubmitButton(bodyField.id, authorId, submitButton);};
     bodyField.onkeyup = u;
     document.getElementById(authorId).onkeyup = u;
@@ -128,7 +137,6 @@ function expandCommentForm (subjectId, bodyField, bodyFieldClone) {
 
 function prepareCommentForm(subjectId, bodyField) {
     var bodyFieldClone = bodyField.parentNode.cloneNode(true);
-
     bodyField.innerHTML = '';
     bodyField.onclick = '';
 
