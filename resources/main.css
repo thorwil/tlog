@@ -311,11 +311,11 @@ fieldset {
 }
 #comments .editable {
   margin-top:1.5em;
-  border-color:#37b;
   padding:0;
   padding-left:0.1em;
   padding-right:0.1em;
   margin-bottom:-0.15em!important; /* Counter-act drift */
+  border-color:#37b;
 }
 .thread .editable {
   margin-bottom:1.5em;
@@ -344,7 +344,7 @@ fieldset {
 }
 #comments td + td { /* ... instead borders on their cells. */
   border-collapse:collapse;
-  border:1px solid;
+  border:1px solid #37b;
   border-top:none;
   width:100%;
 }
