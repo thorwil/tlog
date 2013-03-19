@@ -1,3 +1,4 @@
+Fix expanded comment form lower border
 Enforce max comment nesting level
 Check "#comments .updated > div:nth-child(3)" CSS
 

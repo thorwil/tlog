@@ -15,6 +15,8 @@
 	  :onmouseover (str "configureField('" parent "', this);")}
     [:span.internal-label "Reply"]]])
 
+;; The expanded comment forms are created client-side, via comment.js
+
 (defn- linked-or-plain
   [link text]
   (if (empty? link)

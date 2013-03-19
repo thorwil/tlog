@@ -92,11 +92,14 @@ function expandCommentForm (subjectId, bodyField, bodyFieldClone) {
     var linkId = 'link_' + subjectId;
     var table = document.createElement('table');
 
-    function tr(id, label, title) {
-	return "<tr>"
+    function tr(id, label, tooltip) {
+	return "<tr class=\"has-tooltip\" data-tooltip=\"" + tooltip + "\">"
 	    + "<td>"
-	    + "<label for=\"" + id + "\" title=\"" + title + "\">" + label + "</label></td>"
-	    + "<td><input type=\"text\" id=\"" + id + "\" title=\"" + title + "\"></td>"
+	    + "<label for=\"" + id + "\">" + label + "</label>"
+	    + "</td>"
+	    + "<td>"
+	    + "<input type=\"text\" id=\"" + id + "\">"
+	    + "</td>"
 	    + "</tr>";
     }
 
@@ -117,7 +120,7 @@ function expandCommentForm (subjectId, bodyField, bodyFieldClone) {
      * the tooltip: */
     var submitButtonWrapper = document.createElement('div');
     submitButtonWrapper.setAttribute('data-tooltip', 'You have to enter text and a name, before you can publish the comment.');
-    submitButtonWrapper.className = 'has-tooltip';
+    submitButtonWrapper.className = 'button-wrapper has-tooltip';
     submitButtonWrapper.appendChild(submitButton);
 
     // Initially hide the table and button, prepare for slideDown:

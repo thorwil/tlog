@@ -351,10 +351,13 @@ fieldset {
 #comments tr:first-child td {
   border-bottom:none;
 }
-#comments input[type='submit'] {
+#comments .button-wrapper {
   margin-top:1.35em; /* Get Submit button to be on baseline grid, as the comment table refuses to fit. */
   margin-bottom:0.15em;
   height:1.5em;
+}
+#comments input[type='submit'] {
+  margin:0;
   width:100%;
   border:1px solid #acf;
   border-radius:4px;
@@ -420,27 +423,33 @@ fieldset {
 /* Tooltips
    -------- */
 
-.has-tooltip {
-  cursor: help;
-}
 .has-tooltip::after {
-  content: attr(data-tooltip);
   position:absolute;
-  z-index: 999;
-  background:#fff;
-  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  margin-top:1.5em;
-  margin-left:1ex;
-  margin-right:1ex;
-  padding-left:1ex;
-  padding-right:1ex;
+  z-index:999;
+  opacity:0;
   transition:opacity 0.4s ease-out;
+  content:attr(data-tooltip);
+  color:#006633;
 }
 .has-tooltip:hover::after {
-  opacity: 1;
+  opacity:1;
 }
-
+.comment-form tr.has-tooltip::after {
+  margin-left:-33.5em;
+  margin-top:3em; /* Place tooltip below table for first row (Name). */
+  opacity:0; /* opacity from .has-tooltip::after has no effect, here. */
+}
+.comment-form tr.has-tooltip:last-child::after {
+  margin-top:1.5em; /* Place tooltip below table for second row (Website). */
+}
+.comment-form tr.has-tooltip:hover::after {
+  opacity:1; /* opacity from .has-tooltip:hover::after has no effect, here. */
+}
+.comment-form .button-wrapper::after {
+  display:block; /* Get Firefox to position the element like Chromium does. Chromium ignores a display:inline here. */
+  margin-top:-3.1em;
+  margin-left:4.5em;
+}
 
 /* Counteract Ext.js CSS
   --------------------- */
