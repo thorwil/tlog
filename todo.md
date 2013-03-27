@@ -1,10 +1,13 @@
-Deselect Reply fields after adding comment
+Position comment name and link field tooltips correctly
 Add Email field to comment form
 Enforce max comment nesting level
 Check "#comments .updated > div:nth-child(3)" CSS
 Validate pagination range with regex in one step
 Consider moving slug->resource fns to validate ns
 Don't use CSS id for things like "comment-anchor-for_9", use data attributes
+Get comments onto basline grid, or hide baselines
+Make it easier to find the Reply field for a comment and to keep both in view, or give up on Reply at thread end
+When expanding comment form, auto-scroll if necessary to show the complete form
 
 # Pages and entities
 

@@ -24,7 +24,7 @@ function afterAddComment(commentDiv, commentDivParent, commentRendition, bodyFie
 
     // Add new comment followed by its reply field to the page:
     var newComment = htmlStringToNodes(commentRendition);
-    newComment.style.display = 'none'; // TypeError: newComment is null
+    newComment.style.display = 'none';
     commentDivParent.appendChild(newComment);
     $(newComment).fadeIn('slow');
 
@@ -64,7 +64,8 @@ function addComment(subjectId, bodyField, bodyFieldClone, authorId, linkId) {
     }
 
     var slug = '/' + document.getElementsByTagName("article")[0].getAttribute("data-id");
-    var content = Aloha.getEditableById(bodyField.id).getContents();
+    var editable = Aloha.getEditableById(bodyField.id);
+    var content = editable.getContents();
 
     httpRequestPut(slug + '/comment',
 		   JSON.stringify({parent: subjectId,
@@ -163,7 +164,14 @@ function expandCommentForm (subjectId, bodyField, bodyFieldClone) {
 }
 
 function prepareCommentForm(subjectId, bodyField) {
+    // Clone the whole comment-form before it gets expanded, so it can be restored later on, easily.
     var bodyFieldClone = bodyField.parentNode.cloneNode(true);
+
+    /* Make sure the comment-form clone will not appear as being active once restored, by removing its
+     aloha-editable-active CSS class. */
+    var c = bodyFieldClone.childNodes[0];
+    c.className = c.className.replace( /(?:^|\s)aloha-editable-active(?!\S)/g , '' );
+
     bodyField.innerHTML = '';
     bodyField.onclick = '';
 
