@@ -25,7 +25,7 @@
 
 (defn- comment
   [{:keys [author content created_timestamp updated_timestamp link
-           number option-comments-admin-editable] :as foo}]
+           number option-comments-admin-editable]}]
   (let [[timestamps css-class] (t/derive-from-timestamps number
                                                          created_timestamp
                                                          updated_timestamp)]
@@ -53,6 +53,12 @@
                        (-> c first :parent)
                        ;; Comment field to add a sub-comment:
                        (-> c :number))))]))
+
+(defn new-thread-async
+  "Render a thread with a single comment. Used for sending HTML representing a just added comment to
+   the client asynchronously."
+  [parameter-map]
+  (thread [parameter-map]))
 
 (defhtml section
   [article-slug comments-map]

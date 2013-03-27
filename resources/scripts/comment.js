@@ -24,7 +24,7 @@ function afterAddComment(commentDiv, commentDivParent, commentRendition, bodyFie
 
     // Add new comment followed by its reply field to the page:
     var newComment = htmlStringToNodes(commentRendition);
-    newComment.style.display = 'none';
+    newComment.style.display = 'none'; // TypeError: newComment is null
     commentDivParent.appendChild(newComment);
     $(newComment).fadeIn('slow');
 
@@ -41,22 +41,37 @@ function afterAddComment(commentDiv, commentDivParent, commentRendition, bodyFie
 }
 
 function addComment(subjectId, bodyField, bodyFieldClone, authorId, linkId) {
-    var commentData = {parent: subjectId,
-    		       body: getBody(bodyField.id).replace(/<br>$/, ''), // Drop trailing <br>
-    		       author: document.getElementById(authorId).value,
-    		       link: document.getElementById(linkId).value};
+    function httpRequestPut(url, body) {
+	var r = new XMLHttpRequest();
+	r.open('PUT', url, true);
+	r.send(body);
+	r.onreadystatechange = function() {
+	    if (r.readyState == 4) {
+		if (r.status == 201) { // Status 201: Created
+		    // On success, handler answers with HTML for the new comment.
+    		    // Remove comment form:
+    		    var commentDiv = bodyField.parentNode;
+		    var commentDivParent = commentDiv.parentNode;
+		    $(commentDiv).fadeOut('slow',
+					  function() {afterAddComment(commentDiv, commentDivParent,
+								      r.responseText, bodyFieldClone);});
+		} else {
+		    // Bring up error message:
+		    alert(r.status + ' ' + r.statusText + ': ' + r.responseText);
+		}
+	    }
+	};
+    }
 
-    $.post('/comment',
-    	   commentData,
-	   // On success, handler answers with HTML for the new comment:
-    	   function(commentRendition){
-    	       // Remove comment form:
-    	       var commentDiv = bodyField.parentNode;
-	       var commentDivParent = commentDiv.parentNode;
-	       $(commentDiv).fadeOut('slow',
-				     function() {afterAddComment(commentDiv, commentDivParent,
-								 commentRendition, bodyFieldClone);});
-    	   });
+    var slug = '/' + document.getElementsByTagName("article")[0].getAttribute("data-id");
+    var content = Aloha.getEditableById(bodyField.id).getContents();
+
+    httpRequestPut(slug + '/comment',
+		   JSON.stringify({parent: subjectId,
+				   author: document.getElementById(authorId).value,
+				   email: 'dummy@example.com',
+				   link: document.getElementById(linkId).value,
+    				   content: content.replace(/<br>$/, '')})); // Drop trailing <br>
 }
 
 function editableNotBlank(id){

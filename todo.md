@@ -1,7 +1,10 @@
-Fix expanded comment form lower border
+Deselect Reply fields after adding comment
+Add Email field to comment form
 Enforce max comment nesting level
 Check "#comments .updated > div:nth-child(3)" CSS
-
+Validate pagination range with regex in one step
+Consider moving slug->resource fns to validate ns
+Don't use CSS id for things like "comment-anchor-for_9", use data attributes
 
 # Pages and entities
 
@@ -21,9 +24,8 @@ Flash updated timestamps after saving an article and/or other feedback
 
 # Comments
 
-Try switching box model for better comment section layout (Cause not implemented, yet)
-Do not write "Reply" in comment fields, if JS is disabled (Cause not implemented, yet)
-Validate the links (Cause not implemented, yet)
+Do not write "Reply" in comment fields, if JS is disabled
+Validate the links
 Update page with comments from other sessions
 
 

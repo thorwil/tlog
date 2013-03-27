@@ -9,7 +9,7 @@
             [clojure.data.json :as json]
             [tlog.interface.respond :as r]
             [tlog.interface.validate :as v]
-            [tlog.data.resource]))
+            [tlog.data.resource :as rsc]))
 
 
 ;; Utility
@@ -50,9 +50,10 @@
                                   ["write"] r/write
                                   [&] r/not-found)
                              (friend/wrap-authorize [:tlog.data.account/admin]))
-             [[slug tlog.data.resource/slug->resource-or-nil]] (r/resource slug)
+             [[slug rsc/slug->resource-or-nil]] (r/resource slug)
              [&] r/not-found]
-       :put [[slug] (-> r/put-article
+       :put [[[slug rsc/valid-slug-for-article] "comment"] (wrap-json r/put-comment)
+             [slug] (-> r/put-article
                         wrap-json
                         (friend/wrap-authorize [:tlog.data.account/admin]))]
        :post [[slug] (-> r/update-article*

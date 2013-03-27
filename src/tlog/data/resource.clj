@@ -37,12 +37,28 @@ db
         (first (k/select (:table_reference resource-map)
                          (k/where {:slug (:slug resource-map)})))))
 
+(defn slug->raw-resource-or-nil
+  "Take a slug (string). Retrieve the resource for :slug. Return nil if there is no resource for the
+   slug."
+  [slug]
+  ;; k/select returns a vector of matches. Here it can only be empty or contain a single map:
+  (first (k/select resource (k/where {:slug slug}))))
+
 (defn slug->resource-or-nil
   "Take a slug (string). Retrieve the resource for :slug and the entity referenced via
    :table_reference and :slug . Return nil if there is no resource for the slug."
   [slug]
-  (if-let [r (first (k/select resource (k/where {:slug slug})))]
+  (if-let [r (slug->raw-resource-or-nil slug)]
     (resolve-table-reference r)))
+
+(defn valid-slug-for-article
+  "Take a slug (string). Return the slug, if it is associated with an article, otherwise false."
+  [slug]
+  (and (= (-> slug
+              slug->raw-resource-or-nil
+              :table_reference)
+          "article")
+       slug))
 
 (defn article-range
   "Take: - offset into the list of article resources sorted by creation time.

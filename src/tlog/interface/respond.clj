@@ -9,7 +9,8 @@
             [tlog.data.resource :as resource]
             [tlog.data.comment :as comment]
             [tlog.data.feed :as feed]
-            [tlog.render.html.parts.time]))
+            [tlog.render.html.parts.time]
+            [tlog.render.html.parts.comment :as render-comment]))
 
 
 ;; Utility
@@ -156,6 +157,22 @@
   [resource-map]
   (let [handler (-> resource-map :table_reference {"article" article})]
     (fn [request] (response (handler (roles request) resource-map)))))
+
+(defn put-comment
+  "Take a a slug and a request map, containing a :body with a comment's content, name and link.
+   Store a new comment in the database. Return a status 201: Created, if comment/create! returns."
+  [{:keys [body]}]
+  (if-let [c (comment/create! (:parent body)
+                            (:author body)
+                            (:email body)
+                            (:link body)
+                            (-> body :content cleanup-html-string))]
+    {:status 201 ;; = Created
+     :headers {"Content-Type" "text/plain"}
+     :body (render-comment/new-thread-async c)}
+    {:status 451 ;; = Parameter not understood
+     :headers {"Content-Type" "text/plain"}
+     :body "Failed to add comment!"}))
 
 (def not-found
   (-> a/not-found
