@@ -17,7 +17,7 @@
                  [hiccup "1.0.1"]
                  [org.clojure/data.json "0.2.0"]
                  [org.clojure/tools.nrepl "0.2.0-beta10"]]
-  :profiles {:dev {:dependencies [[midje "1.5.0" :exclusions [org.clojure/core.incubator
+  :profiles {:dev {:dependencies [[midje "1.5.1" :exclusions [org.clojure/core.incubator
                                                               slingshot]]]
                    :plugins [[lein-midje "3.0.0"]]}}
   :immutant {:nrepl-port 4242
