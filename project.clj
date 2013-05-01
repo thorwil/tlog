@@ -6,7 +6,7 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
 
                  ;; Not needed when using "lein immutant run", but for "lein midje":
-                 [org.immutant/immutant "0.9.0" :exclusions [org.clojure/java.jdbc]]
+                 [org.immutant/immutant "0.10.0" :exclusions [org.clojure/java.jdbc]]
                  
                  [ring/ring-core "1.1.6"]
 		 [net.cgrand/moustache "1.1.0" :exclusions [org.clojure/clojure
