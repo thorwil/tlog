@@ -1,6 +1,5 @@
-Position comment name and link field tooltips correctly
-Add Email field to comment form
 Enforce max comment nesting level
+Add Email field to comment form
 Check "#comments .updated > div:nth-child(3)" CSS
 Validate pagination range with regex in one step
 Consider moving slug->resource fns to validate ns

@@ -8,7 +8,8 @@
 body {
   font-family:Lato, "Dejavu Sans", Helvetica, Arial, sans-serif;
   /* Lato variants:300, 400 (regular), 700, 900. Left out 100 and italics for 700 and 900. */
-  text-align:center; /* Centering content for IE 6, See http://www.bluerobot.com/web/css/center1.html */
+  text-align:center; /* Centering content for IE 6,
+                        See http://www.bluerobot.com/web/css/center1.html */
   font-size:100%;
   line-height:1.5em;
   word-spacing:0.05em;
@@ -33,7 +34,8 @@ nav {
   margin-bottom:1.45em;
 }
 nav#pages {
-  border-top:1px solid; /* Chromium does not draw a border at all, if asked for 0.05em width, unless zoomed in */
+  border-top:1px solid; /* Chromium does not draw a border at all, if asked for 0.05em width, unless
+                           zoomed in */
   padding-top:1.5em;
   color:#999;
 }
@@ -269,7 +271,8 @@ fieldset {
   border-left:1px solid #999;
 }
 
-/* Ugly, but how else to get the margin notes to line up? */
+/* Comment levels are indented, but timestamps stay in one column on the left. To achieve this, they
+   have to be moved out with an increasing value. */
 #comments .times {
   margin-top:0;
 }
@@ -300,10 +303,11 @@ fieldset {
 .comment {
   padding-top:1.5em;
 }
-#comments > .thread > .thread > .comment { /* Reduce from 2 to 1 empty line above first level comments */
+#comments > .thread > .thread > .comment { /* Reduce from 2 to 1 empty line above 1st level comments */
   padding-top:0;
 }
-.thread + .comment-form { /* Close gap between thread and following comment-form, to have the border-left touch the comment-form rectangle */
+.thread + .comment-form { /* Close gap between thread and following comment-form, to have the
+                             border-left touch the comment-form rectangle */
   margin-top:-1.5em;
 }
 .comment-form * {
@@ -352,7 +356,7 @@ fieldset {
   border-bottom:none;
 }
 #comments .button-wrapper {
-  margin-top:1.35em; /* Get Submit button to be on baseline grid, as the comment table refuses to fit. */
+  margin-top:1.35em; /* Get Submit button to be on baseline grid, as comment table refuses to fit. */
   margin-bottom:0.15em;
   height:1.5em;
 }
@@ -415,7 +419,7 @@ fieldset {
   border-radius:100%;
 }
 #comments .updated > div:nth-child(3) {
-/* Make sure there is one line free below the timestamp marginalia for updated comments */
+  /* Make sure there is one line free below the timestamp marginalia for updated comments.*/
   min-height:3em;
 }
 
@@ -435,7 +439,6 @@ fieldset {
   opacity:1;
 }
 .comment-form tr.has-tooltip::after {
-  margin-left:-33.5em;
   margin-top:3em; /* Place tooltip below table for first row (Name). */
   opacity:0; /* opacity from .has-tooltip::after has no effect, here. */
 }
@@ -446,10 +449,47 @@ fieldset {
   opacity:1; /* opacity from .has-tooltip:hover::after has no effect, here. */
 }
 .comment-form .button-wrapper::after {
-  display:block; /* Get Firefox to position the element like Chromium does. Chromium ignores a display:inline here. */
+  display:block; /* Get Firefox to position the element like Chromium does. Chromium ignores a
+                    display:inline here. */
   margin-top:-3.1em;
   margin-left:4.5em;
 }
+
+/* Without further rules, tooltips for comment form Name and Website would appear beneath and to the
+   right of the form. Since position:absolute is a must to have he tooltips break out of the table,
+   margin-left seems to be the only option left to move the tooltips to just right of the form
+   labels. Due to indention per comment level, the form width decreases, which has to be addressed
+   here. The right value for the 1st level is 35.5em. For the 9th level it's 27em. The resulting
+   step size is 1.0625. The following values have been rounded to one position after decimal point.
+*/
+.thread .comment-form tr.has-tooltip::after {
+  margin-left:-35.5em;
+}
+.thread .thread .comment-form tr.has-tooltip::after {
+  margin-left:-34.5em;
+}
+.thread .thread .thread .comment-form tr.has-tooltip::after {
+  margin-left:-33.4em;
+}
+.thread .thread .thread .thread .comment-form tr.has-tooltip::after {
+  margin-left:-32.3em;
+}
+.thread .thread .thread .thread .thread .comment-form tr.has-tooltip::after {
+  margin-left:-31.3em;
+}
+.thread .thread .thread .thread .thread .thread .comment-form tr.has-tooltip::after {
+  margin-left:-30.2em;
+}
+.thread .thread .thread .thread .thread .thread .thread .comment-form tr.has-tooltip::after {
+  margin-left:-29.1em;
+}
+.thread .thread .thread .thread .thread .thread .thread .thread .comment-form tr.has-tooltip::after {
+  margin-left:-28.1em;
+}
+.thread .thread .thread .thread .thread .thread .thread .thread .thread .comment-form tr.has-tooltip::after {
+  margin-left:-27em;
+}
+
 
 /* Counteract Ext.js CSS
   --------------------- */
