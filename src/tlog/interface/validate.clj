@@ -16,13 +16,13 @@
 
 ;; Validators
 
-(defn- ->int
-  "Validate/convert argument to integer"
+(defn ->int
+  "Convert a string to an integer if possible. Return nil, otherwise."
   [s]
   (try (Integer. s)
        (catch Exception e nil)))
 
-(def ^:private >zero
+(def >zero
   "Validate integer being > 0."
   (valid #(> % 0)))
 

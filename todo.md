@@ -1,4 +1,4 @@
-Enforce max comment nesting level
+Don't accept PUTs of comments with a final level parent or not existing parent
 Add Email field to comment form
 Check "#comments .updated > div:nth-child(3)" CSS
 Validate pagination range with regex in one step
