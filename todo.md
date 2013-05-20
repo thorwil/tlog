@@ -1,3 +1,4 @@
+Include level in comments map, instead of querying the db again to determine level per comment
 Don't accept PUTs of comments with a final level parent or not existing parent
 Add Email field to comment form
 Check "#comments .updated > div:nth-child(3)" CSS

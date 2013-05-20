@@ -47,24 +47,6 @@
      [:div {:id (str "comment-content_" number)
             :class (str "content " option-comments-admin-editable)} content]]))
 
-(defhtml ^:private thread-
-  [thread-or-comment]
-  (if (map? thread-or-comment)
-    (comment thread-or-comment)
-    [:div.thread
-     (mapcat thread thread-or-comment)
-     (let [c (first thread-or-comment)]
-       (apply comment-field (or
-                             ;; Comment field for the article, the slug is the value for :slug in
-                             ;; the first map in the first list. Since it's already clear this is
-                             ;; the first level, no second argument is given to comment-field:
-                             (if-let [s (-> c first :parent)] ;; the result in [] for apply to work,
-                               [s])                           ;; or a naked nil for the or
-                             ;; Comment field to add a sub-comment. A second argument with the
-                             ;; nesting level will be used, to leave out comment-fields once a
-                             ;; maximum level is reached:
-                             [(:number c) (-> c :number level)])))]))
-
 (defhtml ^:private thread
   [thread-or-comment]
   (if (map? thread-or-comment)
