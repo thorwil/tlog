@@ -24,21 +24,39 @@ db
                        :content content})))
 
 (defn- comments-for-parent
-  "Take an article slug (string). Return a sequence of comments directly associated via the slug."
+  "Take an article slug or comment number as string. Return a sequence of associated comments."
   [parent]
   (k/select comment
             (k/where {:parent parent})))
 
+(defn- comments-with-level-for-parent
+  "Take an article slug or comment number as string and a nesting level. Return a sequence of
+   associated comments, with the level included in each comment map."
+  [parent level]
+  (map (partial into {:level level}) (comments-for-parent parent)))
+
 (defn nested-comments
-  "Retrieve all comments for the parent, then recurse to retrieve comments for the parents of the
-   just retrieved comments. Returns a list of lists per thread. Example with only the :number and
-   :parent keys, of 2 comments to an article 'first', with one sub-comment to the first comment:
-   (({:number 1, :parent 'first'} ({:number 2, :parent '1'})) ({:number 3, :parent 'first'}))"
-  [parent]
-  ;; primary keys for articles are strings, but for comments they are integers. comment's :parent is
-  ;; a string to be able to reference articles. Using str converts integers and acts as identity for
-  ;; strings.
-  (map #(cons % (-> % :number str nested-comments)) (comments-for-parent parent)))
+  "Retrieve all comments for the parent (article slug or comment number as string or integer), then
+   recurse to retrieve comments for the parents of the just retrieved comments. Return a list of
+   lists per thread, containing comment maps. Where each comment map includes the nesting level,
+   counted from zero for comments referring directly to an article.
+
+   Example with only the :number, :parent and :level keys, of 2 comments to an article 'first', with
+   one sub-comment to the first comment:
+   (({:number 1, :parent 'first' :level 0}
+     ({:number 2, :parent '1' :level 1}))
+    ({:number 3, :parent 'first' :level 1}))"
+  ([parent level]
+     ;; Map over the current level of comments, with a function that cons the current level to the
+     ;; nested comments for the next level.
+     ;; Primary keys for articles are strings, but for comments they are integers. comment's :parent
+     ;; is a string to be able to reference articles. Using str converts integers and acts as
+     ;; identity for strings.
+     (map #(cons %1 (nested-comments (-> %1 :number str) (inc %2)))
+          (comments-with-level-for-parent parent level)
+          (repeat level)))
+  ([parent]
+     (nested-comments parent 0)))
 
 (defn- comment-with-number
   "Take a comment number. Return the comment map, or nil if there is no comment with that

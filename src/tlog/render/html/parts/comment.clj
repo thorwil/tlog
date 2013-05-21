@@ -8,18 +8,14 @@
 
 
 (defhtml ^:private comment-field
-  "Take a parent comment number (as ID). Render an Aloha editable to be placed at every end in the
-   comment tree. Optionally take a second argument with the nesting level, to return nil to have
-   nothing rendered, once a maximum level is reached. Wrapped in another div that will collect the
-   fields and button that may be inserted below the initial field."
-  ([parent]
-     [:div.comment-form
-      [:div {:class "hyphenate editable start-blank"
-             :onmouseover (str "configureField('" parent "', this);")}
-       [:span.internal-label "Reply"]]])
-  ([parent level]
-     (if (> max-comment-level level)
-       (comment-field parent))))
+  "Take a parent comment number. Render an Aloha editable to be placed at every end in the comment
+   tree. Wrapped in another div that will collect the fields and button that may be inserted below
+   the initial field."
+  [parent]
+  [:div.comment-form
+   [:div {:class "hyphenate editable start-blank"
+          :onmouseover (str "configureField('" parent "', this);")}
+    [:span.internal-label "Reply"]]])
 
 ;; The expanded comment forms are created client-side, via comment.js
 
@@ -50,19 +46,19 @@
 (defhtml ^:private thread
   [thread-or-comment]
   (if (map? thread-or-comment)
+    ;; Argument is a single comment map:
     (comment thread-or-comment)
+    ;; Argument is a thread (nested sequence):
     [:div.thread
      (mapcat thread thread-or-comment)
      (let [c (first thread-or-comment)]
        (if-let [s (-> c first :parent)]
          ;; Comment field for the article, the slug is the value for :slug in the first map in the
-         ;; first list. Since it's already clear this is the first level, no second argument is
-         ;; given to comment-field:
+         ;; first list:
          (comment-field s)
-         ;; Comment field to add a sub-comment. A second argument with the nesting level will be
-         ;; used, to leave out comment-fields once a maximum level is reached:
-         (let [n (:number c)]
-           (comment-field n (level n)))))]))
+         ;; Comment field to add a sub-comment, unless the nesting level reached the maximum:
+         (if (> max-comment-level (-> c :level inc))
+           (comment-field (:number c)))))]))
 
 (defn new-thread-async
   "Render a thread with a single comment. Used for sending HTML representing a just added comment to
