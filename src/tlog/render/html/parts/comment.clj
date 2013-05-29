@@ -47,8 +47,8 @@
   "Take a level (integer) and comment number (string). Return a comment-field, if the level does not
    exceed max-comment-level, otherwise nil."
   [level number]
-  (if (> max-comment-level (inc level))
-           (comment-field number)))
+  (if (>= max-comment-level level)
+    (comment-field number)))
 
 (defhtml ^:private thread
   "Take either a thread list or a single comment-map. Render a comment thread of threads, or a

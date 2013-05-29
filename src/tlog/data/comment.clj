@@ -4,6 +4,7 @@
   (:require [korma.core :as k]
             [tlog.data.access :refer [db]]
             [tlog.data.time :refer [now]]
+            [tlog.interface.configuration :refer [max-comment-level]]
             [tlog.interface.validate :refer [->int]]))
 
 db
@@ -76,17 +77,22 @@ db
       (if (> l -1) l))))
 
 (defn create!
-  "Take strings for the comment data. Store a comment in the database. Return the comment map."
+  "Take strings for the comment data. Store a comment in the database and return the comment map,
+   except if the max comment nesting level would be exceeded. As there won't be a matching
+   comment-field, that would mean someone tried it by creating a custom request and does not deserve
+   a specific error message."
   [parent author email link content]
-  (let [c (k/insert comment
-                    (k/values {;; primary key 'number' is a serial, filled in by a sequence starting
-                               ;; from 1 
-                               :parent parent
-                               :created_timestamp (now)
-                               :updated_timestamp (now)
-                               :author author
-                               :email email
-                               :link link
-                               :content content}))]
-    ;; Add :level to the comment map to be returned:
-    (into c {:level (-> c :number str level)})))
+  (let [parent-level (level parent)]
+    (if (> max-comment-level parent-level)
+      (let [c (k/insert comment
+                        (k/values {;; primary key 'number' is a serial, filled in by a sequence
+                                   ;; starting from 1 
+                                   :parent parent
+                                   :created_timestamp (now)
+                                   :updated_timestamp (now)
+                                   :author author
+                                   :email email
+                                   :link link
+                                   :content content}))]
+        ;; Add :level to the comment map to be returned:
+        (into c {:level (inc parent-level)})))))
