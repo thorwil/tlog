@@ -1,4 +1,4 @@
-Don't accept PUTs of comments with a final level parent or not existing parent
+Start visible comment numbering from 1 on each article page
 Suppress Publish button tooltip, if comment form input is sufficient
 Add Email field to comment form
 Check "#comments .updated > div:nth-child(3)" CSS
@@ -12,7 +12,7 @@ When expanding comment form, auto-scroll if necessary to show the complete form
 # Pages and entities
 
 Comments (form, create, edit, delete, editable by admin)
-Add footer
+Add footer with brief "About", link to journal ...
 Delete article
 Move article
 Note on login form if already logged in
@@ -63,6 +63,7 @@ Memchache/memoization
 Minify JS and CSS files
 Minify inline JS (tlog.render.html.parts.script/aloha)
 Etags?
+Look into writing out static html and serving it directly
 Do not try to remove CSS class empty for every single comment submission (Cause not implemented, yet)
 
 

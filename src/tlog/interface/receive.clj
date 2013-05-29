@@ -8,7 +8,7 @@
             [ring.middleware.params :refer [wrap-params]]
             [clojure.data.json :as json]
             [tlog.interface.respond :as r]
-            [tlog.interface.validate :as v]
+            [tlog.interface.validate :refer [dash-separated-integer-pair]]
             [tlog.data.resource :as rsc]))
 
 
@@ -43,7 +43,7 @@
   (app :get [(wrap-resource "/")
              wrap-file-info
              [] r/journal-default
-             [[from-to v/dash-separated-integer-pair]] (r/journal from-to)
+             [[from-to dash-separated-integer-pair]] (r/journal from-to)
              ["login"] r/login
              ["logout"] (friend/logout r/logout)
              ["admin" &] (-> (app [] r/admin
@@ -52,7 +52,7 @@
                              (friend/wrap-authorize [:tlog.data.account/admin]))
              [[slug rsc/slug->resource-or-nil]] (r/resource slug)
              [&] r/not-found]
-       :put [[[slug rsc/valid-slug-for-article] "comment"] (wrap-json r/put-comment)
+       :put [[[slug rsc/valid-article-slug] "comment"] (wrap-json r/put-comment)
              [slug] (-> r/put-article
                         wrap-json
                         (friend/wrap-authorize [:tlog.data.account/admin]))]

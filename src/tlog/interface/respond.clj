@@ -4,6 +4,7 @@
   (:require [ring.util.response :refer [response redirect]]
             [net.cgrand.moustache :refer [alter-response]]
             [tlog.interface.configuration :refer [articles-per-journal-page]]
+            [tlog.interface.validate :refer [string] :rename {string valid-string}]
             [tlog.render.html.assemble :as a]
             [tlog.data.article :as article]
             [tlog.data.resource :as resource]
@@ -39,7 +40,7 @@
   [r]
   (-> r :session :cemerick.friend/identity :authentications vals first :roles))
 
-(defn article-range
+(defn- article-range
   "Take index numbers for a first and last article. Return seq of maps of all articles within that
    range. There are no fixed article index numbers. The association happens only for being able to
    have URI-fragments like 32-28 as a short way to specify a range (continuous selection) of
@@ -51,6 +52,24 @@
         limit (inc (- from to))]
     (article/range offset limit)))
 
+(defn- article-slug-or-comment-number
+  "Validate a string being either the slug of an article, or the number of a comment. Return nil for
+   nil."
+  [s]
+  (if (or (resource/valid-article-slug s)
+          (comment/comment-with-number-str s))
+    s))
+
+(defn response-plain
+  "Take a status string and body string. Return a response map with text/plain content-type, the
+   status number matching the status string and the given body."
+  [status body]
+  {:headers {"Content-Type" "text/plain"}
+   :status ({"Created" 201
+             "Bad Request" 400
+             "Internal Server Error" 500}
+            status)
+   :body body})
 
 ;; Handlers
 
@@ -103,7 +122,7 @@
                    (:title body)
                    (-> body :content cleanup-html-string)
                    (-> body :feeds (clojure.string/split ,,, #" ")))
-  {:status 201 ;; = Created
+  {:status 201 ;; = "Created"
    :headers {"Content-Type" "text/plain"}
    :body "Article created."})
 
@@ -116,10 +135,10 @@
                                            (cleanup-html-string content))]
     ;; updated-timestamp will be nil, if there was no resource for the given slug.
     (if updated-timestamp
-        {:status 200 ;; = OK
+        {:status 200 ;; = "OK"
          :headers {"Content-Type" "text/plain"}
          :body (tlog.render.html.parts.time/time-updated slug updated-timestamp)}
-        {:status 400 ;; = Bad request
+        {:status 400 ;; = "Bad request"
          :headers {"Content-Type" "text/plain"}
          :body (format "There doesn't seem to be an article that could be updated, with the slug %s"
                        slug)})))
@@ -130,8 +149,8 @@
   [slug feed checked]
   (let [[checked-final changed] (feed/set-article-feed-rel! slug feed checked)]
     {:status (if changed
-               200  ;; = OK
-               409) ;; = Conflict
+               200  ;; = "OK"
+               409) ;; = "Conflict"
      :headers {"Content-Type" "text/plain"}
      :body (str checked-final)}))
 
@@ -159,20 +178,25 @@
     (fn [request] (response (handler (roles request) resource-map)))))
 
 (defn put-comment
-  "Take a a slug and a request map, containing a :body with a comment's content, name and link.
-   Store a new comment in the database. Return a status 201: Created, if comment/create! returns."
+  "Take a request map, containing a :body with a comment's map. If the comment's parent is an
+   article or comment, try to store the new comment in the database. Return an appropriate response
+   in all cases."
   [{:keys [body]}]
-  (if-let [c (comment/create! (:parent body)
-                            (:author body)
-                            (:email body)
-                            (:link body)
-                            (-> body :content cleanup-html-string))]
-    {:status 201 ;; = Created
-     :headers {"Content-Type" "text/plain"}
-     :body (render-comment/new-thread-async c)}
-    {:status 451 ;; = Parameter not understood
-     :headers {"Content-Type" "text/plain"}
-     :body "Failed to add comment!"}))
+  (if-let [parent (-> body :parent valid-string article-slug-or-comment-number)]
+    ;; article-slug-or-comment-number will happily map nil -> nil.
+    ;; The new comment's parent is a valid article slug or comment number, so continue:
+    (if-let [c (comment/create! parent
+                                (:author body)
+                                (:email body)
+                                (:link body)
+                                (-> body :content cleanup-html-string))]
+      ;; The new comment has been stored in the database, respond with a HTML rendiotion of the
+      ;; comment as body:
+      (response-plain "Created" (render-comment/new-thread-async c))
+      ;; Something went wrong, the comment couldn't be stored in the database:
+      (response-plain "Internal Server Error" "Failed to add comment."))
+    ;; The new commen's parent is not an article slug or comment-number:
+    (response-plain "Bad Request" "Comment parent does not refer to an article or comment.")))
 
 (def not-found
   (-> a/not-found

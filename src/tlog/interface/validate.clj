@@ -46,3 +46,7 @@
                          [a b])))
           ((fn [[a b]] (when-let [b (int-gt-zero b)]
                          [a b])))))
+
+(def string
+  "Validate argument being a string."
+  (valid string?))

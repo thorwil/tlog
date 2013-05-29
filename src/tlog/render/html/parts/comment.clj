@@ -2,9 +2,9 @@
   "HTML parts for navigation. To be handed to skeleton as values of keys other than :main."
   (:require [hiccup.core :refer [html]]
             [hiccup.def :refer [defhtml]]
-            [tlog.render.html.parts.time :as t]
-            [tlog.data.comment :refer [level]]
-            [tlog.interface.configuration :refer [max-comment-level]]))
+            [tlog.data.resource :refer [valid-article-slug]]
+            [tlog.interface.configuration :refer [max-comment-level]]
+            [tlog.render.html.parts.time :as t]))
 
 
 (defhtml ^:private comment-field
@@ -43,7 +43,16 @@
      [:div {:id (str "comment-content_" number)
             :class (str "content " option-comments-admin-editable)} content]]))
 
+(defn- comment-field-if-not-max-level
+  "Take a level (integer) and comment number (string). Return a comment-field, if the level does not
+   exceed max-comment-level, otherwise nil."
+  [level number]
+  (if (> max-comment-level (inc level))
+           (comment-field number)))
+
 (defhtml ^:private thread
+  "Take either a thread list or a single comment-map. Render a comment thread of threads, or a
+   single comment thread."
   [thread-or-comment]
   (if (map? thread-or-comment)
     ;; Argument is a single comment map:
@@ -53,20 +62,25 @@
      (mapcat thread thread-or-comment)
      (let [c (first thread-or-comment)]
        (if-let [s (-> c first :parent)]
-         ;; Comment field for the article, the slug is the value for :slug in the first map in the
-         ;; first list:
+         ;; Comment field for an article:
          (comment-field s)
          ;; Comment field to add a sub-comment, unless the nesting level reached the maximum:
-         (if (> max-comment-level (-> c :level inc))
-           (comment-field (:number c)))))]))
+         (comment-field-if-not-max-level (-> c :level inc)
+                                       (:number c))))]))
 
-(defn new-thread-async
+(defhtml new-thread-async
   "Render a thread with a single comment. Used for sending HTML representing a just added comment to
    the client asynchronously."
-  [parameter-map]
-  (thread [parameter-map]))
+  [comment-map]
+  ;;(thread [parameter-map])
+  [:div.thread
+   (comment comment-map)
+   ;; Comment field to add a sub-comment, unless the nesting level reached the maximum:
+   (comment-field-if-not-max-level (-> comment-map :level Integer. inc)
+                                   (:number comment-map))])
 
 (defhtml section
+  "Render a comment section."
   [article-slug comments-map]
   [:div#comments
    [:h3 "Comments"]

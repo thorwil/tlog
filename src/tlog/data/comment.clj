@@ -4,24 +4,12 @@
   (:require [korma.core :as k]
             [tlog.data.access :refer [db]]
             [tlog.data.time :refer [now]]
-            [tlog.interface.validate :refer [->int >zero]]))
+            [tlog.interface.validate :refer [->int]]))
 
 db
 
 (k/defentity comment
   (k/pk :number))
-
-(defn create!
-  [parent author email link content]
-  (k/insert comment
-            (k/values {;; primary key 'number' is a serial, filled in by a sequence starting from 1 
-                       :parent parent
-                       :created_timestamp (now)
-                       :updated_timestamp (now)
-                       :author author
-                       :email email
-                       :link link
-                       :content content})))
 
 (defn- comments-for-parent
   "Take an article slug or comment number as string. Return a sequence of associated comments."
@@ -65,24 +53,40 @@ db
   (not-empty (first (k/select comment
                               (k/where {:number number})))))
 
-(defn- comment-with-number-str
+(defn comment-with-number-str
   "Take a comment number as string. Return the comment map, or nil, if the string can't be converted
    to an integer or if there is no comment with that number."
   [number-str]
   (if-let [n (->int number-str)]
     (comment-with-number n)))
 
-(defn level
-  "Take a comment number as string. Return the count of members of the successive chain of parent
-   comments with an article as parent are level 1. Return nil, if there is no comment for the given
-   number."
+(defn- level
+  "Take a comment number as string. Return the count of members of the chain of parent
+   comments that have parent comments. Thus the level for comments refering directly to an article
+   is 0. Return nil, if there is no comment for the given number."
   [number-str]
   (loop [n number-str
-         l 0]
+         l -1]
     (if-let [c (comment-with-number-str n)]
       ;; There's a comment with that number, so recur with its parent:
       (recur (:parent c) (inc l))
       ;; The number-str either contains a number not associated with a comment, or it's an article
-      ;; slug. Stop here and return the level reached. If it's still zero, the number-str did not
+      ;; slug. Stop here and return the level reached. If it's still -1, the number-str did not
       ;; match a comment at all; return nil:
-      (>zero l))))
+      (if (> l -1) l))))
+
+(defn create!
+  "Take strings for the comment data. Store a comment in the database. Return the comment map."
+  [parent author email link content]
+  (let [c (k/insert comment
+                    (k/values {;; primary key 'number' is a serial, filled in by a sequence starting
+                               ;; from 1 
+                               :parent parent
+                               :created_timestamp (now)
+                               :updated_timestamp (now)
+                               :author author
+                               :email email
+                               :link link
+                               :content content}))]
+    ;; Add :level to the comment map to be returned:
+    (into c {:level (-> c :number str level)})))

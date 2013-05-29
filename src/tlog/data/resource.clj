@@ -37,7 +37,7 @@ db
         (first (k/select (:table_reference resource-map)
                          (k/where {:slug (:slug resource-map)})))))
 
-(defn slug->raw-resource-or-nil
+(defn- slug->raw-resource-or-nil
   "Take a slug (string). Retrieve the resource for :slug. Return nil if there is no resource for the
    slug."
   [slug]
@@ -51,7 +51,8 @@ db
   (if-let [r (slug->raw-resource-or-nil slug)]
     (resolve-table-reference r)))
 
-(defn valid-slug-for-article
+;; Placed here for not having to require slug->raw-resource-or-nil elsewhere:
+(defn valid-article-slug
   "Take a slug (string). Return the slug, if it is associated with an article, otherwise false."
   [slug]
   (and (= (-> slug
